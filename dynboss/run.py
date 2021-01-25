@@ -76,8 +76,8 @@ nodemer_k = 30
 edgemer_k = nodemer_k + 1
 
 build_genomes = run_get_output("cat " + buildlist).split('\n')
-add_genomes = run_get_output("cat " + buildlist).split('\n')
-del_genomes = run_get_output("cat " + buildlist).split('\n')
+add_genomes = run_get_output("cat " + addlist).split('\n')
+del_genomes = run_get_output("cat " + dellist).split('\n')
 resultfile = open("results.txt",'w')
 
 # Concatenate fasta files
