@@ -28,6 +28,8 @@ names_no_bifrost = ["FDBG", "BufBOSS", "DynBOSS"]
 # Plot construction
 fig, ax = plt.subplots()
 ax.scatter([D["time"] for D in all_built], [D["mem"] for D in all_built])
+print([D["time"] for D in all_built])
+print([D["mem"] for D in all_built])
 for i, name in enumerate(names):
     ax.annotate(name, 
                 xy=(all_built[i]["time"], all_built[i]["mem"]), xycoords='data', # Data point
@@ -51,7 +53,7 @@ plt.show(block = False)
 
 # Plot deletion
 fig3, ax3 = plt.subplots()
-ax.scatter([D["time"] for D in all_deleted], [D["mem"] for D in all_deleted])
+ax3.scatter([D["time"] for D in all_deleted], [D["mem"] for D in all_deleted])
 for i, name in enumerate(names_no_bifrost):
     ax3.annotate(name, 
                 xy=(all_deleted[i]["time"], all_deleted[i]["mem"]), xycoords='data', # Data point
