@@ -83,7 +83,7 @@ resultfile = open("fdbg_results.txt",'w')
 
 # Run fdbg
 
-build_concat = tempdir + "/build.fasta"
+build_concat = tempdir + "/built.fasta"
 concatenate_to(build_genomes, build_concat)
 add_concat = tempdir + "/add.fasta"
 concatenate_to(add_genomes, add_concat)
@@ -98,5 +98,5 @@ run_timed_rss("./bahar-fdbg/cpp-src/fdbg-build-jarno " + build_concat + " " + st
 
 run_timed_rss("./bahar-fdbg/cpp-src/fdbg-add-jarno " + add_concat + " " + str(nodemer_k) + " " + built + " " + added, "fdbg-add", resultfile)
 
-run_timed_rss("./bahar-fdbg/cpp-src/fdbg-add-jarno " + add_concat + " " + str(nodemer_k) + " " + added + " " + deleted, "fdbg-del", resultfile)
+run_timed_rss("./bahar-fdbg/cpp-src/fdbg-del-jarno " + add_concat + " " + str(nodemer_k) + " " + added + " " + deleted, "fdbg-del", resultfile)
 
