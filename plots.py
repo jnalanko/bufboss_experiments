@@ -11,8 +11,8 @@ fdbg_added = {"time": 449.58, "mem": 3805618176, "index_disk": 33107152}
 fdbg_deleted = {"time": 0, "mem": 0, "index_disk": 0}
 
 bufboss_built = {"time": 121.68, "mem": 2456678400, "index_disk": 28004 * 2**10}
-bufboss_added = {"time": 0, "mem": 0, "index_disk": 0}
-bufboss_deleted = {"time": 0, "mem": 0, "index_disk": 0}
+bufboss_added = {"time": 510.73, "mem": 234758144, "index_disk": 0}
+bufboss_deleted = {"time": 6.08, "mem": 10121216, "index_disk": 0}
 
 dynboss_built = {"time": 34.49 + 3.35 + 9.35, "mem": max(1642811392, 260165632, 26664960), "index_disk": 0}
 dynboss_added = {"time": 0, "mem": 0, "index_disk": 0}
