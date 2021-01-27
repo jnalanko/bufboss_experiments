@@ -93,6 +93,7 @@ int main(int argc, char* argv[]) {
         kmer_t v = mer_string_to_binary(strV, num, nodeLength);
         if (Graph.IsEdgeInGraph(u,v)){
             Graph.dynamicRemoveEdge(u,v);
+            n_deleted++;
         }
     }
 
