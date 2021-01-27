@@ -37,7 +37,7 @@ using namespace std;
 
 
 /**
- * Run like "./a.out kmers.fasta 8"
+ * Run like "./a.out kmers.fasta 30 index.bin"
  */
 int main(int argc, char* argv[]) {
    // Set debug level
@@ -56,10 +56,9 @@ int main(int argc, char* argv[]) {
    // fasta filename
    string filename = argv[1];
    int k = stoi(argv[2]);
+   string dsfile = argv[3];
    FDBG Graph;
 
-   //Have we constructed this dataset before on these parameters?
-   string dsfile = filename.substr( 0, filename.find_last_of( '.' ) ) + "fdbg" + to_string( k ) + ".bin";
    // get k-mers and edgemers from file
    unordered_set<kmer_t> kmers;
    unordered_set<kmer_t> edgemers;

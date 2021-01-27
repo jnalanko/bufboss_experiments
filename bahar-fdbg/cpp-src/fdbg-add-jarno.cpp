@@ -66,8 +66,7 @@ int main(int argc, char* argv[]) {
     unsigned int nodeLength = stoi(argv[2]);
     unsigned int edgemer_k = nodeLength + 1;
     string graphName = argv[3];
-
-    
+    string outfile = argv[4];
 
     BOOST_LOG_TRIVIAL(info) << "reading kmers from new fasta file";
     getKmers(nKmers, edgemer_k, kmer_2, input);
@@ -141,4 +140,9 @@ int main(int argc, char* argv[]) {
         << "After addition graph has " << Graph.n << " nodes ";
     BOOST_LOG_TRIVIAL(info) << "Bits per element after addition: "
                             << Graph.bitSize() / static_cast<double>(Graph.n);
+
+   BOOST_LOG_TRIVIAL(info) << "Writing data structure to file " << outfile;
+   ofstream ofile(outfile.c_str(), ios::out | ios::binary );
+   Graph.save(ofile);
+   ofile.close();
 }

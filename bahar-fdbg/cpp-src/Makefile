@@ -1,5 +1,6 @@
 
 .PHONY: fdbg-build-jarno fdbg-add-jarno fdbg-del-jarno
+all: fdbg-build-jarno fdbg-add-jarno fdbg-del-jarno
 
 #bds: BuildDataStructure.cpp formatutil.cpp TestUtil.cpp FDBG.cpp
 #	g++ -O3  -std=c++11 -DBOOST_LOG_DYN_LINK BuildDataStructure.cpp -o bds -L/s/apu/a/homes/baharpan/boost/lib -I/s/apu/a/homes/baharpan/boost/include  -lboost_filesystem -lboost_log -lboost_system -lboost_thread  -l pthread

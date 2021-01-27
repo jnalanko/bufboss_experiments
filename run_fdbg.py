@@ -69,6 +69,7 @@ tempdir = "temp"
 run("mkdir -p " + tempdir)
 
 datadir = "data"
+outdir = "fdbg_out"
 buildlist = datadir + "/coli12_build.txt"
 addlist = datadir + "/coli12_add.txt"
 dellist = datadir + "/coli12_del.txt"
@@ -84,18 +85,18 @@ resultfile = open("fdbg_results.txt",'w')
 
 build_concat = tempdir + "/build.fasta"
 concatenate_to(build_genomes, build_concat)
-run_timed_rss("./bahar-fdbg/cpp-src/fdbg-build-jarno " + build_concat + " " + str(nodemer_k), "fdbg-build", resultfile)
-
 add_concat = tempdir + "/add.fasta"
 concatenate_to(add_genomes, add_concat)
-run_timed_rss("./bahar-fdbg/cpp-src/fdbg-add-jarno " + add_concat + " " + str(nodemer_k) + " " + drop_extension(build_concat) + "fdbg" + str(nodemer_k) + ".bin", "fdbg-add", resultfile)
-
-# Todo: save add to disk and use that
 del_concat = tempdir + "/del.fasta"
 concatenate_to(del_genomes, del_concat)
-run_timed_rss("./bahar-fdbg/cpp-src/fdbg-add-jarno " + del_concat + " " + str(nodemer_k) + " " + drop_extension(build_concat) + "fdbg" + str(nodemer_k) + ".bin", "fdbg-del", resultfile)
 
-#./bahar-fdbg/cpp-src/fdbg-add-jarno $(head -n 1 ../../data/coli12_add.txt) 30 ../../data/coli3682/GCA_000987555.1_ASM98755v1fdbg30.bin
+built = outdir + "/built.dbg"
+added = outdir + "/added.dbg"
+deleted = outdir + "/deleted.dbg"
 
-#./bahar-fdbg/cpp-src/fdbg-del-jarno $(head -n 1 ../../data/coli12_add.txt) 30 ../../data/coli3682/GCA_000987555.1_ASM98755v1fdbg30.bin
+run_timed_rss("./bahar-fdbg/cpp-src/fdbg-build-jarno " + build_concat + " " + str(nodemer_k) + " " + built, "fdbg-build", resultfile)
+
+run_timed_rss("./bahar-fdbg/cpp-src/fdbg-add-jarno " + add_concat + " " + str(nodemer_k) + " " + built + " " + added, "fdbg-add", resultfile)
+
+run_timed_rss("./bahar-fdbg/cpp-src/fdbg-add-jarno " + add_concat + " " + str(nodemer_k) + " " + added + " " + deleted, "fdbg-del", resultfile)
 
