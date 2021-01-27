@@ -11,7 +11,11 @@ fdbg_added = {"time": 449.58, "mem": 3805618176, "index_disk": 33107152,  "name"
 fdbg_deleted = {"time": 0, "mem": 0, "index_disk": 0, "name": "FDBG"}
 
 bufboss_built = {"time": 121.68, "mem": 2456678400, "index_disk": 28004 * 2**10, "name": "BufBOSS"}
-bufboss_added = {"time": 262.94, "mem": 293093376, "index_disk": 35708 * 2**10, "name": "BufBOSS"}
+
+bufboss_added_runs = []
+bufboss_added_runs.append({"time": 203.77, "mem": 357457920, "index_disk": 0, "name": "BufBOSS-0.1"})
+bufboss_added_runs.append({"time": 262.94, "mem": 293093376, "index_disk": 35708 * 2**10, "name": "BufBOSS-0.05"})
+
 bufboss_deleted = {"time": 510.09, "mem": 576802816, "index_disk": 26028 * 2**10, "name": "BufBOSS"}
 # Why bufboss_deleted ram is so high? Because: "5257062 dummy edgemers added".
 
@@ -20,13 +24,15 @@ dynboss_added = {"time": 0, "mem": 0, "index_disk": 0, "name": "DynBOSS"}
 dynboss_deleted = {"time": 0, "mem": 0, "index_disk": 0, "name": "DynBOSS"}
 
 all_built = [bifrost_built, fdbg_built, bufboss_built, dynboss_built] 
-all_added = [bifrost_added, fdbg_added, bufboss_added] 
+all_added = [bifrost_added, fdbg_added] + bufboss_added_runs 
 all_deleted = [bufboss_deleted] 
 
 # Plot construction
 fig, ax = plt.subplots()
-ax.scatter([D["time"] for D in all_built], [D["mem"] for D in all_built])
-for D in all_built:    
+for D in all_built:
+    color = "blue"
+    if "BufBOSS" in D["name"]: color = "orange"
+    ax.scatter(D["time"], D["mem"], color = color)
     ax.annotate(D["name"], 
                 xy=(D["time"], D["mem"]), xycoords='data', # Data point
                 xytext=(5, 5), textcoords='offset points') # Text offset
@@ -37,8 +43,10 @@ plt.show(block = False)
 
 # Plot addition
 fig2, ax2 = plt.subplots()
-ax2.scatter([D["time"] for D in all_added], [D["mem"] for D in all_added])
 for D in all_added:
+    color = "blue"
+    if "BufBOSS" in D["name"]: color = "orange"
+    ax2.scatter(D["time"], D["mem"], color = color)
     ax2.annotate(D["name"], 
                 xy=(D["time"], D["mem"]), xycoords='data', # Data point
                 xytext=(5, 5), textcoords='offset points') # Text offset
@@ -51,6 +59,9 @@ plt.show(block = False)
 fig3, ax3 = plt.subplots()
 ax3.scatter([D["time"] for D in all_deleted], [D["mem"] for D in all_deleted])
 for D in all_deleted:
+    color = "blue"
+    if "BufBOSS" in D["name"]: color = "orange"
+    ax3.scatter(D["time"], D["mem"], color = color)
     ax3.annotate(D["name"], 
                 xy=(D["time"], D["mem"]), xycoords='data', # Data point
                 xytext=(5, 5), textcoords='offset points') # Text offset
