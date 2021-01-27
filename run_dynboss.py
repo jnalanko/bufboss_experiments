@@ -106,5 +106,5 @@ run_timed_rss(program + " build -p " + drop_path_and_extension(build_concat) + "
 run_timed_rss(program + " add -g " + built + " -s " + add_concat + " -o " + added, "add", resultfile)
 
 # Del
-run_timed_rss(program + " -g " + added + " -s " + del_concat + " -o " + deleted, "del", resultfile)
+run_timed_rss(program + " delete -g " + added + " -s " + del_concat + " -o " + deleted, "del", resultfile)
 

@@ -13,6 +13,8 @@ fdbg_deleted = {"time": 0, "mem": 0, "index_disk": 0, "name": "FDBG"}
 bufboss_built = {"time": 121.68, "mem": 2456678400, "index_disk": 28004 * 2**10, "name": "BufBOSS"}
 
 bufboss_added_runs = []
+#bufboss_added_runs.append({"time": 140.1, "mem": 711532544, "index_disk": 0, "name": "BufBOSS-1.0"}) # Almost the same as BufBOSS-0.5
+bufboss_added_runs.append({"time": 138.23, "mem": 711827456, "index_disk": 0, "name": "BufBOSS-0.5"})
 bufboss_added_runs.append({"time": 203.77, "mem": 357457920, "index_disk": 0, "name": "BufBOSS-0.1"})
 bufboss_added_runs.append({"time": 262.94, "mem": 293093376, "index_disk": 35708 * 2**10, "name": "BufBOSS-0.05"})
 
