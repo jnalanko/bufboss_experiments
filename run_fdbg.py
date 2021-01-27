@@ -88,12 +88,12 @@ run_timed_rss("./bahar-fdbg/cpp-src/fdbg-build-jarno " + build_concat + " " + st
 
 add_concat = tempdir + "/add.fasta"
 concatenate_to(add_genomes, add_concat)
-run_timed_rss("./bahar-fdbg/cpp-src/fdbg-add-jarno " + add_concat + " " + str(nodemer_k) + " " + build_concat + "fdbg" + str(nodemer_k) + ".bin", "fdbg-add", resultfile)
+run_timed_rss("./bahar-fdbg/cpp-src/fdbg-add-jarno " + add_concat + " " + str(nodemer_k) + " " + drop_extension(build_concat) + "fdbg" + str(nodemer_k) + ".bin", "fdbg-add", resultfile)
 
 # Todo: save add to disk and use that
 del_concat = tempdir + "/del.fasta"
 concatenate_to(del_genomes, del_concat)
-run_timed_rss("./bahar-fdbg/cpp-src/fdbg-add-jarno " + del_concat + " " + str(nodemer_k) + " " + build_concat + "fdbg" + str(nodemer_k) + ".bin", "fdbg-del", resultfile)
+run_timed_rss("./bahar-fdbg/cpp-src/fdbg-add-jarno " + del_concat + " " + str(nodemer_k) + " " + drop_extension(build_concat) + "fdbg" + str(nodemer_k) + ".bin", "fdbg-del", resultfile)
 
 #./bahar-fdbg/cpp-src/fdbg-add-jarno $(head -n 1 ../../data/coli12_add.txt) 30 ../../data/coli3682/GCA_000987555.1_ASM98755v1fdbg30.bin
 
