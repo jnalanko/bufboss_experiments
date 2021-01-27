@@ -18,8 +18,8 @@ bufboss_added_runs.append({"time": 138.23, "mem": 711827456, "index_disk": 0, "n
 #bufboss_added_runs.append({"time": 168.49, "mem": 681062400, "index_disk": 0, "name": "BufBOSS-0.25"})
 bufboss_added_runs.append({"time": 203.77, "mem": 357457920, "index_disk": 0, "name": "BufBOSS-0.1"})
 bufboss_added_runs.append({"time": 262.94, "mem": 293093376, "index_disk": 35708 * 2**10, "name": "BufBOSS-0.05"})
-bufboss_added_runs.append({"time": 373.12, "mem": 274550784, "index_disk": 35708 * 2**10, "name": "BufBOSS-0.025"})
-bufboss_added_runs.append({"time": 616.47, "mem": 256974848, "index_disk": 35708 * 2**10, "name": "BufBOSS-0.01"})
+bufboss_added_runs.append({"time": 373.12, "mem": 274550784, "index_disk": 0, "name": "BufBOSS-0.025"})
+bufboss_added_runs.append({"time": 616.47, "mem": 256974848, "index_disk": 0, "name": "BufBOSS-0.01"})
 
 bufboss_deleted = {"time": 510.09, "mem": 576802816, "index_disk": 26028 * 2**10, "name": "BufBOSS"}
 # Why bufboss_deleted ram is so high? Because: "5257062 dummy edgemers added".
