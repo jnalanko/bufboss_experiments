@@ -74,15 +74,13 @@ program = "bifrost/build/src/Bifrost"
 buildlist = datadir + "/coli12_build.txt"
 addlist = datadir + "/coli12_add.txt"
 
+# Bifrost appends .gfa to these
 built = outdir + "/built.dbg"
 added = outdir + "/added.dbg"
 deleted = outdir + "/deleted.dbg"
 
 resultfile = open("bifrost_results.txt",'w')
 
-
 # Bifrost is node-centric and nodes are k-mers.
 run_timed_rss(program + " build -r " + buildlist + " -k 30 -y -o " + built, "bifrost-build", resultfile)
-#run_timed_rss(./build/src/Bifrost build -r ../data/coli12_build.txt -k 31 -y -o coli12)
-run_timed_rss(program + " update -g " + built + " -r " + addlist + " -k 30 -o " + added, "bifrost-update", resultfile)
-#/usr/bin/time -v ./build/src/Bifrost update -g coli12.gfa -r ../data/coli12_add.txt -k 31 -o coli12_added
+run_timed_rss(program + " update -g " + built+".gfa" + " -r " + addlist + " -k 30 -o " + added, "bifrost-update", resultfile)
