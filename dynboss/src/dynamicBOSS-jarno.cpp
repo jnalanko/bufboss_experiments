@@ -18,6 +18,7 @@ struct parameters_t {
    std::string function = "";
    std::string pack_filename = "";
    std::string graph_filename = "";
+   std::string output_filename = "";
    std::string kmer_filename = "";
    std::string queryfile= "queryResults.tsv";
 };
@@ -39,13 +40,15 @@ void parse_arguments(int argc, char **argv, parameters_t & params)
    TCLAP::ValueArg<std::string> pack_filename_arg("p","pack-input",
             ".packed file (output from cosmo-pack).", false, "", "pack file", cmd);
 
-
+   TCLAP::ValueArg<std::string> output_filename_arg("o","output",
+            "Output graph name", false, "", "output file", cmd);
 
    cmd.parse( argc, argv );
    params.function  = function_arg.getValue();
    params.pack_filename  = pack_filename_arg.getValue();
    params.graph_filename  = graph_filename_arg.getValue();
    params.kmer_filename  = kmer_filename_arg.getValue();
+   params.output_filename = output_filename_arg.getValue();
 }
 
 
@@ -252,15 +255,10 @@ if (p.function == "build" || (p.function != "query" && !warning)){
   bs = dbg.bit_size();
   cout << "Total size    : " << bs / 8.0 / 1024.0 / 1024.0 << " MB" << endl;
   cout << "Bits per edge : " << bs / static_cast<double>(dbg.num_edges()) << " Bits" << endl;
-  extension = (p.function == "build") ? "dbg" : "updated";
-  string base = (p.function == "build") ? p.pack_filename : p.graph_filename;
-  string outfilename = base+ "."+extension;
 
-  cout<<"Writing the";
-  if (p.function != "build") cout<<" updated";
-  cout<<" DynamicBOSS in file: "<<outfilename<<endl;
+  cout<<"Writing the DynamicBOSS in file: "<<p.output_filename<<endl;
 
-  ofstream ofs( outfilename, ios::out | ios::binary );
+  ofstream ofs(p.output_filename, ios::out | ios::binary );
   dbg.serialize( ofs );
   ofs.close();
 }
