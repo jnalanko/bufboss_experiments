@@ -13,20 +13,23 @@ fdbg_deleted = {"time": 0, "mem": 0, "index_disk": 0, "name": "FDBG"}
 bufboss_built = {"time": 121.68, "mem": 2456678400, "index_disk": 28004 * 2**10, "name": "BufBOSS"}
 
 bufboss_added_runs = []
-#bufboss_added_runs.append({"time": 140.1, "mem": 711532544, "index_disk": 0, "name": "BufBOSS-1.0"}) # Almost the same as BufBOSS-0.5
+#bufboss_added_runs.append({"time": 140.1, "mem": 711532544, "index_disk": 0, "name": "BufBOSS-1.0"})
 bufboss_added_runs.append({"time": 138.23, "mem": 711827456, "index_disk": 0, "name": "BufBOSS-0.5"})
+#bufboss_added_runs.append({"time": 168.49, "mem": 681062400, "index_disk": 0, "name": "BufBOSS-0.25"})
 bufboss_added_runs.append({"time": 203.77, "mem": 357457920, "index_disk": 0, "name": "BufBOSS-0.1"})
 bufboss_added_runs.append({"time": 262.94, "mem": 293093376, "index_disk": 35708 * 2**10, "name": "BufBOSS-0.05"})
+bufboss_added_runs.append({"time": 373.12, "mem": 274550784, "index_disk": 35708 * 2**10, "name": "BufBOSS-0.025"})
+bufboss_added_runs.append({"time": 616.47, "mem": 256974848, "index_disk": 35708 * 2**10, "name": "BufBOSS-0.01"})
 
 bufboss_deleted = {"time": 510.09, "mem": 576802816, "index_disk": 26028 * 2**10, "name": "BufBOSS"}
 # Why bufboss_deleted ram is so high? Because: "5257062 dummy edgemers added".
 
 dynboss_built = {"time": 34.49 + 3.35 + 9.35, "mem": max(1642811392, 260165632, 26664960), "index_disk": 0, "name": "DynBOSS"}
-dynboss_added = {"time": 0, "mem": 0, "index_disk": 0, "name": "DynBOSS"}
+dynboss_added = {"time": 6755.0, "mem": 1568399360, "index_disk": 0, "name": "DynBOSS"}
 dynboss_deleted = {"time": 0, "mem": 0, "index_disk": 0, "name": "DynBOSS"}
 
 all_built = [bifrost_built, fdbg_built, bufboss_built, dynboss_built] 
-all_added = [bifrost_added, fdbg_added] + bufboss_added_runs 
+all_added = [bifrost_added, dynboss_added, fdbg_added] + bufboss_added_runs 
 all_deleted = [bufboss_deleted] 
 
 # Plot construction
