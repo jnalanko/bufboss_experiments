@@ -90,13 +90,10 @@ resultfile = open("bufboss_results.txt",'w')
 
 run_timed_rss(program + " -k " + str(nodemer_k) + " -r -b 1000000000 -o " + built + " --add-files " + buildlist, "bufboss-build", resultfile)
 
-buf_fractions = [0.100, 0.500, 0.025, 0.010]
+buf_fractions = [1.0, 0.5, 0.25, 0.1, 0.5, 0.025, 0.01]
 
 for b in buf_fractions:
     run_timed_rss(program + " -k " + str(nodemer_k) + " -r -b " + str(b) + " -i " + built + " -o " + added + " --add-files " + addlist, "bufboss-add-" + str(b), resultfile)
-    run_timed_rss(program + " -k " + str(nodemer_k) + " -r -b " + str(b) + " -i " + added + " -o " + deleted + " --del-files " + dellist, "bufboss-del-" + str(b), resultfile)
 
-#/usr/bin/time -v ./bufboss/bin/bufboss_update -k 30 -r -b 1000000000 -o bufboss_out/build --add-files data/coli12_build.txt
-#/usr/bin/time -v ./bufboss/bin/bufboss_update -k 30 -r -b 0.05 -i bufboss_out/build/ --add-files data/coli12_add.txt -o bufboss_out/add/
-#/usr/bin/time -v ./bufboss/bin/bufboss_update -k 30 -r -b 0.05 -i bufboss_out/build/ --del-files data/coli12_del.txt -o bufboss_out/del/
-#/usr/bin/time -v ./bufboss/bin/bufboss_update -k 30 -r -b 0.05 -i bufboss_out/build/ --add-files data/coli12_add.txt --del-files data/coli12_del.txt -o bufboss_out/adddel/
+for b in buf_fractions:
+    run_timed_rss(program + " -k " + str(nodemer_k) + " -r -b " + str(b) + " -i " + added + " -o " + deleted + " --del-files " + dellist, "bufboss-del-" + str(b), resultfile)
