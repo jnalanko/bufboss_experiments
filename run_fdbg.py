@@ -98,5 +98,5 @@ run_timed_rss("./bahar-fdbg/cpp-src/fdbg-build-jarno " + build_concat + " " + st
 
 run_timed_rss("./bahar-fdbg/cpp-src/fdbg-add-jarno " + add_concat + " " + str(nodemer_k) + " " + built + " " + added, "fdbg-add", resultfile)
 
-run_timed_rss("./bahar-fdbg/cpp-src/fdbg-del-jarno " + add_concat + " " + str(nodemer_k) + " " + added + " " + deleted, "fdbg-del", resultfile)
+run_timed_rss("./bahar-fdbg/cpp-src/fdbg-del-jarno " + del_concat + " " + str(nodemer_k) + " " + added + " " + deleted, "fdbg-del", resultfile)
 
