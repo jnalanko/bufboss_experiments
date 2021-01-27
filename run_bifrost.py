@@ -1,3 +1,4 @@
+
 import subprocess
 import time
 import sys
@@ -65,39 +66,23 @@ def run_timed_rss(command, name, outfile):
     outfile.write(name + " " + str(time) + " " + str(rss) + "\n")
     outfile.flush()
 
-tempdir = "temp"
-run("mkdir -p " + tempdir)
-
 datadir = "data"
-outdir = "fdbg_out"
+outdir = "bifrost_out"
 run("mkdir -p " + outdir)
+
+program = "bifrost/build/src/Bifrost"
 buildlist = datadir + "/coli12_build.txt"
 addlist = datadir + "/coli12_add.txt"
-dellist = datadir + "/coli12_del.txt"
-nodemer_k = 30
-edgemer_k = nodemer_k + 1
-
-build_genomes = run_get_output("cat " + buildlist).split('\n')
-add_genomes = run_get_output("cat " + addlist).split('\n')
-del_genomes = run_get_output("cat " + dellist).split('\n')
-resultfile = open("fdbg_results.txt",'w')
-
-# Run fdbg
-
-build_concat = tempdir + "/built.fasta"
-concatenate_to(build_genomes, build_concat)
-add_concat = tempdir + "/add.fasta"
-concatenate_to(add_genomes, add_concat)
-del_concat = tempdir + "/del.fasta"
-concatenate_to(del_genomes, del_concat)
 
 built = outdir + "/built.dbg"
 added = outdir + "/added.dbg"
 deleted = outdir + "/deleted.dbg"
 
-run_timed_rss("./bahar-fdbg/cpp-src/fdbg-build-jarno " + build_concat + " " + str(nodemer_k) + " " + built, "fdbg-build", resultfile)
+resultfile = open("bifrost_results.txt",'w')
 
-run_timed_rss("./bahar-fdbg/cpp-src/fdbg-add-jarno " + add_concat + " " + str(nodemer_k) + " " + built + " " + added, "fdbg-add", resultfile)
 
-run_timed_rss("./bahar-fdbg/cpp-src/fdbg-del-jarno " + del_concat + " " + str(nodemer_k) + " " + added + " " + deleted, "fdbg-del", resultfile)
-
+# Bifrost is node-centric and nodes are k-mers.
+run_timed_rss(program + " build -r " + buildlist + " -k 30 -y -o " + built, "bifrost-build", resultfile)
+#run_timed_rss(./build/src/Bifrost build -r ../data/coli12_build.txt -k 31 -y -o coli12)
+run_timed_rss(program + " update -g " + built + " -r " + addlist + " -k 30 -o " + added)
+#/usr/bin/time -v ./build/src/Bifrost update -g coli12.gfa -r ../data/coli12_add.txt -k 31 -o coli12_added
