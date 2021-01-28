@@ -10,7 +10,8 @@ fdbg_built = {"time": 90.65, "mem": 2798444544, "index_disk": 32489872, "name": 
 fdbg_added = {"time": 449.58, "mem": 3805618176, "index_disk": 33107152,  "name": "FDBG"}
 fdbg_deleted = {"time": 0, "mem": 0, "index_disk": 0, "name": "FDBG"}
 
-bufboss_built = {"time": 0.64+12.87, "mem": max(528969728,1673670656), "index_disk": 27932 * 2**10, "name": "BufBOSS"}
+bufboss_built_in_mem = {"time": 0.64+12.87, "mem": max(528969728,1673670656), "index_disk": 27932 * 2**10, "name": "BufBOSS-in-mem-sort"}
+bufboss_built_in_disk = {"time": 0.64 + 43.28, "mem": max(528969728,395231232), "index_disk": 27932 * 2**10, "name": "BufBOSS-disk-sort"}
 
 bufboss_added_runs = []
 #bufboss_added_runs.append({"time": 140.1, "mem": 711532544, "index_disk": 0, "name": "BufBOSS-1.0"})
@@ -28,7 +29,7 @@ dynboss_built = {"time": 34.49 + 3.35 + 9.35, "mem": max(1642811392, 260165632, 
 dynboss_added = {"time": 6755.0, "mem": 1568399360, "index_disk": 0, "name": "DynBOSS"}
 dynboss_deleted = {"time": 10655.0, "mem": 1451417600, "index_disk": 0, "name": "DynBOSS"}
 
-all_built = [bifrost_built, fdbg_built, bufboss_built, dynboss_built] 
+all_built = [bifrost_built, fdbg_built, bufboss_built_in_mem, bufboss_built_in_disk, dynboss_built] 
 all_added = [bifrost_added, dynboss_added, fdbg_added] + bufboss_added_runs 
 all_deleted = [bufboss_deleted, dynboss_deleted] 
 
@@ -41,6 +42,8 @@ for D in all_built:
     ax.annotate(D["name"], 
                 xy=(D["time"], D["mem"]), xycoords='data', # Data point
                 xytext=(5, 5), textcoords='offset points') # Text offset
+ax.set_xlim((0, None))
+ax.set_ylim((0, None))
 ax.set_xlabel("time (s)")
 ax.set_ylabel("mem (bytes)")
 ax.set_title("Construction")
@@ -55,6 +58,8 @@ for D in all_added:
     ax2.annotate(D["name"], 
                 xy=(D["time"], D["mem"]), xycoords='data', # Data point
                 xytext=(5, 5), textcoords='offset points') # Text offset
+ax.set_xlim((0, None))
+ax.set_ylim((0, None))
 ax2.set_xlabel("time (s)")
 ax2.set_ylabel("mem (bytes)")
 ax2.set_title("Addition")
@@ -70,6 +75,8 @@ for D in all_deleted:
     ax3.annotate(D["name"], 
                 xy=(D["time"], D["mem"]), xycoords='data', # Data point
                 xytext=(5, 5), textcoords='offset points') # Text offset
+ax.set_xlim((0, None))
+ax.set_ylim((0, None))
 ax3.set_xlabel("time (s)")
 ax3.set_ylabel("mem (bytes)")
 ax3.set_title("Deletion")
