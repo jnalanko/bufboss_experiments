@@ -102,7 +102,7 @@ run("mkdir -p " + deleted)
 resultfile = open("bufboss_results.txt",'w')
 
 run_timed_rss("./bufboss/KMC/bin/kmc -v -k31 -m1 -ci1 -cs1 -fm temp/build.fasta temp/kmc_db temp", "KMC", resultfile)
-run_timed_rss("./bufboss/bin/bufboss_build --KMC temp/kmc_db -o " + built, "build_from_KMC", resultfile)
+run_timed_rss("./bufboss/bin/bufboss_build --KMC temp/kmc_db -o " + built + " -t " + tempdir, "build_from_KMC", resultfile)
 #run_timed_rss(build_program + " -k " + str(nodemer_k) + " -r -b 1000000000 -o " + built + " --add-files " + buildlist, "bufboss-build", resultfile)
 
 buf_fractions = [1.0, 0.5, 0.25, 0.1, 0.5, 0.025, 0.01]
