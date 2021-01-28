@@ -26,11 +26,11 @@ bufboss_deleted = {"time": 510.09, "mem": 576802816, "index_disk": 26028 * 2**10
 
 dynboss_built = {"time": 34.49 + 3.35 + 9.35, "mem": max(1642811392, 260165632, 26664960), "index_disk": 0, "name": "DynBOSS"}
 dynboss_added = {"time": 6755.0, "mem": 1568399360, "index_disk": 0, "name": "DynBOSS"}
-dynboss_deleted = {"time": 0, "mem": 0, "index_disk": 0, "name": "DynBOSS"}
+dynboss_deleted = {"time": 10655.0, "mem": 1451417600, "index_disk": 0, "name": "DynBOSS"}
 
 all_built = [bifrost_built, fdbg_built, bufboss_built, dynboss_built] 
 all_added = [bifrost_added, dynboss_added, fdbg_added] + bufboss_added_runs 
-all_deleted = [bufboss_deleted] 
+all_deleted = [bufboss_deleted, dynboss_deleted] 
 
 # Plot construction
 fig, ax = plt.subplots()
