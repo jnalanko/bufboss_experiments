@@ -73,6 +73,7 @@ run("mkdir -p " + outdir)
 
 build_program = "bufboss/bin/bufboss_build"
 update_program = "bufboss/bin/bufboss_update"
+query_program = "bufboss/bin/bufboss_query"
 buildlist = datadir + "/coli12_build.txt"
 addlist = datadir + "/coli12_add.txt"
 dellist = datadir + "/coli12_del.txt"
@@ -98,17 +99,22 @@ deleted = outdir + "/deleted"
 run("mkdir -p " + built)
 run("mkdir -p " + added)
 run("mkdir -p " + deleted)
+query_out = outdir + "/queries.txt"
+query_data = "data/reads/coli_reads_half1.fasta"
+
 
 resultfile = open("bufboss_results.txt",'w')
 
 run_timed_rss("./bufboss/KMC/bin/kmc -v -k31 -m1 -ci1 -cs1 -fm temp/build.fasta temp/kmc_db temp", "KMC", resultfile)
 run_timed_rss("./bufboss/bin/bufboss_build --KMC temp/kmc_db -o " + built + " -t " + tempdir, "build_from_KMC", resultfile)
-#run_timed_rss(build_program + " -k " + str(nodemer_k) + " -r -b 1000000000 -o " + built + " --add-files " + buildlist, "bufboss-build", resultfile)
 
-buf_fractions = [1.0, 0.5, 0.25, 0.1, 0.5, 0.025, 0.01]
+#buf_fractions = [1.0, 0.5, 0.25, 0.1, 0.5, 0.025, 0.01]
+buf_fractions = [1.0]
 
 for b in buf_fractions:
     run_timed_rss(update_program + " -k " + str(nodemer_k) + " -r -b " + str(b) + " -i " + built + " -o " + added + " --add-files " + addlist, "bufboss-add-" + str(b), resultfile)
 
 for b in buf_fractions:
     run_timed_rss(update_program + " -k " + str(nodemer_k) + " -r -b " + str(b) + " -i " + added + " -o " + deleted + " --del-files " + dellist, "bufboss-del-" + str(b), resultfile)
+
+run_timed_rss(query_program + " -i " + deleted + " -o " + query_out + " -q " + query_data, "bufboss-query", resultfile)

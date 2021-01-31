@@ -1,3 +1,6 @@
+#
+# TODO: queries are from added because deleted does not exist
+#
 
 import subprocess
 import time
@@ -73,14 +76,17 @@ run("mkdir -p " + outdir)
 program = "bifrost/build/src/Bifrost"
 buildlist = datadir + "/coli12_build.txt"
 addlist = datadir + "/coli12_add.txt"
+queryfile = "data/reads/coli_reads_half1.fasta"
 
 # Bifrost appends .gfa to these
 built = outdir + "/built.dbg"
 added = outdir + "/added.dbg"
 deleted = outdir + "/deleted.dbg"
+query_out = outdir + "/queries.txt"
 
 resultfile = open("bifrost_results.txt",'w')
 
 # Bifrost is node-centric and nodes are k-mers.
-run_timed_rss(program + " build -r " + buildlist + " -k 30 -y -o " + built, "bifrost-build", resultfile)
-run_timed_rss(program + " update -g " + built+".gfa" + " -r " + addlist + " -k 30 -o " + added, "bifrost-update", resultfile)
+#run_timed_rss(program + " build -r " + buildlist + " -k 30 -y -o " + built, "bifrost-build", resultfile)
+#run_timed_rss(program + " update -g " + built+".gfa" + " -r " + addlist + " -k 30 -o " + added, "bifrost-update", resultfile)
+run_timed_rss(program + " query -g " + added+".gfa" + " -q " + queryfile + " -o " + query_out, "bifrost-query", resultfile)
