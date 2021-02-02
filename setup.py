@@ -73,16 +73,9 @@ buildlist = datadir + "/coli12_build.txt"
 addlist = datadir + "/coli12_add.txt"
 dellist = datadir + "/coli12_del.txt"
 
-# Concatenate fasta files
-build_genomes = run_get_output("cat " + buildlist).split('\n')
-add_genomes = run_get_output("cat " + addlist).split('\n')
-del_genomes = run_get_output("cat " + dellist).split('\n')
-build_concat = tempdir + "/build.fasta"
-concatenate_to(build_genomes, build_concat)
-add_concat = tempdir + "/add.fasta"
-concatenate_to(add_genomes, add_concat)
-del_concat = tempdir + "/del.fasta"
-concatenate_to(del_genomes, del_concat)
+build_concat = datadir + "/build.fasta"
+add_concat = datadir + "/add.fasta"
+del_concat = datadir + "/del.fasta"
 
 nodemer_k = 30
 edgemer_k = nodemer_k + 1
@@ -92,7 +85,17 @@ query_random_sequence = "data/random/sequence.fna"
 query_existing_edgemers = "data/existing/edgemers.fna"
 query_existing_sequence = "data/existing/sequence.fna"
 
-def generate_query_files():
+def generate_input_files():
+
+    # Concatenate fasta files
+    build_genomes = run_get_output("cat " + buildlist).split('\n')
+    add_genomes = run_get_output("cat " + addlist).split('\n')
+    del_genomes = run_get_output("cat " + dellist).split('\n')
+
+    concatenate_to(build_genomes, build_concat)
+    concatenate_to(add_genomes, add_concat)
+    concatenate_to(del_genomes, del_concat)
+
     # Generate random queries
     run("mkdir -p data/random")
     run("python3 gen_random_kmers.py 31 1000000 > " + query_random_edgemers)
