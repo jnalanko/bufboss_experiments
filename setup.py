@@ -90,7 +90,7 @@ edgemer_k = nodemer_k + 1
 query_random_edgemers = "data/random/edgemers.fna"
 query_random_sequence = "data/random/sequence.fna"
 query_existing_edgemers = "data/existing/edgemers.fna"
-query_existing_sequence = "data/existing/edgemers.fna"
+query_existing_sequence = "data/existing/sequence.fna"
 
 def generate_query_files():
     # Generate random queries
@@ -107,7 +107,6 @@ def generate_query_files():
     run("mkdir -p " + index_dir)
     run("./bufboss/KMC/bin/kmc -k31 -m1 -ci1 -cs1 -fm " + tempdir + "/buildadd_concat.fna" + " " + tempdir + "/kmc_db temp")
     run("./bufboss/bin/bufboss_build --KMC " + tempdir + "/kmc_db -o " + index_dir + " -t " + tempdir)
-    #run("./bufboss/bin/bufboss_update" + " -k " + str(nodemer_k) + " --revcomp -i " + index_dir + " -o " + index_dir + " --add-files " + addlist)
     run("./bufboss/bin/bufboss_sample_random_edgemers -i " + index_dir + " -o " + query_existing_edgemers + " --count 1000000")
 
     # For existing sequences, take the first file in addlist
