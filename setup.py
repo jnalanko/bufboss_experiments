@@ -5,7 +5,6 @@ import sys
 import os
 import uuid
 import random
-from setup import * # My setup file
 from multiprocessing import Pool
 
 if sys.version_info < (3, 0):
@@ -67,50 +66,23 @@ def run_timed_rss(command, name, outfile):
     outfile.write(name + " " + str(time) + " " + str(rss) + "\n")
     outfile.flush()
 
-build_program = "bufboss/bin/bufboss_build"
-update_program = "bufboss/bin/bufboss_update"
-query_program = "bufboss/bin/bufboss_query"
+datadir = "data"
+tempdir = "temp"
 
-outdir = "bufboss_out"
-run("mkdir -p " + outdir)
+buildlist = datadir + "/coli12_build.txt"
+addlist = datadir + "/coli12_add.txt"
+dellist = datadir + "/coli12_del.txt"
 
-built = outdir + "/built"
-added = outdir + "/added"
-deleted = outdir + "/deleted"
-run("mkdir -p " + built)
-run("mkdir -p " + added)
-run("mkdir -p " + deleted)
+# Concatenate fasta files
+build_genomes = run_get_output("cat " + buildlist).split('\n')
+add_genomes = run_get_output("cat " + addlist).split('\n')
+del_genomes = run_get_output("cat " + dellist).split('\n')
+build_concat = tempdir + "/build.fasta"
+concatenate_to(build_genomes, build_concat)
+add_concat = tempdir + "/add.fasta"
+concatenate_to(add_genomes, add_concat)
+del_concat = tempdir + "/del.fasta"
+concatenate_to(del_genomes, del_concat)
 
-query_out = outdir + "/queries.txt"
-resultfile = open("bufboss_results.txt",'w')
-
-run_build, run_add, run_del, run_query = False, False, False, True
-
-if run_build:
-    run_timed_rss("./bufboss/KMC/bin/kmc -v -k31 -m1 -ci1 -cs1 -fm temp/build.fasta temp/kmc_db temp", "KMC", resultfile)
-    run_timed_rss("./bufboss/bin/bufboss_build --KMC temp/kmc_db -o " + built + " -t " + tempdir, "build_from_KMC", resultfile)
-
-if run_add:
-    #buf_fractions = [1.0, 0.5, 0.25, 0.1, 0.5, 0.025, 0.01]
-    buf_fractions = [1.0]
-    for b in buf_fractions:
-        run_timed_rss(update_program + " -k " + str(nodemer_k) + " -r -b " + str(b) + " -i " + built + " -o " + added + " --add-files " + addlist, "bufboss-add-" + str(b), resultfile)
-
-if run_del:
-    for b in buf_fractions:
-        run_timed_rss(update_program + " -k " + str(nodemer_k) + " -r -b " + str(b) + " -i " + added + " -o " + deleted + " --del-files " + dellist, "bufboss-del-" + str(b), resultfile)
-
-if run_query:
-    # Existing reads
-    run_timed_rss(query_program + " -i " + added + " -o " + query_out + " -q " + add_concat, "bufboss-query-existing-sequences", resultfile)
-    
-    # Random reads
-    run_timed_rss(query_program + " -i " + added + " -o " + query_out + " -q " + "data/random/sequence.fna", "bufboss-query-random-sequence", resultfile)
-
-    # Existing k-mers
-    
-    run("./bufboss/bin/bufboss_sample_random_edgemers -i " + added + " -o " + outdir + "/sampled_edgemers.fna --count 1000000") # Sample
-    run_timed_rss(query_program + " -i " + added + " -o " + query_out + " -q " + outdir + "/sampled_edgemers.fna", "bufboss-query-existing-kmers", resultfile) # Query
-
-    # Random k-mers
-    run_timed_rss(query_program + " -i " + added + " -o " + query_out + " -q " + "data/random/edgemers.fna", "bufboss-query-random-kmers", resultfile) # Query
+nodemer_k = 30
+edgemer_k = nodemer_k + 1
