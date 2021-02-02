@@ -108,7 +108,7 @@ if run_query:
     run_timed_rss(query_program + " -i " + added + " -o " + query_out + " -q " + query_random_sequence, "bufboss-query-random-sequence", resultfile)
 
     # Existing edgemers
-    run_timed_rss(query_program + " -i " + added + " -o " + query_out + " -q " + query_existing_edgemers, "bufboss-query-existing-kmers", resultfile) # Query
+    run_timed_rss(query_program + " -i " + added + " -o " + query_out + " -q " + query_existing_edgemers, "bufboss-query-existing-edgemers", resultfile) # Query
 
     # Random edgemers
-    run_timed_rss(query_program + " -i " + added + " -o " + query_out + " -q " + query_random_edgemers, "bufboss-query-random-kmers", resultfile) # Query
+    run_timed_rss(query_program + " -i " + added + " -o " + query_out + " -q " + query_random_edgemers, "bufboss-query-random-edgemers", resultfile)

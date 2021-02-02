@@ -117,4 +117,4 @@ def generate_input_files():
     run("cp " + filename + " " + query_existing_sequence)
 
 if __name__ == "__main__":
-    generate_query_files()
+    generate_input_files()
