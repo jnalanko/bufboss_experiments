@@ -126,15 +126,15 @@ if run_del:
 
 if run_query:
     # Existing reads
-    run_timed_rss(query_program + " -i " + added + " -o " + query_out + " -q " + add_concat, "bufboss-query-existing-reads", resultfile)
+    run_timed_rss(query_program + " -i " + added + " -o " + query_out + " -q " + add_concat, "bufboss-query-existing-sequences", resultfile)
     
-    # Todo: non-existing reads
-    pass
+    # Random reads
+    run_timed_rss(query_program + " -i " + added + " -o " + query_out + " -q " + "data/random/sequence.fna", "bufboss-query-random-sequence", resultfile)
 
     # Existing k-mers
     
     run("./bufboss/bin/bufboss_sample_random_edgemers -i " + added + " -o " + outdir + "/sampled_edgemers.fna --count 1000000") # Sample
     run_timed_rss(query_program + " -i " + added + " -o " + query_out + " -q " + outdir + "/sampled_edgemers.fna", "bufboss-query-existing-kmers", resultfile) # Query
 
-    # Non-existing k-mers
-    run_timed_rss(query_program + " -i " + added + " -o " + query_out + " -q " + "data/edgemers/random.fna", "bufboss-query-nonexisting-kmers", resultfile) # Query
+    # Random k-mers
+    run_timed_rss(query_program + " -i " + added + " -o " + query_out + " -q " + "data/random/edgemers.fna", "bufboss-query-random-kmers", resultfile) # Query
