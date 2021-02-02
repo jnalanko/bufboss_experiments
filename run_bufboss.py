@@ -111,10 +111,10 @@ if run_query_no_buffer:
     run_timed_rss(query_program + " -i " + added + " -o " + query_out + " -q " + query_random_sequence, "bufboss-query-random-sequence", resultfile)
 
     # Existing build edgemers
-    run_timed_rss(query_program + " -i " + added + " -o " + query_out + " -q " + query_existing_build_edgemers, "bufboss-query-existing-edgemers", resultfile)
+    run_timed_rss(query_program + " -i " + added + " -o " + query_out + " -q " + query_existing_build_edgemers, "bufboss-query-existing-build-edgemers", resultfile)
 
     # Existing added edgemers
-    run_timed_rss(query_program + " -i " + added + " -o " + query_out + " -q " + query_existing_added_edgemers, "bufboss-query-existing-edgemers", resultfile)
+    run_timed_rss(query_program + " -i " + added + " -o " + query_out + " -q " + query_existing_added_edgemers, "bufboss-query-existing-added-edgemers", resultfile)
 
     # Random edgemers
     run_timed_rss(query_program + " -i " + added + " -o " + query_out + " -q " + query_random_edgemers, "bufboss-query-random-edgemers", resultfile)
