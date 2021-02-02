@@ -43,11 +43,11 @@ if run_add:
     #buf_fractions = [1.0, 0.5, 0.25, 0.1, 0.5, 0.025, 0.01]
     buf_fractions = [1.0]
     for b in buf_fractions:
-        run_timed_rss(update_program + " -k " + str(nodemer_k) + " -r -b " + str(b) + " -i " + built + " -o " + added + " --add-files " + addlist, "bufboss-add-" + str(b), resultfile)
+        run_timed_rss(update_program + " -k " + str(nodemer_k) + " --end-flush -r -b " + str(b) + " -i " + built + " -o " + added + " --add-files " + addlist, "bufboss-add-" + str(b), resultfile)
 
 if run_del:
     for b in buf_fractions:
-        run_timed_rss(update_program + " -k " + str(nodemer_k) + " -r -b " + str(b) + " -i " + added + " -o " + deleted + " --del-files " + dellist, "bufboss-del-" + str(b), resultfile)
+        run_timed_rss(update_program + " -k " + str(nodemer_k) + " --end-flush -r -b " + str(b) + " -i " + added + " -o " + deleted + " --del-files " + dellist, "bufboss-del-" + str(b), resultfile)
 
 if run_query:
     # Existing build sequence
