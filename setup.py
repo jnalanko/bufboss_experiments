@@ -86,3 +86,32 @@ concatenate_to(del_genomes, del_concat)
 
 nodemer_k = 30
 edgemer_k = nodemer_k + 1
+
+query_random_edgemers = "data/random/edgemers.fna"
+query_random_sequence = "data/random/sequence.fna"
+query_existing_edgemers = "data/existing/edgemers.fna"
+query_existing_sequence = "data/existing/edgemers.fna"
+
+def generate_query_files():
+    # Generate random queries
+    run("mkdir -p data/random")
+    run("python3 gen_random_kmers.py 31 1000000 > " + query_random_edgemers)
+    run("python3 gen_random_kmers.py 31000000 1 > " + query_random_sequence)
+
+    # Generate existing queries...
+    run("mkdir -p data/existing")
+
+    # For existing k-mers, build a bufboss and sampled from there
+    index_dir = tempdir + "/buffboss"
+    run("mkdir -p " + index_dir)
+    run("./bufboss/KMC/bin/kmc -v -k31 -m1 -ci1 -cs1 -fm temp/build.fasta " + tempdir + "/kmc_db temp")
+    run("./bufboss/bin/bufboss_build --KMC " + tempdir + "/kmc_db -o " + index_dir + " -t " + tempdir)
+    run("./bufboss/bin/bufboss_update" + " -k " + str(nodemer_k) + " --revcomp -i " + index_dir + " -o " + index_dir + " --add-files " + addlist)
+    run("./bufboss/bin/bufboss_sample_random_edgemers -i " + index_dir + " -o " + query_existing_edgemers + " --count 1000000")
+
+    # For existing sequences, take the first file in addlist
+    filename = open(addlist).readlines()[0].strip()
+    run("cp " + filename + " " + query_existing_sequence)
+
+if __name__ == "__main__":
+    generate_query_files()
