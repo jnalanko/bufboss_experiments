@@ -36,6 +36,7 @@ run_query = True
 run_query_vs_buffer_fraction = True
 
 if run_build:
+    run("cp " + build_concat + " " + tempdir + "/build.fasta")
     run_timed_rss("./bufboss/KMC/bin/kmc -v -k31 -m1 -ci1 -cs1 -fm temp/build.fasta temp/kmc_db temp", "KMC", resultfile)
     run_timed_rss("./bufboss/bin/bufboss_build --KMC temp/kmc_db -o " + built + " -t " + tempdir, "build_from_KMC", resultfile)
 
