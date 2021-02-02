@@ -1,13 +1,10 @@
-#
-# TODO: queries are from added because deleted does not exist
-#
-
 import subprocess
 import time
 import sys
 import os
 import uuid
 import random
+from setup import *
 from multiprocessing import Pool
 
 if sys.version_info < (3, 0):
@@ -89,4 +86,7 @@ resultfile = open("bifrost_results.txt",'w')
 # Bifrost is node-centric and nodes are k-mers.
 #run_timed_rss(program + " build -r " + buildlist + " -k 30 -y -o " + built, "bifrost-build", resultfile)
 #run_timed_rss(program + " update -g " + built+".gfa" + " -r " + addlist + " -k 30 -o " + added, "bifrost-update", resultfile)
-run_timed_rss(program + " query -g " + added+".gfa" + " -q " + addlist + " -o " + query_out, "bifrost-query", resultfile)
+run_timed_rss(program + " query -g " + added+".gfa" + " -q " + query_random_edgemers + " -o " + query_out, "bifrost-query", resultfile)
+run_timed_rss(program + " query -g " + added+".gfa" + " -q " + query_random_sequence + " -o " + query_out, "bifrost-query", resultfile)
+run_timed_rss(program + " query -g " + added+".gfa" + " -q " + query_existing_edgemers + " -o " + query_out, "bifrost-query", resultfile)
+run_timed_rss(program + " query -g " + added+".gfa" + " -q " + query_existing_sequence + " -o " + query_out, "bifrost-query", resultfile)
