@@ -125,8 +125,16 @@ if run_del:
         run_timed_rss(update_program + " -k " + str(nodemer_k) + " -r -b " + str(b) + " -i " + added + " -o " + deleted + " --del-files " + dellist, "bufboss-del-" + str(b), resultfile)
 
 if run_query:
-    run_timed_rss(query_program + " -i " + added + " -o " + query_out + " -q " + add_concat, "bufboss-query", resultfile)
+    # Existing reads
+    run_timed_rss(query_program + " -i " + added + " -o " + query_out + " -q " + add_concat, "bufboss-query-existing-reads", resultfile)
+    
+    # Todo: non-existing reads
+    pass
 
+    # Existing k-mers
+    
+    run("./bufboss/bin/bufboss_sample_random_edgemers -i " + added + " -o " + outdir + "/sampled_edgemers.fna --count 1000000") # Sample
+    run_timed_rss(query_program + " -i " + added + " -o " + query_out + " -q " + outdir + "/sampled_edgemers.fna", "bufboss-query-existing-kmers", resultfile) # Query
 
-
-
+    # Non-existing k-mers
+    run_timed_rss(query_program + " -i " + added + " -o " + query_out + " -q " + "data/edgemers/random.fna", "bufboss-query-nonexisting-kmers", resultfile) # Query
