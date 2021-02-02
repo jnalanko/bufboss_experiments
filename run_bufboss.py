@@ -87,8 +87,8 @@ resultfile = open("bufboss_results.txt",'w')
 run_build = False
 run_add = False
 run_del = False
-run_query = True
-run_query_vs_buffer_fraction = False
+run_query = False
+run_query_vs_buffer_fraction = True
 
 if run_build:
     run_timed_rss("./bufboss/KMC/bin/kmc -v -k31 -m1 -ci1 -cs1 -fm temp/build.fasta temp/kmc_db temp", "KMC", resultfile)
@@ -125,6 +125,13 @@ if run_query:
 
 if run_query_vs_buffer_fraction:
     run("./bufboss/bin/query_performance_experiment -i " + built + " --add-files " + addlist + " --buf-fraction-increment 0.01 --max-buf-fraction 1.0 -q " + query_existing_build_sequence + " --tempdir " + tempdir + " --experiment-out buf-frac-query-existing-build-seq.txt")
-    run("./bufboss/bin/query_performance_experiment -i " + built + " --add-files " + addlist + " --buf-fraction-increment 0.01 --max-buf-fraction 1.0 -q " + query_random_sequence + " --tempdir " + tempdir + " --experiment-out buf-frac-query-random-seq.txt")
+
+    run("./bufboss/bin/query_performance_experiment -i " + built + " --add-files " + addlist + " --buf-fraction-increment 0.01 --max-buf-fraction 1.0 -q " + query_existing_added_sequence + " --tempdir " + tempdir + " --experiment-out buf-frac-query-existing-added-seq.txt")
+
     run("./bufboss/bin/query_performance_experiment -i " + built + " --add-files " + addlist + " --buf-fraction-increment 0.01 --max-buf-fraction 1.0 -q " + query_existing_build_edgemers + " --tempdir " + tempdir + " --experiment-out buf-frac-query-existing-build-edgemers.txt")
+
+    run("./bufboss/bin/query_performance_experiment -i " + built + " --add-files " + addlist + " --buf-fraction-increment 0.01 --max-buf-fraction 1.0 -q " + query_existing_added_edgemers + " --tempdir " + tempdir + " --experiment-out buf-frac-query-existing-added-edgemers.txt")
+
+    run("./bufboss/bin/query_performance_experiment -i " + built + " --add-files " + addlist + " --buf-fraction-increment 0.01 --max-buf-fraction 1.0 -q " + query_random_sequence + " --tempdir " + tempdir + " --experiment-out buf-frac-query-random-seq.txt")
+
     run("./bufboss/bin/query_performance_experiment -i " + built + " --add-files " + addlist + " --buf-fraction-increment 0.01 --max-buf-fraction 1.0 -q " + query_random_edgemers + " --tempdir " + tempdir + " --experiment-out buf-frac-query-random-edgemers.txt")
