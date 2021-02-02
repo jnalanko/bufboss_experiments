@@ -66,6 +66,10 @@ def run_timed_rss(command, name, outfile):
     outfile.write(name + " " + str(time) + " " + str(rss) + "\n")
     outfile.flush()
 
+#
+# Setup start
+#
+
 datadir = "data"
 outdir = "bufboss_out"
 tempdir = "temp"
@@ -100,21 +104,29 @@ run("mkdir -p " + built)
 run("mkdir -p " + added)
 run("mkdir -p " + deleted)
 query_out = outdir + "/queries.txt"
-query_data = "data/reads/coli_reads_half1.fasta"
-
+#query_data = "data/reads/coli_reads_half1.fasta"
 
 resultfile = open("bufboss_results.txt",'w')
 
-run_timed_rss("./bufboss/KMC/bin/kmc -v -k31 -m1 -ci1 -cs1 -fm temp/build.fasta temp/kmc_db temp", "KMC", resultfile)
-run_timed_rss("./bufboss/bin/bufboss_build --KMC temp/kmc_db -o " + built + " -t " + tempdir, "build_from_KMC", resultfile)
+run_build, run_add, run_del, run_query = False, False, False, True
 
-#buf_fractions = [1.0, 0.5, 0.25, 0.1, 0.5, 0.025, 0.01]
-buf_fractions = [1.0]
+if run_build:
+    run_timed_rss("./bufboss/KMC/bin/kmc -v -k31 -m1 -ci1 -cs1 -fm temp/build.fasta temp/kmc_db temp", "KMC", resultfile)
+    run_timed_rss("./bufboss/bin/bufboss_build --KMC temp/kmc_db -o " + built + " -t " + tempdir, "build_from_KMC", resultfile)
 
-for b in buf_fractions:
-    run_timed_rss(update_program + " -k " + str(nodemer_k) + " -r -b " + str(b) + " -i " + built + " -o " + added + " --add-files " + addlist, "bufboss-add-" + str(b), resultfile)
+if run_add:
+    #buf_fractions = [1.0, 0.5, 0.25, 0.1, 0.5, 0.025, 0.01]
+    buf_fractions = [1.0]
+    for b in buf_fractions:
+        run_timed_rss(update_program + " -k " + str(nodemer_k) + " -r -b " + str(b) + " -i " + built + " -o " + added + " --add-files " + addlist, "bufboss-add-" + str(b), resultfile)
 
-for b in buf_fractions:
-    run_timed_rss(update_program + " -k " + str(nodemer_k) + " -r -b " + str(b) + " -i " + added + " -o " + deleted + " --del-files " + dellist, "bufboss-del-" + str(b), resultfile)
+if run_del:
+    for b in buf_fractions:
+        run_timed_rss(update_program + " -k " + str(nodemer_k) + " -r -b " + str(b) + " -i " + added + " -o " + deleted + " --del-files " + dellist, "bufboss-del-" + str(b), resultfile)
 
-run_timed_rss(query_program + " -i " + deleted + " -o " + query_out + " -q " + query_data, "bufboss-query", resultfile)
+if run_query:
+    run_timed_rss(query_program + " -i " + added + " -o " + query_out + " -q " + add_concat, "bufboss-query", resultfile)
+
+
+
+
