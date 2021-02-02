@@ -112,8 +112,8 @@ def generate_input_files():
     run("./bufboss/bin/bufboss_build --KMC " + tempdir + "/kmc_db -o " + index_dir + " -t " + tempdir)
     run("./bufboss/bin/bufboss_sample_random_edgemers -i " + index_dir + " -o " + query_existing_edgemers + " --count 1000000")
 
-    # For existing sequences, take the first file in addlist
-    filename = open(addlist).readlines()[0].strip()
+    # For existing sequences, take the first file in buildlist
+    filename = open(buildlist).readlines()[0].strip()
     run("cp " + filename + " " + query_existing_sequence)
 
 if __name__ == "__main__":
