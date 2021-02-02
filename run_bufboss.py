@@ -84,7 +84,11 @@ run("mkdir -p " + deleted)
 query_out = outdir + "/queries.txt"
 resultfile = open("bufboss_results.txt",'w')
 
-run_build, run_add, run_del, run_query_no_buffer, run_query_vs_buffer_fraction = False, False, False, True, False
+run_build = False
+run_add = False
+run_del = False
+run_query = True
+run_query_vs_buffer_fraction = False
 
 if run_build:
     run_timed_rss("./bufboss/KMC/bin/kmc -v -k31 -m1 -ci1 -cs1 -fm temp/build.fasta temp/kmc_db temp", "KMC", resultfile)
@@ -100,7 +104,7 @@ if run_del:
     for b in buf_fractions:
         run_timed_rss(update_program + " -k " + str(nodemer_k) + " -r -b " + str(b) + " -i " + added + " -o " + deleted + " --del-files " + dellist, "bufboss-del-" + str(b), resultfile)
 
-if run_query_no_buffer:
+if run_query:
     # Existing build sequence
     run_timed_rss(query_program + " -i " + added + " -o " + query_out + " -q " + query_existing_build_sequence, "bufboss-query-existing-build-sequence", resultfile)
 
