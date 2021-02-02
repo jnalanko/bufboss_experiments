@@ -84,7 +84,7 @@ run("mkdir -p " + deleted)
 query_out = outdir + "/queries.txt"
 resultfile = open("bufboss_results.txt",'w')
 
-run_build, run_add, run_del, run_query, run_query_vs_buffer_fraction = False, False, False, False, True
+run_build, run_add, run_del, run_query_no_buffer, run_query_vs_buffer_fraction = False, False, False, True, False
 
 if run_build:
     run_timed_rss("./bufboss/KMC/bin/kmc -v -k31 -m1 -ci1 -cs1 -fm temp/build.fasta temp/kmc_db temp", "KMC", resultfile)
@@ -100,21 +100,27 @@ if run_del:
     for b in buf_fractions:
         run_timed_rss(update_program + " -k " + str(nodemer_k) + " -r -b " + str(b) + " -i " + added + " -o " + deleted + " --del-files " + dellist, "bufboss-del-" + str(b), resultfile)
 
-if run_query:
-    # Existing sequence
-    run_timed_rss(query_program + " -i " + added + " -o " + query_out + " -q " + query_existing_sequence, "bufboss-query-existing-sequences", resultfile)
+if run_query_no_buffer:
+    # Existing build sequence
+    run_timed_rss(query_program + " -i " + added + " -o " + query_out + " -q " + query_existing_build_sequence, "bufboss-query-existing-build-sequence", resultfile)
+
+    # Existing added sequence
+    run_timed_rss(query_program + " -i " + added + " -o " + query_out + " -q " + query_existing_added_sequence, "bufboss-query-existing-added-sequence", resultfile)
     
     # Random sequence
     run_timed_rss(query_program + " -i " + added + " -o " + query_out + " -q " + query_random_sequence, "bufboss-query-random-sequence", resultfile)
 
-    # Existing edgemers
-    run_timed_rss(query_program + " -i " + added + " -o " + query_out + " -q " + query_existing_edgemers, "bufboss-query-existing-edgemers", resultfile) # Query
+    # Existing build edgemers
+    run_timed_rss(query_program + " -i " + added + " -o " + query_out + " -q " + query_existing_build_edgemers, "bufboss-query-existing-edgemers", resultfile)
+
+    # Existing added edgemers
+    run_timed_rss(query_program + " -i " + added + " -o " + query_out + " -q " + query_existing_added_edgemers, "bufboss-query-existing-edgemers", resultfile)
 
     # Random edgemers
     run_timed_rss(query_program + " -i " + added + " -o " + query_out + " -q " + query_random_edgemers, "bufboss-query-random-edgemers", resultfile)
 
 if run_query_vs_buffer_fraction:
-    run("./bufboss/bin/query_performance_experiment -i " + built + " --add-files " + addlist + " --buf-fraction-increment 0.01 --max-buf-fraction 1.0 -q " + query_existing_sequence + " --tempdir " + tempdir + " --experiment-out buf-frac-query-existing-seq.txt")
+    run("./bufboss/bin/query_performance_experiment -i " + built + " --add-files " + addlist + " --buf-fraction-increment 0.01 --max-buf-fraction 1.0 -q " + query_existing_build_sequence + " --tempdir " + tempdir + " --experiment-out buf-frac-query-existing-build-seq.txt")
     run("./bufboss/bin/query_performance_experiment -i " + built + " --add-files " + addlist + " --buf-fraction-increment 0.01 --max-buf-fraction 1.0 -q " + query_random_sequence + " --tempdir " + tempdir + " --experiment-out buf-frac-query-random-seq.txt")
-    run("./bufboss/bin/query_performance_experiment -i " + built + " --add-files " + addlist + " --buf-fraction-increment 0.01 --max-buf-fraction 1.0 -q " + query_existing_edgemers + " --tempdir " + tempdir + " --experiment-out buf-frac-query-existing-edgemers.txt")
+    run("./bufboss/bin/query_performance_experiment -i " + built + " --add-files " + addlist + " --buf-fraction-increment 0.01 --max-buf-fraction 1.0 -q " + query_existing_build_edgemers + " --tempdir " + tempdir + " --experiment-out buf-frac-query-existing-build-edgemers.txt")
     run("./bufboss/bin/query_performance_experiment -i " + built + " --add-files " + addlist + " --buf-fraction-increment 0.01 --max-buf-fraction 1.0 -q " + query_random_edgemers + " --tempdir " + tempdir + " --experiment-out buf-frac-query-random-edgemers.txt")

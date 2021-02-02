@@ -82,8 +82,10 @@ edgemer_k = nodemer_k + 1
 
 query_random_edgemers = "data/random/edgemers.fna"
 query_random_sequence = "data/random/sequence.fna"
-query_existing_edgemers = "data/existing/edgemers.fna"
-query_existing_sequence = "data/existing/sequence.fna"
+query_existing_build_edgemers = "data/existing/build_edgemers.fna"
+query_existing_build_sequence = "data/existing/build_sequence.fna"
+query_existing_added_edgemers = "data/existing/added_edgemers.fna"
+query_existing_added_sequence = "data/existing/added_sequence.fna"
 
 def generate_input_files():
 
@@ -104,17 +106,23 @@ def generate_input_files():
     # Generate existing queries...
     run("mkdir -p data/existing")
 
-    # For existing k-mers, build a bufboss and sampled from there
-    run("cat " + build_concat + " " + add_concat + " > " + tempdir + "/buildadd_concat.fna")
+    # ...for existing k-mers, build a bufboss and sampled from there. First for build kmers...
     index_dir = tempdir + "/buffboss"
     run("mkdir -p " + index_dir)
-    run("./bufboss/KMC/bin/kmc -k31 -m1 -ci1 -cs1 -fm " + tempdir + "/buildadd_concat.fna" + " " + tempdir + "/kmc_db temp")
+    run("./bufboss/KMC/bin/kmc -k31 -m1 -ci1 -cs1 -fm " + build_concat + " " + tempdir + "/kmc_db temp")
     run("./bufboss/bin/bufboss_build --KMC " + tempdir + "/kmc_db -o " + index_dir + " -t " + tempdir)
-    run("./bufboss/bin/bufboss_sample_random_edgemers -i " + index_dir + " -o " + query_existing_edgemers + " --count 1000000")
+    run("./bufboss/bin/bufboss_sample_random_edgemers -i " + index_dir + " -o " + query_existing_build_edgemers + " --count 1000000")
 
-    # For existing sequences, take the first file in buildlist
+    # ...then for added kmers (resuse the same index dir
+    run("./bufboss/KMC/bin/kmc -k31 -m1 -ci1 -cs1 -fm " + add_concat + " " + tempdir + "/kmc_db temp")
+    run("./bufboss/bin/bufboss_build --KMC " + tempdir + "/kmc_db -o " + index_dir + " -t " + tempdir)
+    run("./bufboss/bin/bufboss_sample_random_edgemers -i " + index_dir + " -o " + query_existing_added_edgemers + " --count 1000000")
+
+    # For existing sequences, take the first file in buildlist and in addlist
     filename = open(buildlist).readlines()[0].strip()
-    run("cp " + filename + " " + query_existing_sequence)
+    run("cp " + filename + " " + query_existing_build_sequence)
+    filename = open(addlist).readlines()[0].strip()
+    run("cp " + filename + " " + query_existing_added_sequence)
 
 if __name__ == "__main__":
     generate_input_files()
