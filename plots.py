@@ -2,12 +2,12 @@ import matplotlib.pyplot as plt
 import sys
 from setup import *
 
-build = [] # Data points are triples (name, time, rss) represented as dicts
-add = [] # Data points are triples (name, time, rss) represented as dicts
-delete = [] # Data points are triples (name, time, rss) represented as dicts
-query = {} # Here we have dict {query-dataset-name -> list of pairs (tool, time)}
-
 def parse_summaries():
+
+    build = [] # Data points are triples (name, time, rss) represented as dicts
+    add = [] # Data points are triples (name, time, rss) represented as dicts
+    delete = [] # Data points are triples (name, time, rss) represented as dicts
+    query = {} # Here we have dict {query-dataset-name -> list of pairs (tool, time)}
 
     to_dict3 = lambda name, time, mem : {"name" : name, "time": time, "mem": mem}
     to_dict2 = lambda name, time : {"name" : name, "time": time}
@@ -36,8 +36,17 @@ def parse_summaries():
             if tokens[0] not in query: query[tokens[0]] = []
             query[tokens[0]].append(("BufBOSS",  float(tokens[1])))
 
+    return build, add, delete, query
 
-parse_summaries()
+# Returns dict for numebr of k-mers in each query input
+def parse_query_metadata():
+    D = dict()
+    for line in open("lists/query_metadata.txt"):
+        D["query-" + line.split()[0]] = int(line.split()[-1]) # todo: append this prefix to the query name already in setup
+    return D
+
+build, add, delete, query = parse_summaries()
+query_metadata = parse_query_metadata()
 print(build)
 print(add)
 print(query)
@@ -46,7 +55,9 @@ print(query)
 for Q in query:
     print(Q)
     for tool, time in query[Q]:
-        print(tool + " " + str(time))
+        edgemers = query_metadata[Q]
+        time_per_edgemer = time / edgemers # seconds
+        print(tool + " " + str(time_per_edgemer * 1e6) + " microseconds/edgemer")
 
 # Plot construction
 fig, ax = plt.subplots()
