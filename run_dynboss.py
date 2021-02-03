@@ -24,22 +24,22 @@ resultdir = "dynboss_results"
 run("mkdir -p " + resultdir)
 
 # Count k-mers. We use the reverse-complement concatenated data because dynboss does not index rc by itself.
-run_to_files("dynboss/dsk-1.6906/dsk " + build_concat_with_rc + " " + str(edgemer_k), resultdir + "/dsk")
-run_to_files("dynboss/bin/cosmo-pack " + drop_path_and_extension(build_concat_with_rc) + ".solid_kmers_binary", resultdir + "/pack")
+run_to_files("/usr/bin/time -v dynboss/dsk-1.6906/dsk " + build_concat_with_rc + " " + str(edgemer_k), resultdir + "/dsk")
+run_to_files("/usr/bin/time -v dynboss/bin/cosmo-pack " + drop_path_and_extension(build_concat_with_rc) + ".solid_kmers_binary", resultdir + "/pack")
 
 # Build
-run_to_files(program + " build -p " + drop_path_and_extension(build_concat_with_rc) + ".solid_kmers_binary.packed -o " + built, resultdir + "/build")
+run_to_files("/usr/bin/time -v " + program + " build -p " + drop_path_and_extension(build_concat_with_rc) + ".solid_kmers_binary.packed -o " + built, resultdir + "/build")
 
 # Add
-#run_to_files(program + " add -g " + built + " -s " + add_concat_with_rc + " -o " + added, resultdir + "/add")
+run_to_files("/usr/bin/time -v " + program + " add -g " + built + " -s " + add_concat_with_rc + " -o " + added, resultdir + "/add")
 
 # Del
-#run_to_files(program + " delete -g " + added + " -s " + del_concat_with_rc + " -o " + deleted, resultdir + "/del")
+run_to_files("/usr/bin/time -v " + program + " delete -g " + added + " -s " + del_concat_with_rc + " -o " + deleted, resultdir + "/del")
 
 # Query
 for name in query_inputs:
     filename = query_inputs[name]
-    run_to_files(program + " query -g " + built + " -s " + filename + " --query-result " + outdir + "/" + name + "-result.txt", resultdir + "/" + name)
+    run_to_files("/usr/bin/time -v " + program + " query -g " + built + " -s " + filename + " --query-result " + outdir + "/" + name + "-result.txt", resultdir + "/" + name)
 
 # Parse summary
 summary_out = open(resultdir + "/summary.txt", 'w')
