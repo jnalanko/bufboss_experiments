@@ -26,8 +26,8 @@ query_out = outdir + "/queries.txt"
 resultdir = "bifrost_results"
 run("mkdir -p " + resultdir)
 
-run_build = False
-run_add = False
+run_build = True
+run_add = True
 run_query = True
 
 # Bifrost is node-centric and nodes are k-mers.
@@ -51,4 +51,4 @@ summary_out.write("add " + str(add_time) + " " + str(add_rss) + "\n")
 for name in query_inputs:
     time = parse_our_printed_time(resultdir + "/" + name + ".stderr.txt")
     rss = -1 # Not available
-    summary_out.write("query-" + name + " " + str(time) + " " + str(rss) + "\n")
+    summary_out.write(name + " " + str(time) + " " + str(rss) + "\n")

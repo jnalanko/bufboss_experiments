@@ -31,8 +31,8 @@ run("mkdir -p " + deleted)
 
 query_out = outdir + "/queries.txt"
 
-run_build = False
-run_add = False
+run_build = True
+run_add = True
 run_del = False
 run_query = True
 #run_query_vs_buffer_fraction = True
@@ -82,4 +82,4 @@ for b in buf_fractions:
 for name in query_inputs:
     time = parse_our_printed_time(resultdir + "/" + name + ".stderr.txt")
     rss = -1 # Not available
-    summary_out.write("query-" + name + " " + str(time) + " " + str(rss) + "\n")
+    summary_out.write(name + " " + str(time) + " " + str(rss) + "\n")
