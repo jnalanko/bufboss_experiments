@@ -29,11 +29,11 @@ run("mkdir -p " + deleted)
 query_out = outdir + "/queries.txt"
 resultfile = open("bufboss_results.txt",'w')
 
-run_build = True
-run_add = True
-run_del = True
+run_build = False
+run_add = False
+run_del = False
 run_query = True
-run_query_vs_buffer_fraction = True
+run_query_vs_buffer_fraction = False
 
 if run_build:
     run_timed_rss("./bufboss/KMC/bin/kmc -v -k31 -m1 -ci1 -cs1 -fm " + build_concat + " temp/kmc_db temp", "KMC", resultfile)
