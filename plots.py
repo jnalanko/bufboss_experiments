@@ -1,7 +1,10 @@
 import matplotlib.pyplot as plt
 import sys
+from setup import *
 
 # time (s), working mem (bytes), final disk (bytes)
+
+
 
 bifrost_built = {"time": 51.72, "mem": 150736896, "index_disk": 49311755, "name": "Bifrost"}
 bifrost_added = {"time": 43.0, "mem": 369369088, "index_disk": 73489117, "name": "Bifrost"}

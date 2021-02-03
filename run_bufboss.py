@@ -31,10 +31,10 @@ run("mkdir -p " + deleted)
 
 query_out = outdir + "/queries.txt"
 
-run_build = True
-run_add = True
-run_del = True
-run_query = True
+run_build = False
+run_add = False
+run_del = False
+run_query = False
 #run_query_vs_buffer_fraction = True
 
 buf_fractions = [1.0]
@@ -73,11 +73,11 @@ summary_out.write("build " + str(KMC_time + build_time) + " " + str(max(build_rs
 
 for b in buf_fractions:
     add_time, add_rss = parse_usr_bin_time(resultdir + "/add-" + str(b) + ".stderr.txt")
-    summary_out.write("add " + str(add_time) + " " + str(add_rss) + "\n")
+    summary_out.write("add-" + str(b) + " " + str(add_time) + " " + str(add_rss) + "\n")
 
 for b in buf_fractions:
     del_time, del_rss = parse_usr_bin_time(resultdir + "/del-" + str(b) + ".stderr.txt")
-    summary_out.write("del " + str(add_time) + " " + str(add_rss) + "\n")
+    summary_out.write("del-" + str(b) + " " + str(add_time) + " " + str(add_rss) + "\n")
 
 for name in query_inputs:
     time = parse_our_printed_time(resultdir + "/query-" + name + ".stderr.txt")
