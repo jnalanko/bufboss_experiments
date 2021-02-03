@@ -33,3 +33,15 @@ run_to_files("/usr/bin/time -v " + program + " update -g " + built+".gfa" + " -r
 for name in query_inputs:
     filename = query_inputs[name]
     run_to_files("/usr/bin/time -v " + program + " query -g " + added+".gfa" + " -q " + filename + " -o " + query_out + " --ratio-kmers 1", resultdir + "/query-" + name)
+
+# Parse summary
+summary_out = open(resultdir + "/summary.txt")
+build_time, build_rss = parse_usr_bin_time(resultdir + "/build.stderr.txt")
+summary_out.write("build " + str(build_time) + " " + str(build_rss))
+
+add_time, add_rss = parse_usr_bin_time(resultdir + "/add.stderr.txt")
+summary_out.write("add " + str(add_time) + " " + str(add_rss))
+
+for name in query_inputs:
+    time, rss = parse_usr_bin_time(resultdir + "/query-" + name)
+    summary_out.write("query-" + name + " " + str(time) + " " + str(rss))

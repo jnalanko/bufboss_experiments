@@ -43,17 +43,10 @@ def concatenate_to(filelist, destination):
         else:
             run("cat " + file + " >> " + destination)
 
-# Runs the command and writes to outfile (an opened file object) a line:
-# name: time rss
-# where time is in seconds and rss is in bytes
-def run_timed_rss(command, name, outfile):
-    sys.stderr.write(command + "\n")
-
-    # /usr/bin/time -v prints to stderr
-    stderr_data = subprocess.run("/usr/bin/time -v " + command, shell=True, stderr=subprocess.PIPE).stderr.decode("utf-8").strip()
-    print(stderr_data)
+# Returns pair (time seconds, RSS bytes)
+def parse_usr_bin_time(stderr_file):
     rss, time = None, None
-    for line in stderr_data.split('\n'):
+    for line in open(stderr_file):
         if "Maximum resident set size (kbytes)" in line:
             rss = int(line.split()[-1]) * 2**10 # bytes
         if "Elapsed (wall clock) time (h:mm:ss or m:ss)" in line:
@@ -71,10 +64,10 @@ def run_timed_rss(command, name, outfile):
                 assert(False)
             time = hours * 60*60 + minutes*60 + seconds
     if rss == None or time == None:
-        print("Error parsing /usr/time/time -v")
+        print("Error parsing /usr/time/time -v from " + stderr_file)
         assert(False)
-    outfile.write(name + " " + str(time) + " " + str(rss) + "\n")
-    outfile.flush()
+
+    return time, rss
 
 datadir = "data"
 tempdir = "temp"
