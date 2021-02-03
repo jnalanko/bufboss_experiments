@@ -80,12 +80,19 @@ del_concat = datadir + "/del.fasta"
 nodemer_k = 30
 edgemer_k = nodemer_k + 1
 
-query_random_edgemers = "data/random/edgemers.fna"
-query_random_sequence = "data/random/sequence.fna"
-query_existing_build_edgemers = "data/existing/build_edgemers.fna"
-query_existing_build_sequence = "data/existing/build_sequence.fna"
-query_existing_added_edgemers = "data/existing/added_edgemers.fna"
-query_existing_added_sequence = "data/existing/added_sequence.fna"
+#query_random_edgemers = "data/random/edgemers.fna"
+#query_random_sequence = "data/random/sequence.fna"
+#query_existing_build_edgemers = "data/existing/build_edgemers.fna"
+#query_existing_build_sequence = "data/existing/build_sequence.fna"
+#query_existing_added_edgemers = "data/existing/added_edgemers.fna"
+#query_existing_added_sequence = "data/existing/added_sequence.fna"
+
+query_inputs = {"random_edgemers": "data/random/edgemers.fna",
+                "random_sequence": "data/random/sequence.fna",
+                "existing_build_edgemers": "data/existing/build_edgemers.fna",
+                "existing_build_sequence": "data/existing/build_sequence.fna",
+                "existing_added_edgemers": "data/existing/added_edgemers.fna",
+                "existing_added_sequence" : "data/existing/added_sequence.fna"}
 
 def generate_input_files():
 
@@ -100,8 +107,8 @@ def generate_input_files():
 
     # Generate random queries
     run("mkdir -p data/random")
-    run("python3 gen_random_kmers.py 31 1000000 > " + query_random_edgemers)
-    run("python3 gen_random_kmers.py 31000000 1 > " + query_random_sequence)
+    run("python3 gen_random_kmers.py 31 1000000 > " + query_inputs["random_edgemers"])
+    run("python3 gen_random_kmers.py 31000000 1 > " + query_inputs["random_sequence"])
 
     # Generate existing queries...
     run("mkdir -p data/existing")
@@ -111,18 +118,18 @@ def generate_input_files():
     run("mkdir -p " + index_dir)
     run("./bufboss/KMC/bin/kmc -k31 -m1 -ci1 -cs1 -fm " + build_concat + " " + tempdir + "/kmc_db temp")
     run("./bufboss/bin/bufboss_build --KMC " + tempdir + "/kmc_db -o " + index_dir + " -t " + tempdir)
-    run("./bufboss/bin/bufboss_sample_random_edgemers -i " + index_dir + " -o " + query_existing_build_edgemers + " --count 1000000")
+    run("./bufboss/bin/bufboss_sample_random_edgemers -i " + index_dir + " -o " + query_inputs["existing_build_edgemers"] + " --count 1000000")
 
     # ...then for added kmers (resuse the same index dir
     run("./bufboss/KMC/bin/kmc -k31 -m1 -ci1 -cs1 -fm " + add_concat + " " + tempdir + "/kmc_db temp")
     run("./bufboss/bin/bufboss_build --KMC " + tempdir + "/kmc_db -o " + index_dir + " -t " + tempdir)
-    run("./bufboss/bin/bufboss_sample_random_edgemers -i " + index_dir + " -o " + query_existing_added_edgemers + " --count 1000000")
+    run("./bufboss/bin/bufboss_sample_random_edgemers -i " + index_dir + " -o " + query_inputs["existing_added_edgemers"] + " --count 1000000")
 
     # For existing sequences, take the first file in buildlist and in addlist
     filename = open(buildlist).readlines()[0].strip()
-    run("cp " + filename + " " + query_existing_build_sequence)
+    run("cp " + filename + " " + query_inputs["existing_build_sequence"])
     filename = open(addlist).readlines()[0].strip()
-    run("cp " + filename + " " + query_existing_added_sequence)
+    run("cp " + filename + " " + query_inputs["existing_added_sequence"])
 
 if __name__ == "__main__":
     generate_input_files()
