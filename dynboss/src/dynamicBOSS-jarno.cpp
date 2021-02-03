@@ -273,8 +273,8 @@ int main(int argc, char *argv[]) {
             Sequence_Reader sr(p.kmer_filename, FASTA_MODE);
             while (!sr.done()) {
                 string seq = sr.get_next_query_stream().get_all();
-                vector<bool> hits(std::max(0LL, (long long)seq.size() - (edgemer_k + 1) + 1));
-                for (long long i = 0; i < (long long)seq.size() - (edgemer_k + 1) + 1; i++) {
+                vector<bool> hits(std::max(0LL, (long long)seq.size() - edgemer_k + 1));
+                for (long long i = 0; i < (long long)seq.size() - edgemer_k + 1; i++) {
                     bool present = dbg.index_edge_alan(seq.begin() + i);
                     hits[i] = present;
                 }
