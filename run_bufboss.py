@@ -37,7 +37,6 @@ run("mkdir -p " + added)
 run("mkdir -p " + deleted)
 
 query_out = outdir + "/queries.txt"
-resultfile = open(resultdir + "/build-add-del.txt",'w')
 
 run_build = True
 run_add = True
@@ -55,16 +54,16 @@ if run_add:
     #buf_fractions = [1.0, 0.5, 0.25, 0.1, 0.5, 0.025, 0.01]
     buf_fractions = [1.0]
     for b in buf_fractions:
-        run_to_files("/usr/bin_time -v " + update_program + " -k " + str(nodemer_k) + " --end-flush -r -b " + str(b) + " -i " + built + " -o " + added + " --add-files " + addlist, resultdir + "/add-" + str(b))
+        run_to_files("/usr/bin/time -v " + update_program + " -k " + str(nodemer_k) + " --end-flush -r -b " + str(b) + " -i " + built + " -o " + added + " --add-files " + addlist, resultdir + "/add-" + str(b))
 
 if run_del:
     for b in buf_fractions:
-        run_to_files(update_program + " -k " + str(nodemer_k) + " --end-flush -r -b " + str(b) + " -i " + added + " -o " + deleted + " --del-files " + dellist, "bufboss-del-" + str(b))
+        run_to_files("/usr/bin/time -v " + update_program + " -k " + str(nodemer_k) + " --end-flush -r -b " + str(b) + " -i " + added + " -o " + deleted + " --del-files " + dellist, "bufboss-del-" + str(b))
 
 if run_query:
     for name in query_inputs:
         filename = query_inputs[name]
-        run_to_files(query_program + " -i " + added + " -o " + query_out + " -q " + filename, 
+        run_to_files("/usr/bin/time -v " + query_program + " -i " + added + " -o " + query_out + " -q " + filename, 
                      resultdir + "/query-" + name)
 
 #if run_query_vs_buffer_fraction:
