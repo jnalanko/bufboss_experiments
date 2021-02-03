@@ -45,9 +45,9 @@ run_query = True
 #run_query_vs_buffer_fraction = True
 
 if run_build:
-    run_to_files("/usr/bin_time -v ./bufboss/KMC/bin/kmc -v -k31 -m1 -ci1 -cs1 -fm " + build_concat + " temp/kmc_db temp", 
+    run_to_files("/usr/bin/time -v ./bufboss/KMC/bin/kmc -v -k31 -m1 -ci1 -cs1 -fm " + build_concat + " temp/kmc_db temp", 
                  resultdir + "/build_run_KMC")
-    run_to_files("/usr/bin_time -v ./bufboss/bin/bufboss_build --KMC temp/kmc_db -o " + built + " -t " + tempdir, 
+    run_to_files("/usr/bin/time -v ./bufboss/bin/bufboss_build --KMC temp/kmc_db -o " + built + " -t " + tempdir, 
                  resultdir + "/build_BOSS_from_KMC")
 
 if run_add:
