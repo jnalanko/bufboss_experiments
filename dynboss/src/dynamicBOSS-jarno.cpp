@@ -176,11 +176,12 @@ int main(int argc, char *argv[]) {
         cout << "Reading FASTA file " << p.kmer_filename << endl;
         size_t nKmers;
         set<string> kmers;
-        if (p.function != "query")  // Jarno fix: stream k-mers in query
+        if (p.function != "query"){  // Jarno fix: stream k-mers in query
             getKmers(nKmers, dbg.k, kmers, p.kmer_filename);
-        cout << nKmers << " distinct kmers were counted " << endl;
-        cout << "=============================================================="
+            cout << nKmers << " distinct kmers were counted " << endl;
+            cout << "=============================================================="
                 "======\n";
+        }
 
         size_t counter = 0;
         size_t available_kmers = 0;
