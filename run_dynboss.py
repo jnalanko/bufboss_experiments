@@ -58,3 +58,5 @@ for name in query_inputs:
     time = parse_our_printed_time(resultdir + "/" + name + ".stderr.txt")
     rss = -1 # Not available
     summary_out.write(name + " " + str(time) + " " + str(rss) + "\n")
+
+# TODO: dynboss probably does not handle non-ACGT chars gracefully -> add code to setup.py that splits the seqs at non-ACGT?

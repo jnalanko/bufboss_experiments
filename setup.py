@@ -125,8 +125,8 @@ def generate_input_files():
 
     # Generate random queries
     run("mkdir -p data/random")
-    run("python3 gen_random_kmers.py 31 1000000 > " + query_inputs["query-random_edgemers"])
-    run("python3 gen_random_kmers.py 31000000 1 > " + query_inputs["query-random_sequence"])
+    run("python3 gen_random_kmers.py 31 1000000 > " + query_inputs["query-random_edgemers"]) # Million edgemers
+    run("python3 gen_random_kmers.py 1000000 1 > " + query_inputs["query-random_sequence"]) # Million - k + 1 edgemers
 
     # Generate existing queries...
     run("mkdir -p data/existing")
