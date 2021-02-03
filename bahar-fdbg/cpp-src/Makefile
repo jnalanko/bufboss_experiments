@@ -18,7 +18,10 @@ fdbg-add-jarno:
 	g++ -O3  -std=c++17 fdbg-add-jarno.cpp -o fdbg-add-jarno -l boost_log -l boost_system -l pthread -I -DNDEBUG
 
 fdbg-del-jarno:
-	g++ -O3  -std=c++17 fdbg-del-jarno.cpp -o fdbg-del-jarno -l boost_log -l boost_system -l pthread -I -DNDEBUG
+	g++ -O3  -std=c++17 fdbg-del-jarno.cpp -o fdbg-del-jarno -l boost_log -l boost_system -l pthread -I -DNDEBU
+
+fdbg-query-jarno:
+	g++ -O3  -std=c++17 fdbg-query-jarno.cpp -o fdbg-query-jarno -l boost_log -l boost_system -l pthread -I -DNDEBUG
 
 #readsplit: ReadSplit.cpp
 #	g++ -O3 -std=c++11 ReadSplit.cpp -o readsplit -l boost_log -l pthread
