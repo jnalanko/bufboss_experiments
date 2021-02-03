@@ -90,3 +90,6 @@ run_timed_rss(program + " query -g " + added+".gfa" + " -q " + query_existing_bu
 run_timed_rss(program + " query -g " + added+".gfa" + " -q " + query_existing_build_sequence + " -o " + query_out + " --ratio-kmers 0", "bifrost-query-existing_build_seq", resultfile)
 run_timed_rss(program + " query -g " + added+".gfa" + " -q " + query_existing_added_edgemers + " -o " + query_out + " --ratio-kmers 1", "bifrost-query-existing_added_edgemers", resultfile)
 run_timed_rss(program + " query -g " + added+".gfa" + " -q " + query_existing_added_sequence + " -o " + query_out + " --ratio-kmers 1", "bifrost-query-existing-added-seq", resultfile)
+
+run_timed_rss(program + " query -g " + added+".gfa" + " -q " + query_random_edgemers + " -o " + query_out + " --ratio-kmers 1", "bifrost-query-random_edgemers", resultfile)
+run_timed_rss(program + " query -g " + added+".gfa" + " -q " + query_random_sequence + " -o " + query_out + " --ratio-kmers 1", "bifrost-query-random_seq", resultfile)
