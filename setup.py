@@ -20,8 +20,10 @@ def run(command):
     sys.stderr.write(command + "\n")
     return subprocess.run(command, shell=True)
 
-def run_to_files(command, stdout_file, stderr_file):
+def run_to_files(command, out_prefix):
     sys.stderr.write(command + "\n")
+    stdout_file = out_prefix + ".stdout.txt"
+    stderr_file = out_prefix + ".stderr.txt"
     sys.stderr.write("stdout to " + stdout_file + "\n")
     sys.stderr.write("stderr to " + stderr_file + "\n")
     stdout_stream = open(stdout_file, 'w')
