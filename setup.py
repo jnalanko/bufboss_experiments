@@ -90,12 +90,12 @@ del_concat = datadir + "/del.fasta"
 nodemer_k = 30
 edgemer_k = nodemer_k + 1
 
-query_inputs = {"query-random_edgemers": "data/random/edgemers.fna",
-                "query-random_sequence": "data/random/sequence.fna",
-                "query-existing_build_edgemers": "data/existing/build_edgemers.fna",
-                "query-existing_build_sequence": "data/existing/build_sequence.fna",
-                "query-existing_added_edgemers": "data/existing/added_edgemers.fna",
-                "query-existing_added_sequence" : "data/existing/added_sequence.fna"}
+query_inputs = {"query-random_edgemers": "data/random/edgemers.fasta",
+                "query-random_sequence": "data/random/sequence.fasta",
+                "query-existing_build_edgemers": "data/existing/build_edgemers.fasta",
+                "query-existing_build_sequence": "data/existing/build_sequence.fasta",
+                "query-existing_added_edgemers": "data/existing/added_edgemers.fasta",
+                "query-existing_added_sequence" : "data/existing/added_sequence.fasta"}
 query_metadatafile = "lists/query_metadata.txt"
 
 def fasta_count_edgemers(fastafile):
