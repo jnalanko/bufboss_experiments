@@ -23,18 +23,18 @@ deleted = outdir + "/deleted.dbg"
 resultdir = "dynboss_results"
 run("mkdir -p " + resultdir)
 
-# Count k-mers
-run_to_files("dynboss/dsk-1.6906/dsk " + build_concat + " " + str(edgemer_k), resultdir + "/dsk")
-run_to_files("dynboss/bin/cosmo-pack " + drop_path_and_extension(build_concat) + ".solid_kmers_binary", resultdir + "/pack")
+# Count k-mers. We use the reverse-complement concatenated data because dynboss does not index rc by itself.
+run_to_files("dynboss/dsk-1.6906/dsk " + build_concat_with_rc + " " + str(edgemer_k), resultdir + "/dsk")
+run_to_files("dynboss/bin/cosmo-pack " + drop_path_and_extension(build_concat_with_rc) + ".solid_kmers_binary", resultdir + "/pack")
 
 # Build
-run_to_files(program + " build -p " + drop_path_and_extension(build_concat) + ".solid_kmers_binary.packed -o " + built, resultdir + "/build")
+run_to_files(program + " build -p " + drop_path_and_extension(build_concat_with_rc) + ".solid_kmers_binary.packed -o " + built, resultdir + "/build")
 
 # Add
-#run_to_files(program + " add -g " + built + " -s " + add_concat + " -o " + added, resultdir + "/add")
+#run_to_files(program + " add -g " + built + " -s " + add_concat_with_rc + " -o " + added, resultdir + "/add")
 
 # Del
-#run_to_files(program + " delete -g " + added + " -s " + del_concat + " -o " + deleted, resultdir + "/del")
+#run_to_files(program + " delete -g " + added + " -s " + del_concat_with_rc + " -o " + deleted, resultdir + "/del")
 
 # Query
 for name in query_inputs:
@@ -58,7 +58,3 @@ for name in query_inputs:
     time = parse_our_printed_time(resultdir + "/" + name + ".stderr.txt")
     rss = -1 # Not available
     summary_out.write(name + " " + str(time) + " " + str(rss) + "\n")
-
-# TODO: dynboss probably does not handle non-ACGT chars gracefully -> add code to setup.py that splits the seqs at non-ACGT?
-# TODO: dynboss doesn't seem to index reverse complements even when revcomps=1 is set before building.
-#       -> need to concat RC with the build and add-files for dynboss.
