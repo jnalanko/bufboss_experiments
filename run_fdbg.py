@@ -54,3 +54,9 @@ for name in query_inputs:
     time = parse_our_printed_time(resultdir + "/" + name + ".stderr.txt")
     rss = -1 # Not available
     summary_out.write(name + " " + str(time) + " " + str(rss) + "\n")
+
+# TODO:
+#FDBG.cpp: In member function ‘bool Forest::set_parent_in_IN(const u_int64_t&, bool)’:
+#FDBG.cpp:416:5: warning: no return statement in function returning non-void [-Wreturn-type]
+#  416 |     }
+      |     ^
