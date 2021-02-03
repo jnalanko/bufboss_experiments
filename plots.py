@@ -40,13 +40,22 @@ def parse_summaries():
         tokens = line.split()
         if tokens[0] == "build":
             build.append(to_dict3("DynBOSS",  float(tokens[1]), float(tokens[2])))
-        elif "add-" in tokens[0]:
+        elif tokens[0] == "add":
             add.append(to_dict3("DynBOSS",  float(tokens[1]), float(tokens[2])))
-        elif "del-" in tokens[0]:
-            delete.append(to_dict3("DynBOSS",  float(tokens[1]), float(tokens[2])))
         else: # query
             if tokens[0] not in query: query[tokens[0]] = []
             query[tokens[0]].append(("DynBOSS",  float(tokens[1])))
+
+    # Parse fdbg
+    for line in open("fdbg_results/summary.txt"):
+        tokens = line.split()
+        if tokens[0] == "build":
+            build.append(to_dict3("FDBG",  float(tokens[1]), float(tokens[2])))
+        elif tokens[0] == "add":
+            add.append(to_dict3("FDBG",  float(tokens[1]), float(tokens[2])))
+        else: # query
+            if tokens[0] not in query: query[tokens[0]] = []
+            query[tokens[0]].append(("FDBG",  float(tokens[1])))
 
     return build, add, delete, query
 
