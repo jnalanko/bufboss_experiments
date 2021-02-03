@@ -625,7 +625,7 @@ int main(int argc, char **argv){
                     long long start = cur_time_millis();
                     cdbg.search(opt.filename_query_in, opt.prefixFilenameOut, opt.ratio_kmers, opt.inexact_search, opt.nb_threads, opt.verbose);
                     long long elapsed = cur_time_millis() - start;
-                    std::cout << "Time for all queries: " << (double)elapsed / 1e3 << " seconds" << std::endl;
+                    std::cerr << "Time for all queries: " << (double)elapsed / 1e3 << " seconds" << std::endl;
                 }
             }
         }

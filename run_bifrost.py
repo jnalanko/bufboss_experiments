@@ -35,7 +35,7 @@ for name in query_inputs:
     run_to_files("/usr/bin/time -v " + program + " query -g " + added+".gfa" + " -q " + filename + " -o " + query_out + " --ratio-kmers 1", resultdir + "/query-" + name)
 
 # Parse summary
-summary_out = open(resultdir + "/summary.txt")
+summary_out = open(resultdir + "/summary.txt", 'w')
 build_time, build_rss = parse_usr_bin_time(resultdir + "/build.stderr.txt")
 summary_out.write("build " + str(build_time) + " " + str(build_rss))
 

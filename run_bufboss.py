@@ -12,7 +12,7 @@ if sys.version_info < (3, 0):
     sys.stdout.write("Error: Python3 required\n")
     sys.exit(1)
 
-def parse_time(filename):
+def parse_our_printed_time(filename):
     for line in open(filename).readline():
         if "Time for all queries:" in line:
             return float(line.split()[-2])
