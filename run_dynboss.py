@@ -60,3 +60,5 @@ for name in query_inputs:
     summary_out.write(name + " " + str(time) + " " + str(rss) + "\n")
 
 # TODO: dynboss probably does not handle non-ACGT chars gracefully -> add code to setup.py that splits the seqs at non-ACGT?
+# TODO: dynboss doesn't seem to index reverse complements even when revcomps=1 is set before building.
+#       -> need to concat RC with the build and add-files for dynboss.
