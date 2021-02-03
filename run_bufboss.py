@@ -55,7 +55,9 @@ if run_del:
 if run_query:
     for name in query_inputs:
         filename = query_inputs[name]
-        run(query_program + " -i " + added + " -o " + query_out + " -q " + filename + " &> " + resultdir + "/query-" + name)
+        run_to_files(query_program + " -i " + added + " -o " + query_out + " -q " + filename, 
+                     resultdir + "/" + name + "-stdout", 
+                     resultdir + "/" + name + "-stderr")
 
 if run_query_vs_buffer_fraction:
     run("./bufboss/bin/query_performance_experiment -i " + built + " --add-files " + addlist + " --buf-fraction-increment 0.01 --max-buf-fraction 1.0 -q " + query_existing_build_sequence + " --tempdir " + tempdir + " --experiment-out buf-frac-query-existing-build-seq.txt")

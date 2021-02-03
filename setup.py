@@ -20,6 +20,12 @@ def run(command):
     sys.stderr.write(command + "\n")
     return subprocess.run(command, shell=True)
 
+def run_to_files(command, stdout_file, stderr_file):
+    sys.stderr.write(command + "\n")
+    stdout_stream = open(stdout_file, 'w')
+    stderr_stream = open(stderr_file, 'w')
+    return subprocess.run(command, shell=True, stdout=stdout_stream, stderr=stderr_stream)
+
 def drop_path_and_extension(S):
     return os.path.splitext(os.path.split(S)[1])[0]
 
