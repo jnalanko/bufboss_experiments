@@ -75,9 +75,9 @@ def run_timed_rss(command, name, outfile):
 datadir = "data"
 tempdir = "temp"
 
-buildlist = datadir + "/coli12_build.txt"
-addlist = datadir + "/coli12_add.txt"
-dellist = datadir + "/coli12_del.txt"
+buildlist = "lists/coli_build.txt"
+addlist = "lists/coli_add.txt"
+dellist = "lists/coli_del.txt"
 
 build_concat = datadir + "/build.fasta"
 add_concat = datadir + "/add.fasta"
@@ -85,13 +85,6 @@ del_concat = datadir + "/del.fasta"
 
 nodemer_k = 30
 edgemer_k = nodemer_k + 1
-
-#query_random_edgemers = "data/random/edgemers.fna"
-#query_random_sequence = "data/random/sequence.fna"
-#query_existing_build_edgemers = "data/existing/build_edgemers.fna"
-#query_existing_build_sequence = "data/existing/build_sequence.fna"
-#query_existing_added_edgemers = "data/existing/added_edgemers.fna"
-#query_existing_added_sequence = "data/existing/added_sequence.fna"
 
 query_inputs = {"random_edgemers": "data/random/edgemers.fna",
                 "random_sequence": "data/random/sequence.fna",
@@ -137,5 +130,28 @@ def generate_input_files():
     filename = open(addlist).readlines()[0].strip()
     run("cp " + filename + " " + query_inputs["existing_added_sequence"])
 
+# Takes number of genomes to build, add and del respectively.
 if __name__ == "__main__":
+    n_build = int(sys.argv[1])
+    n_add = int(sys.argv[2])
+    n_del = int(sys.argv[3])
+    assert(n_build + n_add + n_del <= 3682)
+    run("mkdir -p lists")
+    files = run_get_output("ls $PWD/data/coli3682/*.fna | shuf").splitlines()
+
+    build_out = open("lists/coli_build.txt",'w')
+    for i in range(n_build):
+        build_out.write(files[i] + "\n")
+    build_out.close()
+
+    add_out = open("lists/coli_add.txt",'w')
+    for i in range(n_build, n_build + n_add):
+        add_out.write(files[i] + "\n")
+    add_out.close()
+
+    del_out = open("lists/coli_del.txt",'w')
+    for i in range(n_build + n_add, n_build + n_add + n_del):
+        del_out.write(files[i] + "\n")
+    del_out.close()
+    
     generate_input_files()
