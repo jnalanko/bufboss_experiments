@@ -152,7 +152,7 @@ def generate_input_files():
     print("Calculating metadata")
     metadata = open(query_metadatafile,'w')
     for name in query_inputs:
-        metadata.write(name + " " + int(fasta_count_edgemers(query_inputs[name])) + "\n")
+        metadata.write(name + " " + str(fasta_count_edgemers(query_inputs[name])) + "\n")
 
 # Takes number of genomes to build, add and del respectively.
 if __name__ == "__main__":
