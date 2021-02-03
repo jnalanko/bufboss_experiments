@@ -10,7 +10,6 @@ def parse_summaries():
     query = {} # Here we have dict {query-dataset-name -> list of pairs (tool, time)}
 
     to_dict3 = lambda name, time, mem : {"name" : name, "time": time, "mem": mem}
-    to_dict2 = lambda name, time : {"name" : name, "time": time}
 
     # Parse bifrost
     for line in open("bifrost_results/summary.txt"):
@@ -42,7 +41,7 @@ def parse_summaries():
 def parse_query_metadata():
     D = dict()
     for line in open("lists/query_metadata.txt"):
-        D["query-" + line.split()[0]] = int(line.split()[-1]) # todo: append this prefix to the query name already in setup
+        D[line.split()[0]] = int(line.split()[-1])
     return D
 
 build, add, delete, query = parse_summaries()
