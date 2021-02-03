@@ -33,7 +33,7 @@ query_out = outdir + "/queries.txt"
 
 run_build = True
 run_add = True
-run_del = False
+run_del = True
 run_query = True
 #run_query_vs_buffer_fraction = True
 
