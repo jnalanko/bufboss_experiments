@@ -26,13 +26,19 @@ query_out = outdir + "/queries.txt"
 resultdir = "bifrost_results"
 run("mkdir -p " + resultdir)
 
-# Bifrost is node-centric and nodes are k-mers.
-run_to_files("/usr/bin/time -v " + program + " build -r " + buildlist + " -k 30 -y -o " + built, resultdir + "/build")
-run_to_files("/usr/bin/time -v " + program + " update -g " + built+".gfa" + " -r " + addlist + " -k 30 -o " + added, resultdir + "/add")
+run_build = False
+run_add = False
+run_query = True
 
-for name in query_inputs:
-    filename = query_inputs[name]
-    run_to_files("/usr/bin/time -v " + program + " query -g " + added+".gfa" + " -q " + filename + " -o " + query_out + " --ratio-kmers 1", resultdir + "/query-" + name)
+# Bifrost is node-centric and nodes are k-mers.
+if run_build:
+    run_to_files("/usr/bin/time -v " + program + " build -r " + buildlist + " -k 30 -y -o " + built, resultdir + "/build")
+if run_add:    
+    run_to_files("/usr/bin/time -v " + program + " update -g " + built+".gfa" + " -r " + addlist + " -k 30 -o " + added, resultdir + "/add")
+if run_query:
+    for name in query_inputs:
+        filename = query_inputs[name]
+        run_to_files("/usr/bin/time -v " + program + " query -g " + added+".gfa" + " -q " + filename + " -o " + query_out + " --ratio-kmers 1", resultdir + "/query-" + name)
 
 # Parse summary
 summary_out = open(resultdir + "/summary.txt", 'w')
