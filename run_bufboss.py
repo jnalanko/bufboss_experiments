@@ -52,7 +52,7 @@ if run_add:
 
 if run_del:
     for b in buf_fractions:
-        run_to_files("/usr/bin/time -v " + update_program + " -k " + str(nodemer_k) + " --end-flush -r -b " + str(b) + " -i " + added + " -o " + deleted + " --del-files " + dellist, "del-" + str(b))
+        run_to_files("/usr/bin/time -v " + update_program + " -k " + str(nodemer_k) + " --end-flush -r -b " + str(b) + " -i " + added + " -o " + deleted + " --del-files " + dellist, resultdir + "/del-" + str(b))
 
 if run_query:
     for name in query_inputs:
