@@ -51,4 +51,4 @@ summary_out.write("add " + str(add_time) + " " + str(add_rss))
 for name in query_inputs:
     time = parse_our_printed_time(resultdir + "/query-" + name + ".stderr.txt")
     rss = -1 # Not available
-    summary_out.write("query-" + name + " " + str(time) + " " + str(rss))
+    summary_out.write("query-" + name + " " + str(time) + " " + str(rss) + "\n")
