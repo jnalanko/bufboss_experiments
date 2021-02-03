@@ -40,3 +40,21 @@ run_to_files(program + " build -p " + drop_path_and_extension(build_concat) + ".
 for name in query_inputs:
     filename = query_inputs[name]
     run_to_files(program + " query -g " + built + " -s " + filename, resultdir + "/" + name)
+
+# Parse summary
+summary_out = open(resultdir + "/summary.txt", 'w')
+dsk_time, dsk_rss = parse_usr_bin_time(resultdir + "/dsk.stderr.txt")
+pack_time, pack_rss = parse_usr_bin_time(resultdir + "/pack.stderr.txt")
+build_time, build_rss = parse_usr_bin_time(resultdir + "/build.stderr.txt")
+summary_out.write("build " + str(dsk_time + pack_time + build_time) + " " + str(max(dsk_rss, pack_rss, build_rss)) + "\n")
+
+add_time, add_rss = parse_usr_bin_time(resultdir + "/add.stderr.txt")
+summary_out.write("add " + str(add_time) + " " + str(add_rss) + "\n")
+
+del_time, del_rss = parse_usr_bin_time(resultdir + "/del.stderr.txt")
+summary_out.write("del " + str(del_time) + " " + str(del_rss) + "\n")
+
+for name in query_inputs:
+    time = parse_our_printed_time(resultdir + "/" + name + ".stderr.txt")
+    rss = -1 # Not available
+    summary_out.write(name + " " + str(time) + " " + str(rss) + "\n")

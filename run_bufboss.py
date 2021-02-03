@@ -77,7 +77,7 @@ for b in buf_fractions:
 
 for b in buf_fractions:
     del_time, del_rss = parse_usr_bin_time(resultdir + "/del-" + str(b) + ".stderr.txt")
-    summary_out.write("del-" + str(b) + " " + str(add_time) + " " + str(add_rss) + "\n")
+    summary_out.write("del-" + str(b) + " " + str(del_time) + " " + str(del_rss) + "\n")
 
 for name in query_inputs:
     time = parse_our_printed_time(resultdir + "/" + name + ".stderr.txt")
