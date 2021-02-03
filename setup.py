@@ -95,6 +95,10 @@ build_concat = datadir + "/build.fasta"
 add_concat = datadir + "/add.fasta"
 del_concat = datadir + "/del.fasta"
 
+build_concat_with_rc = datadir + "/build_with_rc.fasta"
+add_concat_with_rc = datadir + "/add_with_rc.fasta"
+del_concat_with_rc = datadir + "/del_with_rc.fasta"
+
 nodemer_k = 30
 edgemer_k = nodemer_k + 1
 
@@ -126,6 +130,17 @@ def generate_input_files():
     run("./input_cleaning/collect_and_remove_non_ACGT " + buildlist + " " + build_concat + " " + str(edgemer_k))
     run("./input_cleaning/collect_and_remove_non_ACGT " + addlist + " " + add_concat + " " + str(edgemer_k))
     run("./input_cleaning/collect_and_remove_non_ACGT " + dellist + " " + del_concat + " " + str(edgemer_k))
+
+    # For tools that don't index reverse complements (looking at you dynboss), create input files with
+    # concatenated reverse complements in the end
+    run("./input_cleaning/get_rc " + build_concat + " temp/temp_rc.fasta")
+    run("cat " + build_concat + " temp/temp_rc.fasta > " + build_concat_with_rc) 
+
+    run("./input_cleaning/get_rc " + add_concat + " temp/temp_rc.fasta")
+    run("cat " + add_concat + " temp/temp_rc.fasta > " + add_concat_with_rc)
+
+    run("./input_cleaning/get_rc " + del_concat + " temp/temp_rc.fasta")
+    run("cat " + del_concat + " temp/temp_rc.fasta > " + del_concat_with_rc)
 
     # Generate random queries
     run("mkdir -p data/random")
