@@ -30,7 +30,7 @@ struct parameters_t {
     std::string graph_filename = "";
     std::string output_filename = "";
     std::string kmer_filename = "";
-    std::string queryfile = "queryResults.tsv";
+    std::string query_result = "";
 };
 
 void parse_arguments(int argc, char **argv, parameters_t &params);
@@ -59,12 +59,16 @@ void parse_arguments(int argc, char **argv, parameters_t &params) {
     TCLAP::ValueArg<std::string> output_filename_arg(
         "o", "output", "Output graph name", false, "", "output file", cmd);
 
+    TCLAP::ValueArg<std::string> query_output_filename_arg(
+        "q", "query-result", "File for writing the query results", false, "", "query output file", cmd);
+
     cmd.parse(argc, argv);
     params.function = function_arg.getValue();
     params.pack_filename = pack_filename_arg.getValue();
     params.graph_filename = graph_filename_arg.getValue();
     params.kmer_filename = kmer_filename_arg.getValue();
     params.output_filename = output_filename_arg.getValue();
+    params.query_result = query_output_filename_arg.getValue();
 }
 
 int main(int argc, char *argv[]) {
@@ -253,18 +257,30 @@ int main(int argc, char *argv[]) {
                  << endl;
         }
         if (p.function == "query") {
+            if(p.query_result == ""){
+              std::cerr << "Error: query output file not given" << std::endl;
+              return 1;
+            }
             long long query_start_jarno = cur_time_millis();
             long long edgemer_k =
                 dbg.k;  // This is edgemer k: see dynboss::edge_label(size_t i)
-            ofstream ofs(p.queryfile);
+            ofstream ofs(p.query_result);
+            if(!ofs.good()){
+              cerr << "Error opening query outfile: " << p.query_result << endl;
+              return 1;
+            }
             Sequence_Reader sr(p.kmer_filename, FASTA_MODE);
             while (!sr.done()) {
                 string seq = sr.get_next_query_stream().get_all();
-                for (long long i = 0;
-                     i < (long long)seq.size() - (edgemer_k + 1) + 1; i++) {
+                vector<bool> hits(std::max(0LL, (long long)seq.size() - (edgemer_k + 1) + 1));
+                for (long long i = 0; i < (long long)seq.size() - (edgemer_k + 1) + 1; i++) {
                     bool present = dbg.index_edge_alan(seq.begin() + i);
-                    // todo: print to some outfile
+                    hits[i] = present;
                 }
+                // Write out
+                for(long long i = 0; i < (long long)hits.size(); i++)
+                  ofs << hits[i];
+                ofs << "\n";
             }
             long long elapsed_jarno = cur_time_millis() - query_start_jarno;
             std::cerr << "Time for all queries: " << (double)elapsed_jarno / 1e3
@@ -307,7 +323,7 @@ int main(int argc, char *argv[]) {
                 "unchanged\n";
 
     if (p.function == "query")
-        cout << "Writing the querying results in file: " << p.queryfile << endl;
+        cout << "Query results in file: " << p.query_result << endl;
 
     cout << "DONE!" << endl;
 }
