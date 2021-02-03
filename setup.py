@@ -69,9 +69,9 @@ def run_timed_rss(command, name, outfile):
 datadir = "data"
 tempdir = "temp"
 
-buildlist = datadir + "/coli3682_build.txt"
-addlist = datadir + "/coli3682_add.txt"
-dellist = datadir + "/coli3682_del.txt"
+buildlist = datadir + "/coli12_build.txt"
+addlist = datadir + "/coli12_add.txt"
+dellist = datadir + "/coli12_del.txt"
 
 build_concat = datadir + "/build.fasta"
 add_concat = datadir + "/add.fasta"
