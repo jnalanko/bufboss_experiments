@@ -43,10 +43,10 @@ if run_query:
 # Parse summary
 summary_out = open(resultdir + "/summary.txt", 'w')
 build_time, build_rss = parse_usr_bin_time(resultdir + "/build.stderr.txt")
-summary_out.write("build " + str(build_time) + " " + str(build_rss))
+summary_out.write("build " + str(build_time) + " " + str(build_rss) + "\n")
 
 add_time, add_rss = parse_usr_bin_time(resultdir + "/add.stderr.txt")
-summary_out.write("add " + str(add_time) + " " + str(add_rss))
+summary_out.write("add " + str(add_time) + " " + str(add_rss) + "\n")
 
 for name in query_inputs:
     time = parse_our_printed_time(resultdir + "/query-" + name + ".stderr.txt")
