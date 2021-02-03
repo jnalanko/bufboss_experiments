@@ -10,8 +10,15 @@
 #include "utility.hpp"
 #include "formatutil.cpp"
 #include "kmer-counter.hpp"
+#include "input_reading.hh"
+#include <chrono>
 using namespace std;
 using namespace sdsl;
+
+long long cur_time_millis(){
+	return (std::chrono::duration_cast< std::chrono::milliseconds >(std::chrono::system_clock::now().time_since_epoch())).count();
+}
+
 
 string extension;
 struct parameters_t {
@@ -218,6 +225,7 @@ int main(int argc, char* argv[]){
 
 }
 if (p.function == "query"){
+  long long query_start_jarno = cur_time_millis();
   ofstream ofs(p.queryfile);
   ofs<<"lexo order"<<"\t"<<"kmer"<<"\t"<<"presence"<<endl;
   for (auto it = kmers.begin(); it != kmers.end(); ++it) {
@@ -236,6 +244,9 @@ if (p.function == "query"){
         absent_kmers+=1;
       counter+=1;
   }
+  long long elapsed_jarno = cur_time_millis() - query_start_jarno;
+  std::cerr << "Time for all queries: " << (double)elapsed_jarno / 1e3 << " seconds" << std::endl;
+
   cerr<<"\n100% of kmers were processed\n";
   cout<<kmers.size()-absent_kmers<<" ("<<(double)(kmers.size()-absent_kmers)*100/kmers.size()<<"%) of the kmers were in the graph\n";
   cout<<kmers.size()<< " kmers were queried in "<< time_elapsed/CLOCKS_PER_SEC<<" (s)"<<endl;
