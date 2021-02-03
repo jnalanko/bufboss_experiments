@@ -21,11 +21,17 @@ def parse_our_printed_time(filename):
 def run_get_output(command):
     # Command can have pipes
     sys.stderr.write(command + "\n")
-    return subprocess.run(command, shell=True, stdout=subprocess.PIPE).stdout.decode("utf-8").strip()
+    proc = subprocess.run(command, shell=True, stdout=subprocess.PIPE)
+    if proc.returncode != 0:
+        print("Error: nonzero return code for command: " + command)
+        sys.exit(1)
+    return proc.stdout.decode("utf-8").strip()
 
 def run(command):
     sys.stderr.write(command + "\n")
-    return subprocess.run(command, shell=True)
+    if subprocess.run(command, shell=True).returncode != 0:
+        print("Error: nonzero return code for command: " + command)
+        sys.exit(1)
 
 def run_to_files(command, out_prefix):
     sys.stderr.write(command + "\n")
@@ -35,7 +41,9 @@ def run_to_files(command, out_prefix):
     sys.stderr.write("stderr to " + stderr_file + "\n")
     stdout_stream = open(stdout_file, 'w')
     stderr_stream = open(stderr_file, 'w')
-    return subprocess.run(command, shell=True, stdout=stdout_stream, stderr=stderr_stream)
+    if subprocess.run(command, shell=True, stdout=stdout_stream, stderr=stderr_stream).returncode != 0:
+        print("Error: nonzero return code for command: " + command)
+        sys.exit(1)
 
 def drop_path_and_extension(S):
     return os.path.splitext(os.path.split(S)[1])[0]
@@ -114,14 +122,10 @@ def fasta_count_edgemers(fastafile):
 
 def generate_input_files():
 
-    # Concatenate fasta files
-    build_genomes = run_get_output("cat " + buildlist).split('\n')
-    add_genomes = run_get_output("cat " + addlist).split('\n')
-    del_genomes = run_get_output("cat " + dellist).split('\n')
-
-    concatenate_to(build_genomes, build_concat)
-    concatenate_to(add_genomes, add_concat)
-    concatenate_to(del_genomes, del_concat)
+    # Concatenate fasta files and remove non-ACGT
+    run("./input_cleaning/collect_and_remove_non_ACGT " + buildlist + " " + build_concat + " " + str(edgemer_k))
+    run("./input_cleaning/collect_and_remove_non_ACGT " + addlist + " " + add_concat + " " + str(edgemer_k))
+    run("./input_cleaning/collect_and_remove_non_ACGT " + dellist + " " + del_concat + " " + str(edgemer_k))
 
     # Generate random queries
     run("mkdir -p data/random")
@@ -144,10 +148,11 @@ def generate_input_files():
     run("./bufboss/bin/bufboss_sample_random_edgemers -i " + index_dir + " -o " + query_inputs["query-existing_added_edgemers"] + " --count 1000000")
 
     # For existing sequences, take the first file in buildlist and in addlist
-    filename = open(buildlist).readlines()[0].strip()
-    run("cp " + filename + " " + query_inputs["query-existing_build_sequence"])
-    filename = open(addlist).readlines()[0].strip()
-    run("cp " + filename + " " + query_inputs["query-existing_added_sequence"])
+    run("head -n 1 " + buildlist + " > " + tempdir + "/buildlist_first.txt")
+    run("./input_cleaning/collect_and_remove_non_ACGT " + tempdir + "/buildlist_first.txt " + query_inputs["query-existing_build_sequence"] + " " + str(edgemer_k))
+
+    run("head -n 1 " + addlist + " > " + tempdir + "/addlist_first.txt")
+    run("./input_cleaning/collect_and_remove_non_ACGT " + tempdir + "/addlist_first.txt " + query_inputs["query-existing_added_sequence"] + " " + str(edgemer_k))
 
     print("Calculating metadata")
     metadata = open(query_metadatafile,'w')
