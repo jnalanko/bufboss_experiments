@@ -86,8 +86,8 @@ resultfile = open("bifrost_results.txt",'w')
 # Bifrost is node-centric and nodes are k-mers.
 #run_timed_rss(program + " build -r " + buildlist + " -k 30 -y -o " + built, "bifrost-build", resultfile)
 #run_timed_rss(program + " update -g " + built+".gfa" + " -r " + addlist + " -k 30 -o " + added, "bifrost-update", resultfile)
-run_timed_rss(program + " query -g " + added+".gfa" + " -q " + query_existing_build_edgemers + " -o " + query_out + " --ratio-kmers 0", "bifrost-query-existing_build_edgemers", resultfile)
-run_timed_rss(program + " query -g " + added+".gfa" + " -q " + query_existing_build_sequence + " -o " + query_out + " --ratio-kmers 0", "bifrost-query-existing_build_seq", resultfile)
+run_timed_rss(program + " query -g " + added+".gfa" + " -q " + query_existing_build_edgemers + " -o " + query_out + " --ratio-kmers 1", "bifrost-query-existing_build_edgemers", resultfile)
+run_timed_rss(program + " query -g " + added+".gfa" + " -q " + query_existing_build_sequence + " -o " + query_out + " --ratio-kmers 1", "bifrost-query-existing_build_seq", resultfile)
 run_timed_rss(program + " query -g " + added+".gfa" + " -q " + query_existing_added_edgemers + " -o " + query_out + " --ratio-kmers 1", "bifrost-query-existing_added_edgemers", resultfile)
 run_timed_rss(program + " query -g " + added+".gfa" + " -q " + query_existing_added_sequence + " -o " + query_out + " --ratio-kmers 1", "bifrost-query-existing-added-seq", resultfile)
 
