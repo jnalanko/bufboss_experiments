@@ -153,7 +153,8 @@ int main(int argc, char* argv[]){
   cout << "Reading FASTA file " <<p.kmer_filename<< endl;
   size_t nKmers;
   set<string> kmers;
-  getKmers( nKmers, dbg.k, kmers, p.kmer_filename );
+  if(p.function != "query") // Jarno fix: stream k-mers in query
+    getKmers( nKmers, dbg.k, kmers, p.kmer_filename );
   cout << nKmers << " distinct kmers were counted " << endl;
   cout << "====================================================================\n";
 
@@ -226,35 +227,27 @@ int main(int argc, char* argv[]){
 }
 if (p.function == "query"){
   long long query_start_jarno = cur_time_millis();
+  long long edgemer_k = dbg.k; // This is edgemer k: see dynboss::edge_label(size_t i)
   ofstream ofs(p.queryfile);
-  ofs<<"lexo order"<<"\t"<<"kmer"<<"\t"<<"presence"<<endl;
-  for (auto it = kmers.begin(); it != kmers.end(); ++it) {
-      if (counter % 1000 == 0) {
-        cerr<<"\r           \r";
-        cerr<<(double)counter*100/kmers.size()<<"% of kmers were processed";
-      }
-      string kmer = *it;
-
-      clock_t t_start = clock();
-      bool present = dbg.index_edge_alan( kmer.begin() );
-      time_elapsed += double (clock() - t_start);
-
-      ofs<<counter<<"\t"<<kmer<<"\t"<<present<<endl;
-      if (present == 0)
-        absent_kmers+=1;
-      counter+=1;
+  Sequence_Reader sr(p.kmer_filename, FASTA_MODE);
+  while(!sr.done()){
+    string seq = sr.get_next_query_stream().get_all();
+    for(long long i = 0; i < (long long)seq.size() - (edgemer_k+1) + 1; i++){
+      bool present = dbg.index_edge_alan(seq.begin() + i);
+      // todo: print to some outfile
+    }
   }
   long long elapsed_jarno = cur_time_millis() - query_start_jarno;
   std::cerr << "Time for all queries: " << (double)elapsed_jarno / 1e3 << " seconds" << std::endl;
 
-  cerr<<"\n100% of kmers were processed\n";
+  /*cerr<<"\n100% of kmers were processed\n";
   cout<<kmers.size()-absent_kmers<<" ("<<(double)(kmers.size()-absent_kmers)*100/kmers.size()<<"%) of the kmers were in the graph\n";
   cout<<kmers.size()<< " kmers were queried in "<< time_elapsed/CLOCKS_PER_SEC<<" (s)"<<endl;
   cout<<"Time per operaition: "<<(time_elapsed/CLOCKS_PER_SEC)/kmers.size()<<" (s)"<<endl;
-  ofs.close();
+  ofs.close();*/
 
 }
-}
+  }
 cout << "====================================================================\n";
 if (p.function != "build")
   cout<<"PROCESS FINISHED\n";
