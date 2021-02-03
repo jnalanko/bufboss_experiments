@@ -31,8 +31,12 @@ run_to_files("dynboss/bin/cosmo-pack " + drop_path_and_extension(build_concat) +
 run_to_files(program + " build -p " + drop_path_and_extension(build_concat) + ".solid_kmers_binary.packed -o " + built, resultdir + "/build")
 
 # Add
-run_to_files(program + " add -g " + built + " -s " + add_concat + " -o " + added, resultdir + "/add")
+#run_to_files(program + " add -g " + built + " -s " + add_concat + " -o " + added, resultdir + "/add")
 
 # Del
-run_to_files(program + " delete -g " + added + " -s " + del_concat + " -o " + deleted, resultdir + "/del")
+#run_to_files(program + " delete -g " + added + " -s " + del_concat + " -o " + deleted, resultdir + "/del")
 
+# Query
+for name in query_inputs:
+    filename = query_inputs[name]
+    run_to_files(program + " query -g " + built + " -s " + filename, resultdir + "/" + name)
