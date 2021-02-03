@@ -138,7 +138,7 @@ def generate_input_files():
     run("./bufboss/bin/bufboss_build --KMC " + tempdir + "/kmc_db -o " + index_dir + " -t " + tempdir)
     run("./bufboss/bin/bufboss_sample_random_edgemers -i " + index_dir + " -o " + query_inputs["existing_build_edgemers"] + " --count 1000000")
 
-    # ...then for added kmers (resuse the same index dir
+    # ...then for added kmers (reuse the same index dir)
     run("./bufboss/KMC/bin/kmc -k31 -m1 -ci1 -cs1 -fm " + add_concat + " " + tempdir + "/kmc_db temp")
     run("./bufboss/bin/bufboss_build --KMC " + tempdir + "/kmc_db -o " + index_dir + " -t " + tempdir)
     run("./bufboss/bin/bufboss_sample_random_edgemers -i " + index_dir + " -o " + query_inputs["existing_added_edgemers"] + " --count 1000000")
