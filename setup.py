@@ -22,6 +22,8 @@ def run(command):
 
 def run_to_files(command, stdout_file, stderr_file):
     sys.stderr.write(command + "\n")
+    sys.stderr.write("stdout to " + stdout_file + "\n")
+    sys.stderr.write("stderr to " + stderr_file + "\n")
     stdout_stream = open(stdout_file, 'w')
     stderr_stream = open(stderr_file, 'w')
     return subprocess.run(command, shell=True, stdout=stdout_stream, stderr=stderr_stream)
