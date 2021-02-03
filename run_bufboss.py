@@ -34,7 +34,7 @@ query_out = outdir + "/queries.txt"
 run_build = False
 run_add = False
 run_del = False
-run_query = False
+run_query = True
 #run_query_vs_buffer_fraction = True
 
 buf_fractions = [1.0]
@@ -58,7 +58,7 @@ if run_query:
     for name in query_inputs:
         filename = query_inputs[name]
         run_to_files("/usr/bin/time -v " + query_program + " -i " + added + " -o " + query_out + " -q " + filename, 
-                     resultdir + "/query-" + name)
+                     resultdir + "/" + name)
 
 #if run_query_vs_buffer_fraction:
 #    for name in query_inputs:
@@ -80,6 +80,6 @@ for b in buf_fractions:
     summary_out.write("del-" + str(b) + " " + str(add_time) + " " + str(add_rss) + "\n")
 
 for name in query_inputs:
-    time = parse_our_printed_time(resultdir + "/query-" + name + ".stderr.txt")
+    time = parse_our_printed_time(resultdir + "/" + name + ".stderr.txt")
     rss = -1 # Not available
     summary_out.write("query-" + name + " " + str(time) + " " + str(rss) + "\n")

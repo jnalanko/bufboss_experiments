@@ -38,7 +38,7 @@ if run_add:
 if run_query:
     for name in query_inputs:
         filename = query_inputs[name]
-        run_to_files("/usr/bin/time -v " + program + " query -g " + added+".gfa" + " -q " + filename + " -o " + query_out + " --ratio-kmers 1", resultdir + "/query-" + name)
+        run_to_files("/usr/bin/time -v " + program + " query -g " + added+".gfa" + " -q " + filename + " -o " + query_out + " --ratio-kmers 1", resultdir + "/" + name)
 
 # Parse summary
 summary_out = open(resultdir + "/summary.txt", 'w')
@@ -49,6 +49,6 @@ add_time, add_rss = parse_usr_bin_time(resultdir + "/add.stderr.txt")
 summary_out.write("add " + str(add_time) + " " + str(add_rss) + "\n")
 
 for name in query_inputs:
-    time = parse_our_printed_time(resultdir + "/query-" + name + ".stderr.txt")
+    time = parse_our_printed_time(resultdir + "/" + name + ".stderr.txt")
     rss = -1 # Not available
     summary_out.write("query-" + name + " " + str(time) + " " + str(rss) + "\n")
