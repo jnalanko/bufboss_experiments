@@ -96,6 +96,21 @@ query_inputs = {"random_edgemers": "data/random/edgemers.fna",
                 "existing_build_sequence": "data/existing/build_sequence.fna",
                 "existing_added_edgemers": "data/existing/added_edgemers.fna",
                 "existing_added_sequence" : "data/existing/added_sequence.fna"}
+query_metadatafile = "lists/query_metadata.txt"
+
+def fasta_count_edgemers(fastafile):
+    seq_len = 0
+    total_edgemers = 0
+    for line in open(fastafile):
+        line = line.strip()
+        if len(line) == 0: continue
+        if line[0] == '>':
+            total_edgemers += max(0, seq_len - edgemer_k + 1)
+            seq_len = 0
+        else:
+            seq_len += len(line)
+    total_edgemers += max(0, seq_len - edgemer_k + 1) # Last sequence
+    return total_edgemers
 
 def generate_input_files():
 
@@ -133,6 +148,11 @@ def generate_input_files():
     run("cp " + filename + " " + query_inputs["existing_build_sequence"])
     filename = open(addlist).readlines()[0].strip()
     run("cp " + filename + " " + query_inputs["existing_added_sequence"])
+
+    print("Calculating metadata")
+    metadata = open(query_metadatafile,'w')
+    for name in query_inputs:
+        metadata.write(name + " " + int(fasta_count_edgemers(query_inputs[name])) + "\n")
 
 # Takes number of genomes to build, add and del respectively.
 if __name__ == "__main__":
