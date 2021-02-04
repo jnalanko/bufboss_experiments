@@ -43,6 +43,8 @@ def parse_summaries():
             build.append(to_dict3("DynBOSS",  float(tokens[1]), float(tokens[2])))
         elif tokens[0] == "add":
             add.append(to_dict3("DynBOSS",  float(tokens[1]), float(tokens[2])))
+        elif tokens[0] == "del":
+            delete.append(to_dict3("DynBOSS",  float(tokens[1]), float(tokens[2])))
         else: # query
             if tokens[0] not in query: query[tokens[0]] = []
             query[tokens[0]].append(("DynBOSS",  float(tokens[1])))
@@ -81,6 +83,7 @@ query_inputs = []
 bufboss_queries = []
 bifrost_queries = []
 fdbg_queries = []
+dynboss_queries = []
 
 for Q in query:
     print(Q)
@@ -92,14 +95,16 @@ for Q in query:
         if tool == "Bifrost": bifrost_queries.append(time_per_edgemer)
         if tool == "BufBOSS": bufboss_queries.append(time_per_edgemer)
         if tool == "FDBG": fdbg_queries.append(time_per_edgemer)
+        if tool == "DynBOSS": dynboss_queries.append(time_per_edgemer)
 
 x = np.arange(len(query_inputs))  # the label locations
 width = 0.8  # the width of the bars
 
 fig, ax = plt.subplots()
-rects1 = ax.bar(x + 0*width/3, bifrost_queries, width/3, label='Bifrost')
-rects2 = ax.bar(x + 1*width/3, bufboss_queries, width/3, label='BufBOSS')
-rects3 = ax.bar(x + 2*width/3, fdbg_queries, width/3, label='FDBG')
+rects1 = ax.bar(x + 0*width/4, bifrost_queries, width/4, label='Bifrost')
+rects2 = ax.bar(x + 1*width/4, bufboss_queries, width/4, label='BufBOSS')
+rects3 = ax.bar(x + 2*width/4, fdbg_queries, width/4, label='FDBG')
+rects3 = ax.bar(x + 3*width/4, dynboss_queries, width/4, label='DynBOSS')
 
 # Add some text for labels, title and custom x-axis tick labels, etc.
 ax.set_ylabel('Seconds per edgemer')
