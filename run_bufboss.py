@@ -74,13 +74,13 @@ summary_out.write("build " + str(KMC_time + build_time) + " " + str(max(build_rs
 
 for b in buf_fractions:
     add_time, add_rss = parse_usr_bin_time(resultdir + "/add-" + str(b) + ".stderr.txt")
-    summary_out.write("add-" + str(b) + " " + str(add_time) + " " + str(add_rss) + "\n")
-    # Todo: add disk
+    add_disk = 0 # Todo
+    summary_out.write("add-" + str(b) + " " + str(add_time) + " " + str(add_rss) + " " + str(add_disk) + "\n")
 
 for b in buf_fractions:
     del_time, del_rss = parse_usr_bin_time(resultdir + "/del-" + str(b) + ".stderr.txt")
-    summary_out.write("del-" + str(b) + " " + str(del_time) + " " + str(del_rss) + "\n")
-    # Todo: del disk
+    del_disk = 0 # todo
+    summary_out.write("del-" + str(b) + " " + str(del_time) + " " + str(del_rss) + " " + str(del_disk) + "\n")
 
 for name in query_inputs:
     time = parse_our_printed_time(resultdir + "/" + name + ".stderr.txt")

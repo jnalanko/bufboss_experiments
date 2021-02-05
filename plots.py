@@ -5,60 +5,69 @@ from setup import *
 
 def parse_summaries():
 
-    build = [] # Data points are triples (name, time, rss) represented as dicts
-    add = [] # Data points are triples (name, time, rss) represented as dicts
-    delete = [] # Data points are triples (name, time, rss) represented as dicts
+    build = [] # Data points are triples (name, time, rss, size on disk) represented as dicts
+    add = [] # Data points are triples (name, time, rss, size on disk) represented as dicts
+    delete = [] # Data points are triples (name, time, rss, size on disk) represented as dicts
     query = {} # Here we have dict {query-dataset-name -> list of pairs (tool, time)}
 
-    to_dict3 = lambda name, time, mem : {"name" : name, "time": time, "mem": mem}
+    to_dict4 = lambda name, time, mem, disksize : {"name" : name, "time": time, "mem": mem, "disksize": disksize}
+
+    enable_bifrost = True
+    enable_bufboss = True
+    enable_dynboss = False
+    enable_fdbg = True
 
     # Parse bifrost
-    for line in open("bifrost_results/summary.txt"):
-        tokens = line.split()
-        if tokens[0] == "build":
-            build.append(to_dict3("Bifrost",  float(tokens[1]), float(tokens[2])))
-        elif tokens[0] == "add":
-            add.append(to_dict3("Bifrost",  float(tokens[1]), float(tokens[2])))
-        else: # query
-            if tokens[0] not in query: query[tokens[0]] = []
-            query[tokens[0]].append(("Bifrost",  float(tokens[1])))
+    if enable_bifrost:
+        for line in open("bifrost_results/summary.txt"):
+            tokens = line.split()
+            if tokens[0] == "build":
+                build.append(to_dict4("Bifrost",  float(tokens[1]), float(tokens[2]), float(tokens[3])))
+            elif tokens[0] == "add":
+                add.append(to_dict4("Bifrost",  float(tokens[1]), float(tokens[2]), float(tokens[3])))
+            else: # query
+                if tokens[0] not in query: query[tokens[0]] = []
+                query[tokens[0]].append(("Bifrost",  float(tokens[1])))
 
     # Parse bufboss
-    for line in open("bufboss_results/summary.txt"):
-        tokens = line.split()
-        if tokens[0] == "build":
-            build.append(to_dict3("BufBOSS",  float(tokens[1]), float(tokens[2])))
-        elif "add-" in tokens[0]:
-            add.append(to_dict3("BufBOSS-" + tokens[0].split("-")[-1],  float(tokens[1]), float(tokens[2])))
-        elif "del-" in tokens[0]:
-            delete.append(to_dict3("BufBOSS-" + tokens[0].split("-")[-1],  float(tokens[1]), float(tokens[2])))
-        else: # query
-            if tokens[0] not in query: query[tokens[0]] = []
-            query[tokens[0]].append(("BufBOSS",  float(tokens[1])))
+    if enable_bufboss:
+        for line in open("bufboss_results/summary.txt"):
+            tokens = line.split()
+            if tokens[0] == "build":
+                build.append(to_dict4("BufBOSS-" + tokens[0].split("-")[-1],  float(tokens[1]), float(tokens[2]), float(tokens[3])))
+            elif "add-" in tokens[0]:
+                add.append(to_dict4("BufBOSS-" + tokens[0].split("-")[-1],  float(tokens[1]), float(tokens[2]), float(tokens[3])))
+            elif "del-" in tokens[0]:
+                delete.append(to_dict4("BufBOSS-" + tokens[0].split("-")[-1],  float(tokens[1]), float(tokens[2]), float(tokens[3])))
+            else: # query
+                if tokens[0] not in query: query[tokens[0]] = []
+                query[tokens[0]].append(("BufBOSS",  float(tokens[1])))
 
     # Parse dynboss
-    for line in open("dynboss_results/summary.txt"):
-        tokens = line.split()
-        if tokens[0] == "build":
-            build.append(to_dict3("DynBOSS",  float(tokens[1]), float(tokens[2])))
-        elif tokens[0] == "add":
-            add.append(to_dict3("DynBOSS",  float(tokens[1]), float(tokens[2])))
-        elif tokens[0] == "del":
-            delete.append(to_dict3("DynBOSS",  float(tokens[1]), float(tokens[2])))
-        else: # query
-            if tokens[0] not in query: query[tokens[0]] = []
-            query[tokens[0]].append(("DynBOSS",  float(tokens[1])))
+    if enable_dynboss:
+        for line in open("dynboss_results/summary.txt"):
+            tokens = line.split()
+            if tokens[0] == "build":
+                build.append(to_dict4("DynBOSS",  float(tokens[1]), float(tokens[2]), float(tokens[3])))
+            elif tokens[0] == "add":
+                add.append(to_dict4("DynBOSS",  float(tokens[1]), float(tokens[2]), float(tokens[3])))
+            elif tokens[0] == "del":
+                delete.append(to_dict4("DynBOSS",  float(tokens[1]), float(tokens[2]), float(tokens[3])))
+            else: # query
+                if tokens[0] not in query: query[tokens[0]] = []
+                query[tokens[0]].append(("DynBOSS",  float(tokens[1])))
 
     # Parse fdbg
-    for line in open("fdbg_results/summary.txt"):
-        tokens = line.split()
-        if tokens[0] == "build":
-            build.append(to_dict3("FDBG",  float(tokens[1]), float(tokens[2])))
-        elif tokens[0] == "add":
-            add.append(to_dict3("FDBG",  float(tokens[1]), float(tokens[2])))
-        else: # query
-            if tokens[0] not in query: query[tokens[0]] = []
-            query[tokens[0]].append(("FDBG",  float(tokens[1])))
+    if enable_fdbg:
+        for line in open("fdbg_results/summary.txt"):
+            tokens = line.split()
+            if tokens[0] == "build":
+                build.append(to_dict4("FDBG",  float(tokens[1]), float(tokens[2]), float(tokens[3])))
+            elif tokens[0] == "add":
+                add.append(to_dict4("FDBG",  float(tokens[1]), float(tokens[2]), float(tokens[3])))
+            else: # query
+                if tokens[0] not in query: query[tokens[0]] = []
+                query[tokens[0]].append(("FDBG",  float(tokens[1])))
 
     return build, add, delete, query
 
