@@ -94,6 +94,11 @@ bifrost_queries = []
 fdbg_queries = []
 dynboss_queries = []
 
+print("** Build disk size ** ")
+for D in build:
+    print(D["name"] + " " + str(D["disksize"] / 1e6) + " MB")
+
+print("** Query time ** ")
 for Q in query:
     print(Q)
     query_inputs.append(Q)
