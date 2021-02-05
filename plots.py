@@ -96,7 +96,7 @@ dynboss_queries = []
 
 print("** Build disk size ** ")
 for D in build:
-    print(D["name"] + " " + str(D["disksize"] / 1e6) + " MB")
+    print(D["name"] + " " + str(D["disksize"] / 2**20) + " MiB")
 
 print("** Query time ** ")
 for Q in query:
