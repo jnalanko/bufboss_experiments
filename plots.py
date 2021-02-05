@@ -3,6 +3,11 @@ import sys
 import numpy as np
 from setup import *
 
+enable_bifrost = True
+enable_bufboss = True
+enable_dynboss = False
+enable_fdbg = True
+
 def parse_summaries():
 
     build = [] # Data points are triples (name, time, rss, size on disk) represented as dicts
@@ -11,11 +16,6 @@ def parse_summaries():
     query = {} # Here we have dict {query-dataset-name -> list of pairs (tool, time)}
 
     to_dict4 = lambda name, time, mem, disksize : {"name" : name, "time": time, "mem": mem, "disksize": disksize}
-
-    enable_bifrost = True
-    enable_bufboss = True
-    enable_dynboss = False
-    enable_fdbg = True
 
     # Parse bifrost
     if enable_bifrost:
@@ -110,10 +110,14 @@ x = np.arange(len(query_inputs))  # the label locations
 width = 0.8  # the width of the bars
 
 fig, ax = plt.subplots()
-rects1 = ax.bar(x + 0*width/4, bifrost_queries, width/4, label='Bifrost')
-rects2 = ax.bar(x + 1*width/4, bufboss_queries, width/4, label='BufBOSS')
-rects3 = ax.bar(x + 2*width/4, fdbg_queries, width/4, label='FDBG')
-rects3 = ax.bar(x + 3*width/4, dynboss_queries, width/4, label='DynBOSS')
+if enable_bifrost:
+    rects1 = ax.bar(x + 0*width/4, bifrost_queries, width/4, label='Bifrost')
+if enable_bufboss:
+    rects2 = ax.bar(x + 1*width/4, bufboss_queries, width/4, label='BufBOSS')
+if enable_fdbg:
+    rects3 = ax.bar(x + 2*width/4, fdbg_queries, width/4, label='FDBG')
+if enable_dynboss:
+    rects3 = ax.bar(x + 3*width/4, dynboss_queries, width/4, label='DynBOSS')
 
 # Add some text for labels, title and custom x-axis tick labels, etc.
 ax.set_ylabel('Seconds per edgemer')
