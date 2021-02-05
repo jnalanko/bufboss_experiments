@@ -84,6 +84,12 @@ def parse_usr_bin_time(stderr_file):
 
     return time, rss
 
+# Path can be a directory or a single file
+# If directory, returns the total size of the directory
+# If file, returns the file size
+def get_disk_size_bytes(path):
+    return int(run_get_output("du -d 0 -b "  + path).split()[0])
+
 datadir = "data"
 tempdir = "temp"
 

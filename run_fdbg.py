@@ -42,10 +42,12 @@ for name in query_inputs:
 # Parse summary
 summary_out = open(resultdir + "/summary.txt", 'w')
 build_time, build_rss = parse_usr_bin_time(resultdir + "/build.stderr.txt")
-summary_out.write("build " + str(build_time) + " " + str(build_rss) + "\n")
+build_disk = get_disk_size_bytes(built)
+summary_out.write("build " + str(build_time) + " " + str(build_rss) + " " + str(build_disk) + "\n")
 
 add_time, add_rss = parse_usr_bin_time(resultdir + "/add.stderr.txt")
-summary_out.write("add " + str(add_time) + " " + str(add_rss) + "\n")
+add_disk = get_disk_size_bytes(added)
+summary_out.write("add " + str(add_time) + " " + str(add_rss) + " " + str(add_disk) + "\n")
 
 #del_time, del_rss = parse_usr_bin_time(resultdir + "/del.stderr.txt")
 #summary_out.write("del " + str(del_time) + " " + str(del_rss) + "\n")
@@ -59,4 +61,4 @@ for name in query_inputs:
 #FDBG.cpp: In member function ‘bool Forest::set_parent_in_IN(const u_int64_t&, bool)’:
 #FDBG.cpp:416:5: warning: no return statement in function returning non-void [-Wreturn-type]
 #  416 |     }
-      |     ^
+#      |     ^
