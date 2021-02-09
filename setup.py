@@ -132,7 +132,7 @@ def fasta_count_edgemers(fastafile):
 
 def generate_input_files_from_readfile(readfile, build_percentage, add_percentage, del_percentage):
     # Split to build, add, del
-    run("./input_cleaning/split_and_remove_non_ACGT " + str(edgemer_k) + " " + readfile + " " + build_percentage + " " + add_percentage + " " + del_percentage + " " + build_concat + " " + add_concat + " " + del_concat)
+    run("./input_cleaning/split_and_remove_non_ACGT " + str(edgemer_k) + " " + readfile + " " + str(build_percentage) + " " + str(add_percentage) + " " + str(del_percentage) + " " + build_concat + " " + add_concat + " " + del_concat)
 
     # For tools that don't index reverse complements (looking at you dynboss), create input files with
     # concatenated reverse complements in the end

@@ -72,9 +72,9 @@ int main(int argc, char** argv){
     while(!sr.done()){
         string seq = sr.get_next_query_stream().get_all();
         for(string part : segment_string(seq, edgemer_k)){
-            if(read_id < n_reads / 100 * build_percent)
+            if(read_id < n_reads * build_percent / 100)
                 build_out << ">" << part_id++ << "\n" << part << "\n";
-            else if(read_id < n_reads / 100 * (build_percent + add_percent))
+            else if(read_id < n_reads * (build_percent + add_percent) / 100)
                 build_out << ">" << part_id++ << "\n" << part << "\n";
             else
                 build_out << ">" << part_id++ << "\n" << part << "\n";
