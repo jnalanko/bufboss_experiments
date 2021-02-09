@@ -6,16 +6,6 @@
 typedef long long LL;
 using namespace std;
 
-vector<string> readlines(string file){
-    throwing_ifstream in(file);
-    vector<string> lines;
-    string line;
-    while(in.getline(line)){
-        lines.push_back(line);
-    }
-    return lines;
-}
-
 // Todo: explain what this does
 vector<string> segment_string(const string& S, LL edgemer_k){
     vector<bool> bad(S.size());
