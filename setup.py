@@ -130,7 +130,51 @@ def fasta_count_edgemers(fastafile):
     total_edgemers += max(0, seq_len - edgemer_k + 1) # Last sequence
     return total_edgemers
 
-def generate_input_files():
+def generate_input_files_from_readfile(readfile, build_percentage, add_percentage, del_percentage):
+    # Split to build, add, del
+    run("./input_cleaning/split_and_remove_non_ACGT " + str(edgemer_k) + " " + readfile + " " + build_percentage + " " + add_percentage + " " + del_percentage + " " + build_concat + " " + add_concat + " " + del_concat)
+
+    # For tools that don't index reverse complements (looking at you dynboss), create input files with
+    # concatenated reverse complements in the end
+    run("./input_cleaning/get_rc " + build_concat + " temp/temp_rc.fasta")
+    run("cat " + build_concat + " temp/temp_rc.fasta > " + build_concat_with_rc) 
+
+    run("./input_cleaning/get_rc " + add_concat + " temp/temp_rc.fasta")
+    run("cat " + add_concat + " temp/temp_rc.fasta > " + add_concat_with_rc)
+
+    run("./input_cleaning/get_rc " + del_concat + " temp/temp_rc.fasta")
+    run("cat " + del_concat + " temp/temp_rc.fasta > " + del_concat_with_rc)
+
+    # Generate random queries
+    run("mkdir -p data/random")
+    run("python3 gen_random_kmers.py 31 1000000 > " + query_inputs["query-random_edgemers"]) # Million edgemers
+    run("python3 gen_random_kmers.py 1000000 1 > " + query_inputs["query-random_sequence"]) # Million - k + 1 edgemers
+
+    # Generate existing queries...
+    run("mkdir -p data/existing")
+
+    # ...for existing k-mers, build a bufboss and sample from there. First for build kmers...
+    index_dir = tempdir + "/buffboss"
+    run("mkdir -p " + index_dir)
+    run("./bufboss/KMC/bin/kmc -k31 -m1 -ci1 -cs1 -fm " + build_concat + " " + tempdir + "/kmc_db temp")
+    run("./bufboss/bin/bufboss_build --KMC " + tempdir + "/kmc_db -o " + index_dir + " -t " + tempdir)
+    run("./bufboss/bin/bufboss_sample_random_edgemers -i " + index_dir + " -o " + query_inputs["query-existing_build_edgemers"] + " --count 1000000")
+
+    # ...then for added kmers (reuse the same index dir)
+    run("./bufboss/KMC/bin/kmc -k31 -m1 -ci1 -cs1 -fm " + add_concat + " " + tempdir + "/kmc_db temp")
+    run("./bufboss/bin/bufboss_build --KMC " + tempdir + "/kmc_db -o " + index_dir + " -t " + tempdir)
+    run("./bufboss/bin/bufboss_sample_random_edgemers -i " + index_dir + " -o " + query_inputs["query-existing_added_edgemers"] + " --count 1000000")
+
+    # For existing sequences, take 1 million base pairs from buildlist and addlist
+    run("./input_cleaning/take_prefix 1000000 " + build_concat + " " + query_inputs["query-existing_build_sequence"])
+    run("./input_cleaning/take_prefix 1000000 " + add_concat + " " + query_inputs["query-existing_added_sequence"])
+
+    print("Calculating metadata")
+    metadata = open(query_metadatafile,'w')
+    for name in query_inputs:
+        metadata.write(name + " " + str(fasta_count_edgemers(query_inputs[name])) + "\n")
+
+def generate_input_files_from_genomes():
 
     # Concatenate fasta files and remove non-ACGT
     run("./input_cleaning/collect_and_remove_non_ACGT " + buildlist + " " + build_concat + " " + str(edgemer_k))
@@ -182,26 +226,37 @@ def generate_input_files():
 
 # Takes number of genomes to build, add and del respectively.
 if __name__ == "__main__":
-    n_build = int(sys.argv[1])
-    n_add = int(sys.argv[2])
-    n_del = int(sys.argv[3])
-    assert(n_build + n_add + n_del <= 3682)
-    run("mkdir -p lists")
-    files = run_get_output("ls $PWD/data/coli3682/*.fna | shuf").splitlines()
+    if sys.argv[1] == "ecoli":
+        n_build = int(sys.argv[2])
+        n_add = int(sys.argv[3])
+        n_del = int(sys.argv[4])
+        assert(n_build + n_add + n_del <= 3682)
+        run("mkdir -p lists")
+        files = run_get_output("ls $PWD/data/coli3682/*.fna | shuf").splitlines()
 
-    build_out = open("lists/coli_build.txt",'w')
-    for i in range(n_build):
-        build_out.write(files[i] + "\n")
-    build_out.close()
+        build_out = open("lists/coli_build.txt",'w')
+        for i in range(n_build):
+            build_out.write(files[i] + "\n")
+        build_out.close()
 
-    add_out = open("lists/coli_add.txt",'w')
-    for i in range(n_build, n_build + n_add):
-        add_out.write(files[i] + "\n")
-    add_out.close()
+        add_out = open("lists/coli_add.txt",'w')
+        for i in range(n_build, n_build + n_add):
+            add_out.write(files[i] + "\n")
+        add_out.close()
 
-    del_out = open("lists/coli_del.txt",'w')
-    for i in range(n_build + n_add, n_build + n_add + n_del):
-        del_out.write(files[i] + "\n")
-    del_out.close()
-    
-    generate_input_files()
+        del_out = open("lists/coli_del.txt",'w')
+        for i in range(n_build + n_add, n_build + n_add + n_del):
+            del_out.write(files[i] + "\n")
+        del_out.close()
+        
+        generate_input_files_from_genomes()
+    elif sys.argv[1] == "reads":
+        readfile = sys.argv[2]
+        build_percentage = int(sys.argv[3])
+        add_percentage = int(sys.argv[4])
+        del_percentage = int(sys.argv[5])
+        assert(build_percentage + add_percentage + del_percentage == 100)
+        generate_input_files_from_readfile(readfile, build_percentage, add_percentage, del_percentage)
+    else:
+        print("Invalid experiment name: " + sys.argv[1])
+        quit(1)
