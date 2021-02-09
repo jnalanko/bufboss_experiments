@@ -32,9 +32,9 @@ run_query = True
 
 # Bifrost is node-centric and nodes are k-mers.
 if run_build:
-    run_to_files("/usr/bin/time -v " + program + " build -r " + buildlist + " -k 30 -y -o " + built, resultdir + "/build")
+    run_to_files("/usr/bin/time -v " + program + " build -r " + build_concat + " -k 30 -y -o " + built, resultdir + "/build")
 if run_add:    
-    run_to_files("/usr/bin/time -v " + program + " update -g " + built+".gfa" + " -r " + addlist + " -k 30 -o " + added, resultdir + "/add")
+    run_to_files("/usr/bin/time -v " + program + " update -g " + built+".gfa" + " -r " + add_concat + " -k 30 -o " + added, resultdir + "/add")
 if run_query:
     for name in query_inputs:
         filename = query_inputs[name]
