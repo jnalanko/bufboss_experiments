@@ -75,9 +75,9 @@ int main(int argc, char** argv){
             if(read_id < n_reads * build_percent / 100)
                 build_out << ">" << part_id++ << "\n" << part << "\n";
             else if(read_id < n_reads * (build_percent + add_percent) / 100)
-                build_out << ">" << part_id++ << "\n" << part << "\n";
+                add_out << ">" << part_id++ << "\n" << part << "\n";
             else
-                build_out << ">" << part_id++ << "\n" << part << "\n";
+                del_out << ">" << part_id++ << "\n" << part << "\n";
         }
         read_id++;
     }
