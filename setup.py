@@ -93,10 +93,6 @@ def get_disk_size_bytes(path):
 datadir = "data"
 tempdir = "temp"
 
-buildlist = "lists/coli_build.txt"
-addlist = "lists/coli_add.txt"
-dellist = "lists/coli_del.txt"
-
 build_concat = datadir + "/build.fasta"
 add_concat = datadir + "/add.fasta"
 del_concat = datadir + "/del.fasta"
@@ -175,6 +171,10 @@ def generate_input_files_from_readfile(readfile, build_percentage, add_percentag
         metadata.write(name + " " + str(fasta_count_edgemers(query_inputs[name])) + "\n")
 
 def generate_input_files_from_genomes():
+
+    buildlist = "lists/coli_build.txt"
+    addlist = "lists/coli_add.txt"
+    dellist = "lists/coli_del.txt"
 
     # Concatenate fasta files and remove non-ACGT
     run("./input_cleaning/collect_and_remove_non_ACGT " + buildlist + " " + build_concat + " " + str(edgemer_k))
