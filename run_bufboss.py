@@ -48,11 +48,11 @@ if run_build:
 
 if run_add:
     for b in buf_fractions:
-        run_to_files("/usr/bin/time -v " + update_program + " -k " + str(nodemer_k) + " --end-flush -r -b " + str(b) + " -i " + built + " -o " + added + " --add-files " + add_concat, resultdir + "/add-" + str(b))
+        run_to_files("/usr/bin/time -v " + update_program + " -k " + str(nodemer_k) + " --end-flush -r -b " + str(b) + " -i " + built + " -o " + added + " --add " + add_concat, resultdir + "/add-" + str(b))
 
 if run_del:
     for b in buf_fractions:
-        run_to_files("/usr/bin/time -v " + update_program + " -k " + str(nodemer_k) + " --end-flush -r -b " + str(b) + " -i " + added + " -o " + deleted + " --del-files " + del_concat, resultdir + "/del-" + str(b))
+        run_to_files("/usr/bin/time -v " + update_program + " -k " + str(nodemer_k) + " --end-flush -r -b " + str(b) + " -i " + added + " -o " + deleted + " --del " + del_concat, resultdir + "/del-" + str(b))
 
 if run_query:
     for name in query_inputs:
