@@ -36,6 +36,7 @@ run_to_files("/usr/bin/time -v ./FDBG-RecSplit/cpp-src/fdbg-recsplit-add " + add
 for name in query_inputs:
     filename = query_inputs[name]
     run_to_files("/usr/bin/time -v ./FDBG-RecSplit/cpp-src/fdbg-recsplit-query " + added + " " + filename + " " + outdir + "/" + name + "-result.txt", resultdir + "/" + name)
+    #run_to_files("/usr/bin/time -v ./FDBG-RecSplit/cpp-src/fdbg-recsplit-query " + built + " " + filename + " " + outdir + "/" + name + "-result.txt", resultdir + "/" + name)
 
 # ./bahar-fdbg/cpp-src/fdbg-query-jarno fdbg_out/added.dbg data/existing/build_sequence.fasta temp/out.txt
 
