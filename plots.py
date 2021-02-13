@@ -7,6 +7,7 @@ enable_bifrost = True
 enable_bufboss = True
 enable_dynboss = False
 enable_fdbg = True
+enable_fdbg_recsplit = True
 
 def parse_summaries():
 
@@ -69,6 +70,18 @@ def parse_summaries():
                 if tokens[0] not in query: query[tokens[0]] = []
                 query[tokens[0]].append(("FDBG",  float(tokens[1])))
 
+    # Parse fdbg-recsplit
+    if enable_fdbg:
+        for line in open("fdbg_recsplit_results/summary.txt"):
+            tokens = line.split()
+            if tokens[0] == "build":
+                build.append(to_dict4("FDBG-RecSplit",  float(tokens[1]), float(tokens[2]), float(tokens[3])))
+            elif tokens[0] == "add":
+                add.append(to_dict4("FDBG-RecSplit",  float(tokens[1]), float(tokens[2]), float(tokens[3])))
+            else: # query
+                if tokens[0] not in query: query[tokens[0]] = []
+                query[tokens[0]].append(("FDBG-RecSplit",  float(tokens[1])))
+
     return build, add, delete, query
 
 # Returns dict for numebr of k-mers in each query input
@@ -92,6 +105,7 @@ query_inputs = []
 bufboss_queries = []
 bifrost_queries = []
 fdbg_queries = []
+fdbg_recsplit_queries = []
 dynboss_queries = []
 
 print("** Build disk size ** ")
@@ -110,19 +124,22 @@ for Q in query:
         if tool == "BufBOSS": bufboss_queries.append(time_per_edgemer)
         if tool == "FDBG": fdbg_queries.append(time_per_edgemer)
         if tool == "DynBOSS": dynboss_queries.append(time_per_edgemer)
+        if tool == "FDBG-RecSplit": fdbg_recsplit_queries.append(time_per_edgemer)
 
 x = np.arange(len(query_inputs))  # the label locations
 width = 0.8  # the width of the bars
 
 fig, ax = plt.subplots()
 if enable_bifrost:
-    rects1 = ax.bar(x + 0*width/4, bifrost_queries, width/4, label='Bifrost')
+    rects1 = ax.bar(x + 0*width/5, bifrost_queries, width/5, label='Bifrost')
 if enable_bufboss:
-    rects2 = ax.bar(x + 1*width/4, bufboss_queries, width/4, label='BufBOSS')
+    rects2 = ax.bar(x + 1*width/5, bufboss_queries, width/5, label='BufBOSS')
 if enable_fdbg:
-    rects3 = ax.bar(x + 2*width/4, fdbg_queries, width/4, label='FDBG')
+    rects3 = ax.bar(x + 2*width/5, fdbg_queries, width/5, label='FDBG')
+if enable_fdbg_recsplit:
+    rects4 = ax.bar(x + 3*width/5, fdbg_recsplit_queries, width/5, label='FDBG-RecSplit')
 if enable_dynboss:
-    rects3 = ax.bar(x + 3*width/4, dynboss_queries, width/4, label='DynBOSS')
+    rects5 = ax.bar(x + 4*width/5, dynboss_queries, width/5, label='DynBOSS')
 
 # Add some text for labels, title and custom x-axis tick labels, etc.
 ax.set_ylabel('Seconds per edgemer')
