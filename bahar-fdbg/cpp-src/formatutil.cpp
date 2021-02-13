@@ -288,31 +288,16 @@ void writeFasta( string filename, vector< string >& reads ) {
    ofile.close();
 }
 
-void get_kmers_fasta_or_bin(string fasta_file, unsigned k, unordered_set<kmer_t> &out)
+void get_kmers_fasta_or_bin(string fasta_file, uint64_t k, unordered_set<kmer_t> &out)
 {
-  // fasta filename
-  string filename = fasta_file;
+    // fasta filename
+    string filename = fasta_file;
 
-  // Check if the k-mers from this file have already been stored in binary format
-  string kfile = filename.substr(0, filename.find_last_of('.')) + to_string(k) + ".bin";
-
-  if (!file_exists(kfile))
-  {
-    BOOST_LOG_TRIVIAL(info) << "Binary file for " << k << "-mers does not exist ...";
-    // get reads from file
     BOOST_LOG_TRIVIAL(info) << "Parsing fasta ...";
     vector<string> reads;
     parseFasta(reads, filename);
     getKmers(reads, k, out);
 
-    //save to binary file for future use
-    write_to_bin(kfile, out);
-  }
-  else
-  {
-    //k-mers are already stored in the binary format!
-    read_from_bin(kfile, out);
-  }
 }
 
 /*
