@@ -950,26 +950,26 @@ public:
 		return true;	
 	}
 
-   /*
-    * Add an edge and then do the forest update procedure 
-	 * Returns whether an edge was added or not
+  /*
+    * Add an edge and then do the forest update procedure
+    * Returns whether an edge was added or not
     */
-   bool IsEdgeInGraph(const kmer_t& u, const kmer_t& v){
-	if (!this->detect_membership(u)
-              ||  !this->detect_membership(v)) return false;
-	u_int64_t hashU = f( u );
-      	u_int64_t hashV = f( v );
+  bool IsEdgeInGraph(const kmer_t& u, const kmer_t& v) {
+      if (!this->detect_membership(u) || !this->detect_membership(v))
+          return false;
+      u_int64_t hashU = f(u);
+      u_int64_t hashV = f(v);
 
-        assert(this->f.hash_in_range(hashU));
-        assert(this->f.hash_in_range(hashV));
-      	unsigned outIndex = access_kmer( v, k, k - 1 );
-      	unsigned inIndex = access_kmer( u, k, 0 );
-      	if ( !OUT.get(hashU, outIndex) ) {
-            return false; 
+      assert(this->f.hash_in_range(hashU));
+      assert(this->f.hash_in_range(hashV));
+      unsigned outIndex = access_kmer(v, k, k - 1);
+      unsigned inIndex = access_kmer(u, k, 0);
+      if (!OUT.get(hashU, outIndex)) {
+          return false;
       }
-	return true;
-
-}
+      return true;
+  }
+  
    bool newDynamicAddEdge( const kmer_t& u, const kmer_t& v ) {
 	        if (!this->detect_membership(u)) cerr<<"No u"<<endl;
                 if (!this->detect_membership(v)) cerr<<"No v"<<endl;	
