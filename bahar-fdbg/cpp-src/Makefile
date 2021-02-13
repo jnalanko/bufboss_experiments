@@ -9,19 +9,19 @@ all: fdbg-build-jarno fdbg-add-jarno fdbg-del-jarno
 test: BuildDataStructure.cpp formatutil.cpp TestUtil.cpp FDBG.cpp
 	g++ -O3  -std=c++11 -DBOOST_LOG_DYN_LINK BuildDataStructure.cpp -o bds_test -L/s/apu/a/homes/baharpan/boost/lib -I/s/apu/a/homes/baharpan/boost/include  -lboost_filesystem -lboost_log -lboost_system -lboost_thread  -l pthread
 test-jarno:
-	g++ -O3  -std=c++17 test.cpp -o test-jarno -l boost_log -l boost_system -l pthread -I -DNDEBUG
+	g++ -O3  -std=c++17 test.cpp -o test-jarno -l boost_log -l boost_system -l pthread -DNDEBUG
 
 fdbg-build-jarno:
-	g++ -O3  -std=c++17 fdbg-build-jarno.cpp -o fdbg-build-jarno -l boost_log -l boost_system -l pthread -I -DNDEBUG
+	g++ -O3  -std=c++17 fdbg-build-jarno.cpp -o fdbg-build-jarno -l boost_log -l boost_system -l pthread -DNDEBUG
 
 fdbg-add-jarno:
-	g++ -O3  -std=c++17 fdbg-add-jarno.cpp -o fdbg-add-jarno -l boost_log -l boost_system -l pthread -I -DNDEBUG
+	g++ -O3  -std=c++17 fdbg-add-jarno.cpp -o fdbg-add-jarno -l boost_log -l boost_system -l pthread -DNDEBUG
 
 fdbg-del-jarno:
-	g++ -O3  -std=c++17 fdbg-del-jarno.cpp -o fdbg-del-jarno -l boost_log -l boost_system -l pthread -I -DNDEBU
+	g++ -O3  -std=c++17 fdbg-del-jarno.cpp -o fdbg-del-jarno -l boost_log -l boost_system -l pthread -DNDEBUG
 
 fdbg-query-jarno:
-	g++ -O3  -std=c++17 fdbg-query-jarno.cpp -o fdbg-query-jarno -l boost_log -l boost_system -l pthread -I -DNDEBUG
+	g++ -O3  -std=c++17 fdbg-query-jarno.cpp -o fdbg-query-jarno -l boost_log -l boost_system -l pthread -DNDEBUG
 
 #readsplit: ReadSplit.cpp
 #	g++ -O3 -std=c++11 ReadSplit.cpp -o readsplit -l boost_log -l pthread
