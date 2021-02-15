@@ -3,11 +3,28 @@ import sys
 import numpy as np
 from setup import *
 
-enable_bifrost = True
-enable_bufboss = True
-enable_dynboss = False
-enable_fdbg = True
-enable_fdbg_recsplit = True
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--dir', type=str, help='base directory')
+parser.add_argument('--bifrost', help='Enable Bifrost', action='store_const', const=True, default=False)
+parser.add_argument('--bufboss', help='Enable BufBOSS', action='store_const', const=True, default=False)
+parser.add_argument('--dynboss', help='Enable DynBOSS', action='store_const', const=True, default=False)
+parser.add_argument('--fdbg', help='Enable FDBG', action='store_const', const=True, default=False)
+parser.add_argument('--fdbg-recsplit', help='Enable FDBG-recsplit', action='store_const', const=True, default=False)
+
+args = parser.parse_args()
+
+dir = args.dir
+
+enable_bifrost = args.bifrost
+enable_bufboss = args.bufboss
+enable_dynboss = args.dynboss
+enable_fdbg = args.fdbg
+enable_fdbg_recsplit = args.fdbg_recsplit
+
+print(enable_fdbg_recsplit)
+
 
 def parse_summaries():
 
@@ -20,7 +37,7 @@ def parse_summaries():
 
     # Parse bifrost
     if enable_bifrost:
-        for line in open("bifrost_results/summary.txt"):
+        for line in open(dir + "/bifrost_results/summary.txt"):
             tokens = line.split()
             if tokens[0] == "build":
                 build.append(to_dict4("Bifrost",  float(tokens[1]), float(tokens[2]), float(tokens[3])))
@@ -32,7 +49,7 @@ def parse_summaries():
 
     # Parse bufboss
     if enable_bufboss:
-        for line in open("bufboss_results/summary.txt"):
+        for line in open(dir + "/bufboss_results/summary.txt"):
             tokens = line.split()
             if tokens[0] == "build":
                 build.append(to_dict4("BufBOSS-" + tokens[0].split("-")[-1],  float(tokens[1]), float(tokens[2]), float(tokens[3])))
@@ -46,7 +63,7 @@ def parse_summaries():
 
     # Parse dynboss
     if enable_dynboss:
-        for line in open("dynboss_results/summary.txt"):
+        for line in open(dir + "/dynboss_results/summary.txt"):
             tokens = line.split()
             if tokens[0] == "build":
                 build.append(to_dict4("DynBOSS",  float(tokens[1]), float(tokens[2]), float(tokens[3])))
@@ -60,7 +77,7 @@ def parse_summaries():
 
     # Parse fdbg
     if enable_fdbg:
-        for line in open("fdbg_results/summary.txt"):
+        for line in open(dir + "/fdbg_results/summary.txt"):
             tokens = line.split()
             if tokens[0] == "build":
                 build.append(to_dict4("FDBG",  float(tokens[1]), float(tokens[2]), float(tokens[3])))
@@ -72,7 +89,7 @@ def parse_summaries():
 
     # Parse fdbg-recsplit
     if enable_fdbg:
-        for line in open("fdbg_recsplit_results/summary.txt"):
+        for line in open(dir + "/fdbg_recsplit_results/summary.txt"):
             tokens = line.split()
             if tokens[0] == "build":
                 build.append(to_dict4("FDBG-RecSplit",  float(tokens[1]), float(tokens[2]), float(tokens[3])))
@@ -87,7 +104,7 @@ def parse_summaries():
 # Returns dict for numebr of k-mers in each query input
 def parse_query_metadata():
     D = dict()
-    for line in open("lists/query_metadata.txt"):
+    for line in open(dir + "/lists/query_metadata.txt"):
         D[line.split()[0]] = int(line.split()[-1])
     return D
 

@@ -5,4 +5,4 @@ if [ "$#" -ne 1 ]; then
     exit
 fi
 
-tar -cvf $1 *_results
+tar -cvf $1 *_results lists/query_metadata.txt
