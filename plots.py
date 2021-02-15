@@ -23,6 +23,8 @@ enable_dynboss = args.dynboss
 enable_fdbg = args.fdbg
 enable_fdbg_recsplit = args.fdbg_recsplit
 
+print(args)
+
 print(enable_fdbg_recsplit)
 
 
@@ -88,7 +90,7 @@ def parse_summaries():
                 query[tokens[0]].append(("FDBG",  float(tokens[1])))
 
     # Parse fdbg-recsplit
-    if enable_fdbg:
+    if enable_fdbg_recsplit:
         for line in open(dir + "/fdbg_recsplit_results/summary.txt"):
             tokens = line.split()
             if tokens[0] == "build":
