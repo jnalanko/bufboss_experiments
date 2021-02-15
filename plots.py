@@ -148,17 +148,25 @@ for Q in query:
 x = np.arange(len(query_inputs))  # the label locations
 width = 0.8  # the width of the bars
 
+n_bars = enable_bifrost + enable_bufboss + enable_fdbg + enable_fdbg_recsplit + enable_dynboss
+
 fig, ax = plt.subplots()
+bar_idx = 0
 if enable_bifrost:
-    rects1 = ax.bar(x + 0*width/5, bifrost_queries, width/5, label='Bifrost')
+    rects1 = ax.bar(x + bar_idx*width/n_bars, bifrost_queries, width/n_bars, label='Bifrost')
+    bar_idx += 1
 if enable_bufboss:
-    rects2 = ax.bar(x + 1*width/5, bufboss_queries, width/5, label='BufBOSS')
+    rects2 = ax.bar(x + bar_idx*width/n_bars, bufboss_queries, width/n_bars, label='BufBOSS')
+    bar_idx += 1
 if enable_fdbg:
-    rects3 = ax.bar(x + 2*width/5, fdbg_queries, width/5, label='FDBG')
+    rects3 = ax.bar(x + bar_idx*width/n_bars, fdbg_queries, width/n_bars, label='FDBG')
+    bar_idx += 1
 if enable_fdbg_recsplit:
-    rects4 = ax.bar(x + 3*width/5, fdbg_recsplit_queries, width/5, label='FDBG-RecSplit')
+    rects4 = ax.bar(x + bar_idx*width/n_bars, fdbg_recsplit_queries, width/n_bars, label='FDBG-RecSplit')
+    bar_idx += 1
 if enable_dynboss:
-    rects5 = ax.bar(x + 4*width/5, dynboss_queries, width/5, label='DynBOSS')
+    rects5 = ax.bar(x + bar_idx*width/n_bars, dynboss_queries, width/n_bars, label='DynBOSS')
+    bar_idx += 1
 
 # Add some text for labels, title and custom x-axis tick labels, etc.
 ax.set_ylabel('Seconds per edgemer')
