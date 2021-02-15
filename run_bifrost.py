@@ -47,6 +47,7 @@ build_disk = get_disk_size_bytes(built + ".gfa")
 summary_out.write("build " + str(build_time) + " " + str(build_rss) + " " + str(build_disk) + "\n")
 
 add_time, add_rss = parse_usr_bin_time(resultdir + "/add.stderr.txt")
+add_time = parse_our_printed_time(resultdir + "/add.stderr.txt") # Overwrite /usr/bin/time timing with this because this does not contain index loading
 add_disk = get_disk_size_bytes(added + ".gfa")
 summary_out.write("add " + str(add_time) + " " + str(add_rss) + " " + str(add_disk) + "\n")
 

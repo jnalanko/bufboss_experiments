@@ -13,7 +13,7 @@ if sys.version_info < (3, 0):
 
 def parse_our_printed_time(filename):
     for line in open(filename).readlines():
-        if "Time for all queries:" in line:
+        if ("Time for all queries:" in line) or ("Time for additions:" in line):
             return float(line.split()[-2])
     print("Error parsing time from " + filename)
     assert(False)
