@@ -593,6 +593,9 @@ int main(int argc, char **argv){
                     CompactedDBG<> cdbg2(opt.k, opt.g);
 
                     cdbg1.read(opt.filename_graph_in, opt.nb_threads, opt.verbose);
+
+                    long long start = cur_time_millis();
+
                     cdbg2.build(opt);
 
                     const size_t cdbg1_len = cdbg1.length();
@@ -605,6 +608,10 @@ int main(int argc, char **argv){
                     cdbg_b.clear();
 
                     cdbg_a.simplify(opt.deleteIsolated, opt.clipTips, opt.verbose);
+
+                    long long elapsed = cur_time_millis() - start;
+                    std::cerr << "Time for additions: " << (double)elapsed / 1e3 << " seconds" << std::endl;
+
                     cdbg_a.write(opt.prefixFilenameOut, opt.nb_threads, opt.outputGFA, opt.verbose);
                 }
             }
