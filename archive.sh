@@ -1,6 +1,6 @@
 # Usage: give result tar file name as argument
 
-if [ "$#" -ne 2 ]; then
+if [ "$#" -ne 1 ]; then
     echo "Give result tar filename as parameter"
     exit
 fi
