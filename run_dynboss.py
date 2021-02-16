@@ -55,7 +55,7 @@ summary_out.write("add " + str(add_time) + " " + str(add_rss) + " " + str(add_di
 
 del_time, del_rss = parse_usr_bin_time(resultdir + "/del.stderr.txt")
 del_disk = get_disk_size_bytes(deleted)
-summary_out.write("del " + str(del_time) + " " + str(del_rss) + " " + int(del_disk) + "\n")
+summary_out.write("del " + str(del_time) + " " + str(del_rss) + " " + str(del_disk) + "\n")
 
 for name in query_inputs:
     time = parse_our_printed_time(resultdir + "/" + name + ".stderr.txt")
