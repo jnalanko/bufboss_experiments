@@ -37,8 +37,8 @@ run_del = True
 run_query = True
 #run_query_vs_buffer_fraction = True
 
-buf_fractions = [1.0]
-#buf_fractions = [1.0, 0.5, 0.25, 0.1, 0.5, 0.025, 0.01]
+#buf_fractions = [1.0]
+buf_fractions = [1.0, 0.5, 0.25, 0.1, 0.5, 0.025, 0.01]
 
 if run_build:
     run_to_files("/usr/bin/time -v ./bufboss/KMC/bin/kmc -v -k31 -m1 -ci1 -cs1 -fm " + build_concat + " temp/kmc_db temp", 

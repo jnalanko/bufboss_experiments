@@ -1,0 +1,98 @@
+0.0010 Wed Feb 17 22:24:31 2021 1 input files for addition.
+0.0010 Wed Feb 17 22:24:31 2021 0 input files for deletion.
+0.7230 Wed Feb 17 22:24:32 2021 Loaded BOSS (k = 30) with 352261411 nodes and 358636614 edges
+0.7230 Wed Feb 17 22:24:32 2021 Loading deletions
+0.7230 Wed Feb 17 22:24:32 2021 Loading additions
+0.7230 Wed Feb 17 22:24:32 2021 Adding k-mers of file data/add.fasta
+233.7220 Wed Feb 17 22:28:25 2021 Flushing the buffer
+234.1100 Wed Feb 17 22:28:25 2021 Flushing 0 deletions and 8965979 additions
+234.9290 Wed Feb 17 22:28:26 2021 Adding dummies
+234.9290 Wed Feb 17 22:28:26 2021 BOSS edgemers: 358636614
+234.9520 Wed Feb 17 22:28:26 2021 BUF+ edgemers: 8531434
+235.3420 Wed Feb 17 22:28:27 2021 BUF- edgemers: 0
+381.9590 Wed Feb 17 22:30:53 2021 3602736 dummy edgemers added
+1281.8380 Wed Feb 17 22:45:53 2021 Flushing the buffer
+1282.2390 Wed Feb 17 22:45:53 2021 Flushing 0 deletions and 9269298 additions
+1283.0790 Wed Feb 17 22:45:54 2021 Adding dummies
+1283.0790 Wed Feb 17 22:45:54 2021 BOSS edgemers: 370770784
+1283.1010 Wed Feb 17 22:45:54 2021 BUF+ edgemers: 8822946
+1283.4970 Wed Feb 17 22:45:55 2021 BUF- edgemers: 0
+1435.3670 Wed Feb 17 22:48:27 2021 3724289 dummy edgemers added
+2359.2860 Wed Feb 17 23:03:51 2021 Flushing the buffer
+2359.7010 Wed Feb 17 23:03:51 2021 Flushing 0 deletions and 9583058 additions
+2360.5600 Wed Feb 17 23:03:52 2021 Adding dummies
+2360.5600 Wed Feb 17 23:03:52 2021 BOSS edgemers: 383318019
+2360.5830 Wed Feb 17 23:03:52 2021 BUF+ edgemers: 9120466
+2360.9890 Wed Feb 17 23:03:52 2021 BUF- edgemers: 0
+2520.2380 Wed Feb 17 23:06:31 2021 3837480 dummy edgemers added
+3510.9460 Wed Feb 17 23:23:02 2021 Flushing the buffer
+3511.3720 Wed Feb 17 23:23:03 2021 Flushing 0 deletions and 9906910 additions
+3512.2570 Wed Feb 17 23:23:03 2021 Adding dummies
+3512.2570 Wed Feb 17 23:23:03 2021 BOSS edgemers: 396275965
+3512.2810 Wed Feb 17 23:23:03 2021 BUF+ edgemers: 9413348
+3512.7040 Wed Feb 17 23:23:04 2021 BUF- edgemers: 0
+3678.8880 Wed Feb 17 23:25:50 2021 4023140 dummy edgemers added
+4712.0400 Wed Feb 17 23:43:03 2021 Flushing the buffer
+4712.4810 Wed Feb 17 23:43:04 2021 Flushing 0 deletions and 10242824 additions
+4713.3780 Wed Feb 17 23:43:05 2021 Adding dummies
+4713.3780 Wed Feb 17 23:43:05 2021 BOSS edgemers: 409712453
+4713.4030 Wed Feb 17 23:43:05 2021 BUF+ edgemers: 9732790
+4713.8420 Wed Feb 17 23:43:05 2021 BUF- edgemers: 0
+4884.5080 Wed Feb 17 23:45:56 2021 4134732 dummy edgemers added
+5966.3140 Thu Feb 18 00:03:58 2021 Flushing the buffer
+5966.7720 Thu Feb 18 00:03:58 2021 Flushing 0 deletions and 10589546 additions
+5967.6920 Thu Feb 18 00:03:59 2021 Adding dummies
+5967.6920 Thu Feb 18 00:03:59 2021 BOSS edgemers: 423579975
+5967.7170 Thu Feb 18 00:03:59 2021 BUF+ edgemers: 10056030
+5968.1710 Thu Feb 18 00:03:59 2021 BUF- edgemers: 0
+6146.3570 Thu Feb 18 00:06:58 2021 4286195 dummy edgemers added
+7279.2080 Thu Feb 18 00:25:50 2021 Flushing the buffer
+7279.6790 Thu Feb 18 00:25:51 2021 Flushing 0 deletions and 10948086 additions
+7280.6300 Thu Feb 18 00:25:52 2021 Adding dummies
+7280.6300 Thu Feb 18 00:25:52 2021 BOSS edgemers: 437922200
+7280.6560 Thu Feb 18 00:25:52 2021 BUF+ edgemers: 10389562
+7281.1250 Thu Feb 18 00:25:52 2021 BUF- edgemers: 0
+7465.9960 Thu Feb 18 00:28:57 2021 4436205 dummy edgemers added
+8650.4840 Thu Feb 18 00:48:42 2021 Flushing the buffer
+8650.9730 Thu Feb 18 00:48:42 2021 Flushing 0 deletions and 11318778 additions
+8651.9470 Thu Feb 18 00:48:43 2021 Adding dummies
+8651.9470 Thu Feb 18 00:48:43 2021 BOSS edgemers: 452747967
+8651.9730 Thu Feb 18 00:48:43 2021 BUF+ edgemers: 10742184
+8652.4550 Thu Feb 18 00:48:44 2021 BUF- edgemers: 0
+8843.2640 Thu Feb 18 00:51:54 2021 4566490 dummy edgemers added
+9906.7820 Thu Feb 18 01:09:38 2021 Loading additions done
+9906.7820 Thu Feb 18 01:09:38 2021 Flushing the buffer
+9907.2870 Thu Feb 18 01:09:39 2021 Flushing 0 deletions and 6540820 additions
+9907.8050 Thu Feb 18 01:09:39 2021 Adding dummies
+9907.8050 Thu Feb 18 01:09:39 2021 BOSS edgemers: 468056641
+9907.8210 Thu Feb 18 01:09:39 2021 BUF+ edgemers: 6202392
+9908.3230 Thu Feb 18 01:09:40 2021 BUF- edgemers: 0
+10026.4680 Thu Feb 18 01:11:38 2021 2671159 dummy edgemers added
+10866.7340 Thu Feb 18 01:25:38 2021 0 total non-AGCT characters replaced with random nucleotides
+10866.7340 Thu Feb 18 01:25:38 2021 Merged BOSS (k = 30) has 468016135 nodes and 476930192 edges
+10987.1180 Thu Feb 18 01:27:38 2021 Number of dummy nodes: 129818726
+10987.1180 Thu Feb 18 01:27:38 2021 Writing merged BOSS to bufboss_out/added
+10988.2670 Thu Feb 18 01:27:39 2021 Done
+	Command being timed: "bufboss/bin/bufboss_update -k 30 --end-flush -r -b 0.025 -i bufboss_out/built -o bufboss_out/added --add data/add.fasta"
+	User time (seconds): 10939.84
+	System time (seconds): 47.07
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 3:03:08
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 2509836
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 64480139
+	Voluntary context switches: 63
+	Involuntary context switches: 24894
+	Swaps: 0
+	File system inputs: 2347763
+	File system outputs: 1147984
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

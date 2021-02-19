@@ -1,0 +1,6 @@
+query-existing_added_edgemers 1000000
+query-existing_build_sequence 695500
+query-existing_build_edgemers 1000000
+query-random_edgemers 1000000
+query-random_sequence 999970
+query-existing_added_sequence 694810

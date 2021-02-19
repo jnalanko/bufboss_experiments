@@ -1,0 +1,42 @@
+0.0010 Thu Feb 18 07:12:46 2021 0 input files for addition.
+0.0010 Thu Feb 18 07:12:46 2021 1 input files for deletion.
+1.1480 Thu Feb 18 07:12:47 2021 Loaded BOSS (k = 30) with 468063191 nodes and 476980027 edges
+1.1480 Thu Feb 18 07:12:47 2021 Loading deletions
+1.1480 Thu Feb 18 07:12:47 2021 Deleting k-mers of file data/del.fasta
+10634.9260 Thu Feb 18 10:10:01 2021 Loading additions
+10634.9260 Thu Feb 18 10:10:01 2021 Loading additions done
+10634.9260 Thu Feb 18 10:10:01 2021 Flushing the buffer
+10635.4420 Thu Feb 18 10:10:01 2021 Flushing 31138352 deletions and 0 additions
+10635.4420 Thu Feb 18 10:10:01 2021 Adding dummies
+10635.4420 Thu Feb 18 10:10:01 2021 BOSS edgemers: 476980027
+10635.4420 Thu Feb 18 10:10:01 2021 BUF+ edgemers: 0
+10635.9560 Thu Feb 18 10:10:02 2021 BUF- edgemers: 31138352
+11649.4020 Thu Feb 18 10:26:55 2021 64275210 dummy edgemers added
+12599.8300 Thu Feb 18 10:42:46 2021 0 total non-AGCT characters replaced with random nucleotides
+12599.8310 Thu Feb 18 10:42:46 2021 Merged BOSS (k = 30) has 507063736 nodes and 510116885 edges
+12775.4220 Thu Feb 18 10:45:41 2021 Number of dummy nodes: 189913443
+12775.4220 Thu Feb 18 10:45:41 2021 Writing merged BOSS to bufboss_out/deleted
+12777.1130 Thu Feb 18 10:45:43 2021 Done
+	Command being timed: "bufboss/bin/bufboss_update -k 30 --end-flush -r -b 1.0 -i bufboss_out/added -o bufboss_out/deleted --del data/del.fasta"
+	User time (seconds): 12742.41
+	System time (seconds): 34.86
+	Percent of CPU this job got: 100%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 3:32:57
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 5992380
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 49749395
+	Voluntary context switches: 114
+	Involuntary context switches: 3315
+	Swaps: 0
+	File system inputs: 2632095
+	File system outputs: 1232654
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

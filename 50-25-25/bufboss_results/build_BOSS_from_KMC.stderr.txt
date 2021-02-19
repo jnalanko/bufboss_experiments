@@ -1,0 +1,37 @@
+0.0010 Wed Feb 17 15:06:13 2021 Building from KMC database
+[STXXL-ERRMSG] External memory block allocation error: 2684354560 bytes requested, 0 bytes free. Trying to extend the external memory space...
+[STXXL-ERRMSG] External memory block allocation error: 2684354560 bytes requested, 0 bytes free. Trying to extend the external memory space...
+[STXXL-ERRMSG] External memory block allocation error: 2684354560 bytes requested, 0 bytes free. Trying to extend the external memory space...
+[STXXL-ERRMSG] External memory block allocation error: 2684354560 bytes requested, 0 bytes free. Trying to extend the external memory space...
+[STXXL-ERRMSG] External memory block allocation error: 1593835520 bytes requested, 0 bytes free. Trying to extend the external memory space...
+[STXXL-ERRMSG] External memory block allocation error: 2684354560 bytes requested, 0 bytes free. Trying to extend the external memory space...
+[STXXL-ERRMSG] External memory block allocation error: 1258291200 bytes requested, 0 bytes free. Trying to extend the external memory space...
+175.9400 Wed Feb 17 15:09:09 2021 Built BOSS (k = 30) with 352261411 nodes and 358636614 edges
+260.8590 Wed Feb 17 15:10:34 2021 Number of dummy nodes: 96475429
+260.8590 Wed Feb 17 15:10:34 2021 Number of k-mer nodes: 255785982
+260.8590 Wed Feb 17 15:10:34 2021 Writing BufBOSS to bufboss_out/built
+262.2300 Wed Feb 17 15:10:35 2021 Done
+[STXXL-ERRMSG] Removing disk file: temp/stxxl
+	Command being timed: "./bufboss/bin/bufboss_build --KMC temp/kmc_db -o bufboss_out/built -t temp"
+	User time (seconds): 504.10
+	System time (seconds): 110.12
+	Percent of CPU this job got: 233%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 4:22.56
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 13181360
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 30679077
+	Voluntary context switches: 24494
+	Involuntary context switches: 4564
+	Swaps: 0
+	File system inputs: 57879463
+	File system outputs: 32648540
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

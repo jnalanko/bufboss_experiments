@@ -1,0 +1,8 @@
+build 7492.0 51404247040 447639868
+add 91759.0 128927039488 450888796
+query-existing_added_sequence 30.371 -1
+query-random_edgemers 19.987 -1
+query-existing_build_edgemers 76.957 -1
+query-existing_build_sequence 33.212 -1
+query-random_sequence 16.204 -1
+query-existing_added_edgemers 32.921 -1

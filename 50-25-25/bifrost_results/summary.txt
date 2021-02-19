@@ -1,0 +1,8 @@
+build 1923.18 2329149440 1203670587
+add 908.878 2828390400 1654946489
+query-existing_build_sequence 0.652 -1
+query-existing_added_edgemers 2.345 -1
+query-random_sequence 0.389 -1
+query-existing_added_sequence 0.657 -1
+query-existing_build_edgemers 1.963 -1
+query-random_edgemers 1.385 -1

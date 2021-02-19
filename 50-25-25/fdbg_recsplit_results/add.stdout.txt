@@ -1,0 +1,13 @@
+[2021-02-16 12:21:27.528482] [0x00007f03d4f88740] [info]    reading kmers from new fasta file
+[2021-02-16 12:23:22.670027] [0x00007f03d4f88740] [info]    number of kmers for operations: 946191546
+[2021-02-16 12:23:24.510430] [0x00007f03d4f88740] [info]    Data structure loaded 
+[2021-02-16 12:23:24.510441] [0x00007f03d4f88740] [info]    k value or node size is: 30 graph has 255785982 nodes 
+[2021-02-16 12:23:24.510475] [0x00007f03d4f88740] [info]    Original Bits per element:12.1022
+[2021-02-17 09:06:48.654926] [0x00007f03d4f88740] [info]    DONE with indexing all 946191546 edges
+[2021-02-17 09:06:48.654946] [0x00007f03d4f88740] [info]    Time per indexing: 7.85211e-05
+[2021-02-17 09:06:48.654949] [0x00007f03d4f88740] [info]    863180394 of the edges were already in the graph
+[2021-02-17 13:48:58.726933] [0x00007f03d4f88740] [info]    DONE with addition of all 83011152 edges
+[2021-02-17 13:48:58.726951] [0x00007f03d4f88740] [info]    Time per addition: 0.000164906
+[2021-02-17 13:48:58.726954] [0x00007f03d4f88740] [info]    After addition graph has 338197409 nodes 
+[2021-02-17 13:48:58.726957] [0x00007f03d4f88740] [info]    Bits per element after addition: 9.19158
+[2021-02-17 13:48:58.726959] [0x00007f03d4f88740] [info]    Writing data structure to file fdbg_recsplit_out/added.dbg

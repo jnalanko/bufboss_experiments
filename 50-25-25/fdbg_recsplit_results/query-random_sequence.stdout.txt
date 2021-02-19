@@ -1,0 +1,3 @@
+[2021-02-17 13:53:34.862364] [0x00007f2f4d91d740] [info]    Data structure loaded 
+[2021-02-17 13:53:34.862402] [0x00007f2f4d91d740] [info]    k value or node size is: 30 graph has 338197409 nodes 
+[2021-02-17 13:53:34.862417] [0x00007f2f4d91d740] [info]    Original Bits per element:9.19158

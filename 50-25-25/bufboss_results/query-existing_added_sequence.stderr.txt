@@ -1,0 +1,32 @@
+0.0010 Fri Feb 19 08:04:18 2021 Index directory: bufboss_out/added
+0.0010 Fri Feb 19 08:04:18 2021 Query file: data/existing/added_sequence.fasta
+0.0010 Fri Feb 19 08:04:18 2021 Output file: bufboss_out/queries.txt
+0.6230 Fri Feb 19 08:04:19 2021 Loaded BufBOSS (k = 30) with 468063191 nodes and 476980027 edges
+0.6230 Fri Feb 19 08:04:19 2021 Addition buffer has 0 nodemers
+1.8650 Fri Feb 19 08:04:20 2021 Time for all queries: 1.242000 seconds
+1.8650 Fri Feb 19 08:04:20 2021 694810/694810 edgemers found (100.000000%)
+1.8650 Fri Feb 19 08:04:20 2021 Search speed was 1.787539 microseconds per edgemer
+1.8650 Fri Feb 19 08:04:20 2021 Done
+	Command being timed: "bufboss/bin/bufboss_query -i bufboss_out/added -o bufboss_out/queries.txt -q data/existing/added_sequence.fasta"
+	User time (seconds): 1.46
+	System time (seconds): 0.44
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:01.91
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 650696
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 162132
+	Voluntary context switches: 1
+	Involuntary context switches: 2
+	Swaps: 0
+	File system inputs: 1150244
+	File system outputs: 1378
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
