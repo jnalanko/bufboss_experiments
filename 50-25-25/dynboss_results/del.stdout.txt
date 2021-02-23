@@ -1,0 +1,29 @@
+Function delete is called
+====================================================================
+LOADING GRAPH
+Loading DynamicBOSS from file: dynboss_out/added.dbg
+Original graph: 
+k             : 31
+num_nodes()   : 464252366
+num_edges()   : 479961090
+Total size    : 318.061 MB
+Bits per edge : 5.55898 Bits
+====================================================================
+OPENING KMER FILE
+Reading FASTA file data/del_with_rc.fasta
+96754740 distinct kmers were counted 
+====================================================================
+PROCESS STARTS
+65616388 (67.8172%) of the kmers were not in the graph
+31138352 kmers deleted from the graph in 38459.6 (s)
+Time per operaition: 0.000397496 (s)
+====================================================================
+PROCESS FINISHED
+Updated graph:
+k             : 31
+num_nodes()   : 500439639
+num_edges()   : 514374210
+Total size    : 373.797 MB
+Bits per edge : 6.09602 Bits
+Writing the DynamicBOSS in file: dynboss_out/deleted.dbg
+DONE!

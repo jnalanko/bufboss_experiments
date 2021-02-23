@@ -1,0 +1,4 @@
+Total RAM: 773944 MB
+Available disk space in /s/nut/b/projs/buffboss/bufboss_experiments: 32423597 MB
+
+Saved 256862584 solid kmers

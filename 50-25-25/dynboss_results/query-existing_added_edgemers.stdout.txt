@@ -1,0 +1,18 @@
+Function query is called
+====================================================================
+LOADING GRAPH
+Loading DynamicBOSS from file: dynboss_out/built.dbg
+Original graph: 
+k             : 31
+num_nodes()   : 352261411
+num_edges()   : 363935216
+Total size    : 251.04 MB
+Bits per edge : 5.7864 Bits
+====================================================================
+OPENING KMER FILE
+Reading FASTA file data/existing/added_edgemers.fasta
+PROCESS STARTS
+====================================================================
+PROCESS FINISHED
+Query results in file: dynboss_out/query-existing_added_edgemers-result.txt
+DONE!

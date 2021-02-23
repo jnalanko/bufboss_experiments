@@ -1,0 +1,13 @@
+Function build is called
+====================================================================
+BUILDING GRAPH
+DynamicBOSS graph is built in: 324.15 (s)
+====================================================================
+Graph:
+k             : 31
+num_nodes()   : 352261411
+num_edges()   : 363935216
+Total size    : 252.832 MB
+Bits per edge : 5.82772 Bits
+Writing the DynamicBOSS in file: dynboss_out/built.dbg
+DONE!

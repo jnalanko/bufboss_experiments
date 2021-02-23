@@ -1,0 +1,9 @@
+build 985.1400000000001 11086520320 246689773
+add 146034.0 19102306304 317659740
+del 62619.0 17139310592 339198777
+query-random_edgemers 137.645 -1
+query-random_sequence 117.987 -1
+query-existing_build_edgemers 324.138 -1
+query-existing_build_sequence 191.898 -1
+query-existing_added_edgemers 222.485 -1
+query-existing_added_sequence 184.345 -1
