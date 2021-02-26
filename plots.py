@@ -177,6 +177,7 @@ ax.set_yscale("log")
 ax.legend()
 fig.tight_layout()
 plt.show(block = False)
+plt.savefig(dir + "/query.png")
 
 #
 # Plot construction
@@ -196,6 +197,7 @@ ax.set_xlabel("time (s)")
 ax.set_ylabel("mem (bytes)")
 ax.set_title("Construction")
 plt.show(block = False)
+plt.savefig(dir + "/build.png")
 
 # Plot addition
 fig2, ax2 = plt.subplots()
@@ -211,7 +213,23 @@ ax.set_ylim((0, None))
 ax2.set_xlabel("time (s)")
 ax2.set_ylabel("mem (bytes)")
 ax2.set_title("Addition")
+plt.show(block = False)
+plt.savefig(dir + "/add.png")
+
+# Plot deletion
+fig2, ax2 = plt.subplots()
+for D in delete:
+    color = "blue"
+    if "BufBOSS" in D["name"]: color = "orange"
+    ax2.scatter(D["time"], D["mem"], color = color)
+    ax2.annotate(D["name"], 
+                xy=(D["time"], D["mem"]), xycoords='data', # Data point
+                xytext=(5, 5), textcoords='offset points') # Text offset
+ax.set_xlim((0, None))
+ax.set_ylim((0, None))
+ax2.set_xlabel("time (s)")
+ax2.set_ylabel("mem (bytes)")
+ax2.set_title("Deletion")
+plt.savefig(dir + "/del.png")
 plt.show(block = True)
-
-
 

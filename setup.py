@@ -90,27 +90,13 @@ def parse_usr_bin_time(stderr_file):
 def get_disk_size_bytes(path):
     return int(run_get_output("du -d 0 -b "  + path).split()[0])
 
-datadir = "data"
-tempdir = "temp"
-
-build_concat = datadir + "/build.fasta"
-add_concat = datadir + "/add.fasta"
-del_concat = datadir + "/del.fasta"
-
-build_concat_with_rc = datadir + "/build_with_rc.fasta"
-add_concat_with_rc = datadir + "/add_with_rc.fasta"
-del_concat_with_rc = datadir + "/del_with_rc.fasta"
+experiment_dir = None
+#datadir = experiment_dir + "/data"
+#tempdir = experiment_dir + "/temp"
 
 nodemer_k = 30
 edgemer_k = nodemer_k + 1
 
-query_inputs = {"query-random_edgemers": "data/random/edgemers.fasta",
-                "query-random_sequence": "data/random/sequence.fasta",
-                "query-existing_build_edgemers": "data/existing/build_edgemers.fasta",
-                "query-existing_build_sequence": "data/existing/build_sequence.fasta",
-                "query-existing_added_edgemers": "data/existing/added_edgemers.fasta",
-                "query-existing_added_sequence" : "data/existing/added_sequence.fasta"}
-query_metadatafile = "lists/query_metadata.txt"
 
 def fasta_count_edgemers(fastafile):
     seq_len = 0
@@ -126,7 +112,100 @@ def fasta_count_edgemers(fastafile):
     total_edgemers += max(0, seq_len - edgemer_k + 1) # Last sequence
     return total_edgemers
 
-def generate_input_files_from_readfile(readfile, build_percentage, add_percentage, del_percentage):
+class ExperimentConfig:
+
+    def __init__(self, buildfile = None, buildfile_rc = None, addfile = None, addfile_rc = None, delfile = None, delfile_rc = None, queryfiles = None, experiment_dir = None):
+        if buildfile != None: assert experiment_dir != None # If first argument is given, require that all arguments are given
+        self.buildfile = buildfile
+        self.buildfile_rc = buildfile_rc
+        self.addfile = addfile
+        self.addfile_rc = addfile_rc
+        self.delfile = delfile
+        self.delfile_rc = delfile_rc
+        self.query_inputs = queryfiles
+        self.experiment_dir = experiment_dir
+    
+    def serialize(self, filename):
+        f = open(filename, 'w')
+
+        f.write(self.experiment_dir + "\n")
+
+        f.write(self.buildfile + "\n")
+        f.write(self.buildfile_rc + "\n")
+
+        f.write(self.addfile + "\n")
+        f.write(self.addfile_rc + "\n")
+
+        f.write(self.delfile + "\n")
+        f.write(self.delfile_rc + "\n")
+
+        for query_name in self.query_inputs:
+            f.write(query_name + " " + self.query_inputs[query_name] + "\n")
+
+    def load(self, filename):
+        lines = open(filename, 'r').readlines()
+        self.experiment_dir = lines[0].strip()
+
+        self.buildfile = lines[1].strip()
+        self.buildfile_rc = lines[2].strip()
+
+        self.addfile = lines[3].strip()
+        self.addfile_rc = lines[4].strip()
+
+        self.delfile = lines[5].strip()
+        self.delfile_rc = lines[6].strip()
+
+        self.query_inputs = dict()
+        for line in lines[7:]:
+            name, path = line.split()[0].strip(), line.split()[1].strip()
+            self.query_inputs[name] = path
+            
+
+
+
+
+
+
+def write_config(buildfile, buildfile_rc, addfile, addfile_rc, delfile, delfile_rc, queryfiles, experiment_dir):
+    open(experiment_dir + "/buildfiles.txt", 'w').write("build " + buildfile + "\n" + "build_rc " + buildfile_rc + "\n")
+    open(experiment_dir + "/addfiles.txt", 'w').write("add " + addfile + "\n" + "add_rc " + addfile_rc + "\n")
+    open(experiment_dir + "/delfiles.txt", 'w').write("del " + delfile + "\n" + "del_rc " + delfile_rc + "\n")
+
+    querylist = open(experiment_dir + "/queryfiles.txt", 'w')
+    for query_name in queryfiles:
+        querylist.write(query_name + " " + queryfiles[query_name] + "\n")
+
+
+def generate_input_files_from_readfile(readfile, experiment_dir, build_percentage, add_percentage, del_percentage):
+
+    datadir = experiment_dir + "/data"
+    tempdir = experiment_dir + "/temp"
+
+    run("mkdir -p " + str(datadir))
+    run("mkdir -p " + str(tempdir))
+    run("mkdir -p " + str(experiment_dir))
+    run("mkdir -p " + str(experiment_dir + "/lists"))
+
+    query_inputs = {"query-random_edgemers": experiment_dir + "/data/random/edgemers.fasta",
+                    "query-random_sequence": experiment_dir + "/data/random/sequence.fasta",
+                    "query-existing_build_edgemers": experiment_dir + "/data/existing/build_edgemers.fasta",
+                    "query-existing_build_sequence": experiment_dir + "/data/existing/build_sequence.fasta",
+                    "query-existing_added_edgemers": experiment_dir + "/data/existing/added_edgemers.fasta",
+                    "query-existing_added_sequence" : experiment_dir + "/data/existing/added_sequence.fasta"}
+
+    query_metadatafile = experiment_dir + "/lists/query_metadata.txt"
+
+    build_concat = experiment_dir + "/data/build.fasta"
+    add_concat = experiment_dir + "/data/add.fasta"
+    del_concat = experiment_dir + "/data/del.fasta"
+
+    build_concat_with_rc = experiment_dir + "/data/build_with_rc.fasta"
+    add_concat_with_rc = experiment_dir + "/data/add_with_rc.fasta"
+    del_concat_with_rc = experiment_dir + "/data/del_with_rc.fasta"
+
+    config = ExperimentConfig (build_concat, build_concat_with_rc, add_concat, add_concat_with_rc, del_concat, del_concat_with_rc, query_inputs, experiment_dir)
+    config.serialize(experiment_dir + "/config.txt")
+
     # Split to build, add, del
     run("./input_cleaning/split_and_remove_non_ACGT " + str(edgemer_k) + " " + readfile + " " + str(build_percentage) + " " + str(add_percentage) + " " + str(del_percentage) + " " + build_concat + " " + add_concat + " " + del_concat)
 
@@ -142,12 +221,12 @@ def generate_input_files_from_readfile(readfile, build_percentage, add_percentag
     run("cat " + del_concat + " temp/temp_rc.fasta > " + del_concat_with_rc)
 
     # Generate random queries
-    run("mkdir -p data/random")
+    run("mkdir -p " + experiment_dir + "/data/random")
     run("python3 gen_random_kmers.py 31 1000000 > " + query_inputs["query-random_edgemers"]) # Million edgemers
     run("python3 gen_random_kmers.py 1000000 1 > " + query_inputs["query-random_sequence"]) # Million - k + 1 edgemers
 
     # Generate existing queries...
-    run("mkdir -p data/existing")
+    run("mkdir -p " + experiment_dir + "/data/existing")
 
     # ...for existing k-mers, build a bufboss and sample from there. First for build kmers...
     index_dir = tempdir + "/buffboss"
@@ -170,93 +249,16 @@ def generate_input_files_from_readfile(readfile, build_percentage, add_percentag
     for name in query_inputs:
         metadata.write(name + " " + str(fasta_count_edgemers(query_inputs[name])) + "\n")
 
-def generate_input_files_from_genomes():
-
-    buildlist = "lists/coli_build.txt"
-    addlist = "lists/coli_add.txt"
-    dellist = "lists/coli_del.txt"
-
-    # Concatenate fasta files and remove non-ACGT
-    run("./input_cleaning/collect_and_remove_non_ACGT " + buildlist + " " + build_concat + " " + str(edgemer_k))
-    run("./input_cleaning/collect_and_remove_non_ACGT " + addlist + " " + add_concat + " " + str(edgemer_k))
-    run("./input_cleaning/collect_and_remove_non_ACGT " + dellist + " " + del_concat + " " + str(edgemer_k))
-
-    # For tools that don't index reverse complements (looking at you dynboss), create input files with
-    # concatenated reverse complements in the end
-    run("./input_cleaning/get_rc " + build_concat + " temp/temp_rc.fasta")
-    run("cat " + build_concat + " temp/temp_rc.fasta > " + build_concat_with_rc) 
-
-    run("./input_cleaning/get_rc " + add_concat + " temp/temp_rc.fasta")
-    run("cat " + add_concat + " temp/temp_rc.fasta > " + add_concat_with_rc)
-
-    run("./input_cleaning/get_rc " + del_concat + " temp/temp_rc.fasta")
-    run("cat " + del_concat + " temp/temp_rc.fasta > " + del_concat_with_rc)
-
-    # Generate random queries
-    run("mkdir -p data/random")
-    run("python3 gen_random_kmers.py 31 1000000 > " + query_inputs["query-random_edgemers"]) # Million edgemers
-    run("python3 gen_random_kmers.py 1000000 1 > " + query_inputs["query-random_sequence"]) # Million - k + 1 edgemers
-
-    # Generate existing queries...
-    run("mkdir -p data/existing")
-
-    # ...for existing k-mers, build a bufboss and sample from there. First for build kmers...
-    index_dir = tempdir + "/buffboss"
-    run("mkdir -p " + index_dir)
-    run("./bufboss/KMC/bin/kmc -k31 -m1 -ci1 -cs1 -fm " + build_concat + " " + tempdir + "/kmc_db temp")
-    run("./bufboss/bin/bufboss_build --KMC " + tempdir + "/kmc_db -o " + index_dir + " -t " + tempdir)
-    run("./bufboss/bin/bufboss_sample_random_edgemers -i " + index_dir + " -o " + query_inputs["query-existing_build_edgemers"] + " --count 1000000")
-
-    # ...then for added kmers (reuse the same index dir)
-    run("./bufboss/KMC/bin/kmc -k31 -m1 -ci1 -cs1 -fm " + add_concat + " " + tempdir + "/kmc_db temp")
-    run("./bufboss/bin/bufboss_build --KMC " + tempdir + "/kmc_db -o " + index_dir + " -t " + tempdir)
-    run("./bufboss/bin/bufboss_sample_random_edgemers -i " + index_dir + " -o " + query_inputs["query-existing_added_edgemers"] + " --count 1000000")
-
-    # For existing sequences, take the first file in buildlist and in addlist
-    run("head -n 1 " + buildlist + " > " + tempdir + "/buildlist_first.txt")
-    run("./input_cleaning/collect_and_remove_non_ACGT " + tempdir + "/buildlist_first.txt " + query_inputs["query-existing_build_sequence"] + " " + str(edgemer_k))
-
-    run("head -n 1 " + addlist + " > " + tempdir + "/addlist_first.txt")
-    run("./input_cleaning/collect_and_remove_non_ACGT " + tempdir + "/addlist_first.txt " + query_inputs["query-existing_added_sequence"] + " " + str(edgemer_k))
-
-    print("Calculating metadata")
-    metadata = open(query_metadatafile,'w')
-    for name in query_inputs:
-        metadata.write(name + " " + str(fasta_count_edgemers(query_inputs[name])) + "\n")
-
 # Takes number of genomes to build, add and del respectively.
 if __name__ == "__main__":
-    if sys.argv[1] == "ecoli":
-        n_build = int(sys.argv[2])
-        n_add = int(sys.argv[3])
-        n_del = int(sys.argv[4])
-        assert(n_build + n_add + n_del <= 3682)
-        run("mkdir -p lists")
-        files = run_get_output("ls $PWD/data/coli3682/*.fna | shuf").splitlines()
-
-        build_out = open("lists/coli_build.txt",'w')
-        for i in range(n_build):
-            build_out.write(files[i] + "\n")
-        build_out.close()
-
-        add_out = open("lists/coli_add.txt",'w')
-        for i in range(n_build, n_build + n_add):
-            add_out.write(files[i] + "\n")
-        add_out.close()
-
-        del_out = open("lists/coli_del.txt",'w')
-        for i in range(n_build + n_add, n_build + n_add + n_del):
-            del_out.write(files[i] + "\n")
-        del_out.close()
-        
-        generate_input_files_from_genomes()
-    elif sys.argv[1] == "reads":
+    if sys.argv[1] == "reads-split":
         readfile = sys.argv[2]
-        build_percentage = int(sys.argv[3])
-        add_percentage = int(sys.argv[4])
-        del_percentage = int(sys.argv[5])
+        experiment_dir = sys.argv[3]
+        build_percentage = int(sys.argv[4])
+        add_percentage = int(sys.argv[5])
+        del_percentage = int(sys.argv[6])
         assert(build_percentage + add_percentage + del_percentage == 100)
-        generate_input_files_from_readfile(readfile, build_percentage, add_percentage, del_percentage)
+        generate_input_files_from_readfile(readfile, experiment_dir, build_percentage, add_percentage, del_percentage)
     else:
-        print("Invalid experiment name: " + sys.argv[1])
+        print("Invalid experiment class: " + sys.argv[1])
         quit(1)
