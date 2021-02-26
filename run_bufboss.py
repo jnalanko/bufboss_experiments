@@ -52,11 +52,16 @@ if run_build:
 
 if run_add:
     for b in buf_fractions:
-        run_to_files("/usr/bin/time -v " + update_program + " -k " + str(nodemer_k) + " --end-flush -r -b " + str(b) + " -i " + built + " -o " + added + " --add " + config.addfile, resultdir + "/add-" + str(b))
+        run_to_files("/usr/bin/time -v " + update_program + " -k " + str(nodemer_k) + " -r -b " + str(b) + " -i " + built + " -o " + added + " --add " + config.addfile, resultdir + "/add-" + str(b))
 
 if run_del:
     for b in buf_fractions:
-        run_to_files("/usr/bin/time -v " + update_program + " -k " + str(nodemer_k) + " --end-flush -r -b " + str(b) + " -i " + added + " -o " + deleted + " --del " + config.delfile, resultdir + "/del-" + str(b))
+        run_to_files("/usr/bin/time -v " + update_program + " -k " + str(nodemer_k) + " -r -b " + str(b) + " -i " + added + " -o " + deleted + " --del " + config.delfile, resultdir + "/del-" + str(b))
+
+if run_add and run_del:
+    for b in buf_fractions:
+        run_to_files("/usr/bin/time -v " + update_program + " --add-before-del -k " + str(nodemer_k) + " -r -b " + str(b) + " -i " + added + " -o " + deleted + " --del " + config.delfile + " --add " + config.addfile, resultdir + "/adddel-" + str(b))
+
 
 if run_query:
     for name in config.query_inputs:
@@ -76,15 +81,23 @@ build_time, build_rss = parse_usr_bin_time(resultdir + "/build_BOSS_from_KMC.std
 build_disk = get_disk_size_bytes(built)
 summary_out.write("build " + str(KMC_time + build_time) + " " + str(max(build_rss, KMC_rss)) + " " + str(build_disk) + "\n")
 
+# Add
 for b in buf_fractions:
     add_time, add_rss = parse_usr_bin_time(resultdir + "/add-" + str(b) + ".stderr.txt")
     add_disk = 0 # Todo
     summary_out.write("add-" + str(b) + " " + str(add_time) + " " + str(add_rss) + " " + str(add_disk) + "\n")
 
+# Delete
 for b in buf_fractions:
     del_time, del_rss = parse_usr_bin_time(resultdir + "/del-" + str(b) + ".stderr.txt")
     del_disk = 0 # todo
     summary_out.write("del-" + str(b) + " " + str(del_time) + " " + str(del_rss) + " " + str(del_disk) + "\n")
+
+# Add and delete
+for b in buf_fractions:
+    adddel_time, adddel_rss = parse_usr_bin_time(resultdir + "/adddel-" + str(b) + ".stderr.txt")
+    adddel_disk = 0 # todo
+    summary_out.write("adddel-" + str(b) + " " + str(adddel_time) + " " + str(adddel_rss) + " " + str(adddel_disk) + "\n")
 
 for name in config.query_inputs:
     time = parse_our_printed_time(resultdir + "/" + name + ".stderr.txt")
