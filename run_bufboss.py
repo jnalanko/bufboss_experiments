@@ -29,6 +29,7 @@ run("mkdir -p " + resultdir)
 built = outdir + "/built"
 added = outdir + "/added"
 deleted = outdir + "/deleted"
+added_and_deleted = outdir + "/added_and_deleted"
 run("mkdir -p " + built)
 run("mkdir -p " + added)
 run("mkdir -p " + deleted)
@@ -60,7 +61,7 @@ if run_del:
 
 if run_add and run_del:
     for b in buf_fractions:
-        run_to_files("/usr/bin/time -v " + update_program + " --add-before-del -k " + str(nodemer_k) + " -r -b " + str(b) + " -i " + added + " -o " + deleted + " --del " + config.delfile + " --add " + config.addfile, resultdir + "/adddel-" + str(b))
+        run_to_files("/usr/bin/time -v " + update_program + " --add-before-del -k " + str(nodemer_k) + " -r -b " + str(b) + " -i " + built + " -o " + added_and_deleted + " --del " + config.delfile + " --add " + config.addfile, resultdir + "/adddel-" + str(b))
 
 
 if run_query:
