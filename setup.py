@@ -114,7 +114,7 @@ def fasta_count_edgemers(fastafile):
 
 class ExperimentConfig:
 
-    def __init__(self, buildfile = None, buildfile_rc = None, addfile = None, addfile_rc = None, delfile = None, delfile_rc = None, queryfiles = None, experiment_dir = None):
+    def __init__(self, buildfile = None, buildfile_rc = None, addfile = None, addfile_rc = None, delfile = None, delfile_rc = None, queryfiles = None, experiment_dir = None, tempdir = None):
         if buildfile != None: assert experiment_dir != None # If first argument is given, require that all arguments are given
         self.buildfile = buildfile
         self.buildfile_rc = buildfile_rc
@@ -124,11 +124,13 @@ class ExperimentConfig:
         self.delfile_rc = delfile_rc
         self.query_inputs = queryfiles
         self.experiment_dir = experiment_dir
+        self.temp_dir = tempdir
     
     def serialize(self, filename):
         f = open(filename, 'w')
 
         f.write(self.experiment_dir + "\n")
+        f.write(self.temp_dir + "\n")
 
         f.write(self.buildfile + "\n")
         f.write(self.buildfile_rc + "\n")
@@ -145,18 +147,19 @@ class ExperimentConfig:
     def load(self, filename):
         lines = open(filename, 'r').readlines()
         self.experiment_dir = lines[0].strip()
+        self.temp_dir = lines[1].strip()
 
-        self.buildfile = lines[1].strip()
-        self.buildfile_rc = lines[2].strip()
+        self.buildfile = lines[2].strip()
+        self.buildfile_rc = lines[3].strip()
 
-        self.addfile = lines[3].strip()
-        self.addfile_rc = lines[4].strip()
+        self.addfile = lines[4].strip()
+        self.addfile_rc = lines[5].strip()
 
-        self.delfile = lines[5].strip()
-        self.delfile_rc = lines[6].strip()
+        self.delfile = lines[6].strip()
+        self.delfile_rc = lines[7].strip()
 
         self.query_inputs = dict()
-        for line in lines[7:]:
+        for line in lines[8:]:
             name, path = line.split()[0].strip(), line.split()[1].strip()
             self.query_inputs[name] = path
             
@@ -203,7 +206,7 @@ def generate_input_files_from_readfile(readfile, experiment_dir, build_percentag
     add_concat_with_rc = experiment_dir + "/data/add_with_rc.fasta"
     del_concat_with_rc = experiment_dir + "/data/del_with_rc.fasta"
 
-    config = ExperimentConfig (build_concat, build_concat_with_rc, add_concat, add_concat_with_rc, del_concat, del_concat_with_rc, query_inputs, experiment_dir)
+    config = ExperimentConfig (build_concat, build_concat_with_rc, add_concat, add_concat_with_rc, del_concat, del_concat_with_rc, query_inputs, experiment_dir, tempdir)
     config.serialize(experiment_dir + "/config.txt")
 
     # Split to build, add, del
