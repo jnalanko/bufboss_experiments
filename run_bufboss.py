@@ -33,6 +33,7 @@ added_and_deleted = outdir + "/added_and_deleted"
 run("mkdir -p " + built)
 run("mkdir -p " + added)
 run("mkdir -p " + deleted)
+run("mkdir -p " + added_and_deleted)
 
 query_out = outdir + "/queries.txt"
 
