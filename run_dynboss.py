@@ -43,7 +43,7 @@ run_to_files("/usr/bin/time -v " + program + " delete -g " + added + " -s " + co
 # Query
 for name in config.query_inputs:
     filename = config.query_inputs[name]
-    run_to_files("/usr/bin/time -v " + program + " query -g " + built + " -s " + filename + " --query-result " + outdir + "/" + name + "-result.txt", resultdir + "/" + name)
+    run_to_files("/usr/bin/time -v " + program + " query -g " + added + " -s " + filename + " --query-result " + outdir + "/" + name + "-result.txt", resultdir + "/" + name)
 
 # Parse summary
 summary_out = open(resultdir + "/summary.txt", 'w')
