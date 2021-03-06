@@ -89,9 +89,9 @@ table_prefix = """\\begin{table*}[h]
  \hline
  	&Disk  &Memory  & Time       &Disk  &Memory    & Time       &Disk   &Memory    & Time       &Disk &Memory &Time &Disk &Memory  &Time\\\\"""
 
-table_suffix = """\hline
+table_suffix = """\\hline
   	\\end{tabular}}
- 	\\caption{Time in seconds, memory and disk and memory in $10^6$ bytes}
+ 	\\caption{E coli reads construction. Time in minutes, memory and disk in mebibytes (2^{20} bytes).}
  	\\label{construction}
  \\end{table*}
  """
