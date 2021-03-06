@@ -36,10 +36,10 @@ run_to_files("/usr/bin/time -v ./bahar-fdbg/cpp-src/fdbg-add-jarno " + config.ad
 # Del
 run_to_files("/usr/bin/time -v ./bahar-fdbg/cpp-src/fdbg-del-jarno " + config.delfile_rc + " " + str(nodemer_k) + " " + added + " " + deleted, resultdir + "/del")
 
-# Query TODO: query program does not exist
-#for name in config.query_inputs:
-#    filename = config.query_inputs[name]
-#    run_to_files("/usr/bin/time -v ./bahar-fdbg/cpp-src/fdbg-query-jarno " + added + " " + filename + " " + outdir + "/" + name + "-result.txt", resultdir + "/" + name)
+# Query
+for name in config.query_inputs:
+    filename = config.query_inputs[name]
+    run_to_files("/usr/bin/time -v ./bahar-fdbg/cpp-src/fdbg-query-jarno " + added + " " + filename + " " + outdir + "/" + name + "-result.txt", resultdir + "/" + name)
     #run_to_files("/usr/bin/time -v ./FDBG-RecSplit/cpp-src/fdbg-recsplit-query " + built + " " + filename + " " + outdir + "/" + name + "-result.txt", resultdir + "/" + name)
 
 # ./bahar-fdbg/cpp-src/fdbg-query-jarno fdbg_out/added.dbg data/existing/build_sequence.fasta temp/out.txt
@@ -57,7 +57,7 @@ summary_out.write("add " + str(add_time) + " " + str(add_rss) + " " + str(add_di
 #del_time, del_rss = parse_usr_bin_time(resultdir + "/del.stderr.txt")
 #summary_out.write("del " + str(del_time) + " " + str(del_rss) + "\n")
 
-#for name in config.query_inputs:
-#    time = parse_our_printed_time(resultdir + "/" + name + ".stderr.txt")
-#    rss = -1 # Not available
-#    summary_out.write(name + " " + str(time) + " " + str(rss) + "\n")
+for name in config.query_inputs:
+    time = parse_our_printed_time(resultdir + "/" + name + ".stderr.txt")
+    rss = -1 # Not available
+    summary_out.write(name + " " + str(time) + " " + str(rss) + "\n")
