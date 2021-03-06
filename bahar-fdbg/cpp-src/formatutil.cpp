@@ -50,6 +50,19 @@ unsigned access_kmer( kmer_t mer, unsigned k, unsigned i ) {
   return static_cast<unsigned>(mer); 
 }
 
+char access_kmer_char(kmer_t mer, uint64_t k, uint64_t i)
+{
+    uint64_t val = access_kmer(mer,k,i);
+    switch (val){
+        case 0: return 'A';
+        case 1: return 'C';
+        case 2: return 'G';
+        case 3: return 'T';
+        default: cerr << "This should never happen" << endl; exit(1);
+    }
+}
+
+
 string get_kmer_str( kmer_t mer, unsigned k) {
 
   string kmer_str = "";
@@ -114,6 +127,15 @@ void set_kmer( kmer_t& mer, unsigned k, unsigned i, char c ) {
   val = val << 2*(k - i - 1);  //correct bits in i'th spot, zeros elsewhere
   mer = mer | val;
 }
+
+
+// Drops the first character and appends c
+void kmer_roll(kmer_t& mer, uint64_t k, char c){
+    mer &= ~((kmer_t)(0x03) << (2 * (k-1))); // Clear first char
+    mer <<= 2; // Shift left
+    set_kmer(mer, k, k-1, c); // Append
+}
+
 
 kmer_t mer_string_to_binary( string& r, const unsigned& i, const unsigned& K ) {
    kmer_t mer = 0;

@@ -12,16 +12,16 @@ test-jarno:
 	g++ -O3  -std=c++17 test.cpp -o test-jarno -l boost_log -l boost_system -l pthread -DNDEBUG
 
 fdbg-build-jarno:
-	g++ -O3  -std=c++17 fdbg-build-jarno.cpp -o fdbg-build-jarno -l boost_log -l boost_system -l pthread -DNDEBUG
+	g++ -O3  -std=c++17 fdbg-build-jarno.cpp -o fdbg-build-jarno -l boost_log -l boost_system -l pthread -DNDEBUG -march=native
 
 fdbg-add-jarno:
-	g++ -O3  -std=c++17 fdbg-add-jarno.cpp -o fdbg-add-jarno -l boost_log -l boost_system -l pthread -DNDEBUG
+	g++ -O3  -std=c++17 fdbg-add-jarno.cpp -o fdbg-add-jarno -l boost_log -l boost_system -l pthread -DNDEBUG -march=native
 
 fdbg-del-jarno:
-	g++ -O3  -std=c++17 fdbg-del-jarno.cpp -o fdbg-del-jarno -l boost_log -l boost_system -l pthread -DNDEBUG
+	g++ -O3  -std=c++17 fdbg-del-jarno.cpp -o fdbg-del-jarno -l boost_log -l boost_system -l pthread -DNDEBUG -march=native
 
 fdbg-query-jarno:
-	g++ -O3  -std=c++17 fdbg-query-jarno.cpp -o fdbg-query-jarno -l boost_log -l boost_system -l pthread -DNDEBUG
+	g++ -O3  -std=c++17 fdbg-query-jarno.cpp -o fdbg-query-jarno -l boost_log -l boost_system -l pthread -DNDEBUG -march=native
 
 #readsplit: ReadSplit.cpp
 #	g++ -O3 -std=c++11 ReadSplit.cpp -o readsplit -l boost_log -l pthread

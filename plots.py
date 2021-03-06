@@ -12,16 +12,17 @@ parser.add_argument('--bufboss', help='Enable BufBOSS', action='store_const', co
 parser.add_argument('--dynboss', help='Enable DynBOSS', action='store_const', const=True, default=False)
 parser.add_argument('--fdbg', help='Enable FDBG', action='store_const', const=True, default=False)
 parser.add_argument('--fdbg-recsplit', help='Enable FDBG-recsplit', action='store_const', const=True, default=False)
+parser.add_argument('--all', help='Enable all', action='store_const', const=True, default=False)
 
 args = parser.parse_args()
 
 dir = args.dir
 
-enable_bifrost = args.bifrost
-enable_bufboss = args.bufboss
-enable_dynboss = args.dynboss
-enable_fdbg = args.fdbg
-enable_fdbg_recsplit = args.fdbg_recsplit
+enable_bifrost = args.bifrost or args.all
+enable_bufboss = args.bufboss or args.all
+enable_dynboss = args.dynboss or args.all
+enable_fdbg = args.fdbg # Not included in "all" at the moment
+enable_fdbg_recsplit = args.fdbg_recsplit or args.all
 
 print(args)
 
