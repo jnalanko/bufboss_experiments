@@ -21,31 +21,39 @@ dir = args.dir
 
 datasets = ["20K", "200K", "2M", "14M", "28M"]
 
+# Returns formatted strings time, mem, disk
+def parse_build_line(filename):
+    for line in open(filename):
+        tokens = line.split()
+        if tokens[0] == "build":
+            time, mem, disk = float(tokens[1]), int(tokens[2]), int(tokens[3])
+            return "%.2f" % (time / 60), "%.2f" % (mem / 2**20), "%.2f" %  (disk / 2**20)
+    print("Error parsing " + filename)
+
 def parse_summaries():
 
     for dataset in datasets:
 
-        print("\\hline " + dataset + " ")
+        print("\\hline " + dataset + " & ")
 
-        if dataset == "200K": 
+        if dataset == "200K" or dataset == "200K" or dataset == "2M": 
             print(" & & & ") # summary.txt does not exist for some reason
         else:
-            for line in open(dir + "/" + dataset + "/bufboss_results/summary.txt"):
-                tokens = line.split()
-                if tokens[0] == "build":
-                    print(tokens[3] + " & " + tokens[2] + " & " + tokens[1] + " & ")
-        for line in open(dir + "/" + dataset + "/dynboss_results/summary.txt"):
-            tokens = line.split()
-            if tokens[0] == "build":
-                print(tokens[3] + " & " + tokens[2] + " & " + tokens[1] + " & ")
-        for line in open(dir + "/" + dataset + "/fdbg_recsplit_results/summary.txt"):
-            tokens = line.split()
-            if tokens[0] == "build":
-                print(tokens[3] + " & " + tokens[2] + " & " + tokens[1] + " & ")
-        for line in open(dir + "/" + dataset + "/bifrost_results/summary.txt"):
-            tokens = line.split()
-            if tokens[0] == "build":
-                print(tokens[3] + " & " + tokens[2] + " & " + tokens[1] + " \\")
+            time, mem, disk = parse_build_line(dir + "/" + dataset + "/bufboss_results/summary.txt")
+            print(disk + " & " + mem + " & " + disk + " & ")
+
+        time, mem, disk = parse_build_line(dir + "/" + dataset + "/dynboss_results/summary.txt")
+        print(disk + " & " + mem + " & " + disk + " & ")
+        
+        time, mem, disk = parse_build_line(dir + "/" + dataset + "/fdbg_recsplit_results/summary.txt")
+        print(disk + " & " + mem + " & " + disk + " & ")
+
+        print(" & & & ") # Vanilla FBDG
+
+        time, mem, disk = parse_build_line(dir + "/" + dataset + "/bifrost_results/summary.txt")
+        print(disk + " & " + mem + " & " + disk + " \\\\ ")
+
+
 
 
 
@@ -77,5 +85,13 @@ table_prefix = """\\begin{table*}[h]
  \hline
  	&Disk  &Memory  & Time       &Disk  &Memory    & Time       &Disk   &Memory    & Time       &Disk &Memory &Time &Disk &Memory  &Time\\\\"""
 
+table_suffix = """\hline
+  	\\end{tabular}}
+ 	\\caption{Time in seconds, memory and disk and memory in $10^6$ bytes}
+ 	\\label{construction}
+ \\end{table*}
+ """
+
 print(table_prefix)
 parse_summaries()
+print(table_suffix)
