@@ -36,22 +36,26 @@ def parse_summaries():
 
         print("\\hline " + dataset + " & ")
 
-        if dataset == "200K" or dataset == "200K" or dataset == "2M": 
+        if dataset == "200K" or dataset == "2M": 
             print(" & & & ") # summary.txt does not exist for some reason
         else:
             time, mem, disk = parse_build_line(dir + "/" + dataset + "/bufboss_results/summary.txt")
-            print(disk + " & " + mem + " & " + disk + " & ")
+            print(disk + " & " + mem + " & " + time + " & ")
 
         time, mem, disk = parse_build_line(dir + "/" + dataset + "/dynboss_results/summary.txt")
-        print(disk + " & " + mem + " & " + disk + " & ")
+        print(disk + " & " + mem + " & " + time + " & ")
         
         time, mem, disk = parse_build_line(dir + "/" + dataset + "/fdbg_recsplit_results/summary.txt")
-        print(disk + " & " + mem + " & " + disk + " & ")
+        print(disk + " & " + mem + " & " + time + " & ")
 
-        print(" & & & ") # Vanilla FBDG
+        if dataset == "28M":
+            print(" & & & ") # Vanilla FBDG still running
+        else:
+            time, mem, disk = parse_build_line(dir + "/" + dataset + "/fdbg_results/summary.txt")
+            print(disk + " & " + mem + " & " + time + " & ")
 
         time, mem, disk = parse_build_line(dir + "/" + dataset + "/bifrost_results/summary.txt")
-        print(disk + " & " + mem + " & " + disk + " \\\\ ")
+        print(disk + " & " + mem + " & " + time + " \\\\ ")
 
 
 
