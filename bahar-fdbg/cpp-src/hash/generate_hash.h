@@ -72,6 +72,14 @@ class generate_hash {
      of.write ( (char*) &rinv, sizeof( u_int64_t ) );
      of.write ( (char*) &Prime, sizeof( u_int64_t ) );
 
+      // Write new nodes map
+      int64_t new_n = new_nodes.size();
+      of.write((char *)&new_n, sizeof(new_n));
+      for(const auto& keyval : new_nodes){
+         of.write((char *)&(keyval.first), sizeof(keyval.first));
+         of.write((char *)&(keyval.second), sizeof(keyval.second));
+      }
+
      cerr << "writing BBHash..." << endl;
      bphf->save( of );
    }
@@ -84,14 +92,19 @@ class generate_hash {
      of.read ( (char*) &r, sizeof( u_int64_t ) );
      of.read ( (char*) &rinv, sizeof( u_int64_t ) );
      of.read ( (char*) &Prime, sizeof( u_int64_t ) );
-     //     cerr << "n k r Prime " << n_kmer << ' ' << k_kmer << ' ' << r << ' ' << Prime << '\n';
-     
-     //     this->bphf = new boomphf::mphf<u_int64_t, hasher_t>(n_kmer, KRHash_vec, 4, 2.0, true, false);
+
+     int64_t new_n;
+     of.read((char *)&new_n, sizeof(new_n));
+     new_nodes.clear();
+     for(int64_t i = 0; i < new_n; i++){
+        kmer_t key; u_int64_t val; 
+        of.read((char *)&key, sizeof(key));
+        of.read((char *)&val, sizeof(val));
+        new_nodes[key] = val;
+     }
+
      bphf = new boomphf::mphf< u_int64_t, hasher_t >();
-     //     cerr << "loading BBHash..." << endl;
-     
      bphf->load( of );
-     //     cerr << "done\n";
      precomputePowers_mod();
    }
    
