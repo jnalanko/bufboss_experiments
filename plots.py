@@ -58,8 +58,11 @@ def parse_summaries():
                 build.append(to_dict4("BufBOSS-" + tokens[0].split("-")[-1],  float(tokens[1]), float(tokens[2]), float(tokens[3])))
             elif "add-" in tokens[0]:
                 add.append(to_dict4("BufBOSS-" + tokens[0].split("-")[-1],  float(tokens[1]), float(tokens[2]), float(tokens[3])))
-            elif "del-" in tokens[0]:
+            elif "del-" in tokens[0] and not ("adddel-" in tokens[0]):
+                print(tokens)
                 delete.append(to_dict4("BufBOSS-" + tokens[0].split("-")[-1],  float(tokens[1]), float(tokens[2]), float(tokens[3])))
+            elif "adddel-" in tokens[0]:
+                pass # todo
             else: # query
                 if tokens[0] not in query: query[tokens[0]] = []
                 query[tokens[0]].append(("BufBOSS",  float(tokens[1])))
@@ -192,11 +195,14 @@ for D in build:
     ax.annotate(D["name"], 
                 xy=(D["time"], D["mem"]), xycoords='data', # Data point
                 xytext=(5, 5), textcoords='offset points') # Text offset
-ax.set_xlim((0, None))
-ax.set_ylim((0, None))
+#ax.set_xlim((0, None))
+#ax.set_ylim((0, None))
 ax.set_xlabel("time (s)")
 ax.set_ylabel("mem (bytes)")
 ax.set_title("Construction")
+ax.set_xscale("log")
+ax.set_yscale("log")
+plt.grid(True, which="both", linestyle='dotted')
 plt.show(block = False)
 plt.savefig(dir + "/build.png")
 
@@ -209,11 +215,14 @@ for D in add:
     ax2.annotate(D["name"], 
                 xy=(D["time"], D["mem"]), xycoords='data', # Data point
                 xytext=(5, 5), textcoords='offset points') # Text offset
-ax.set_xlim((0, None))
-ax.set_ylim((0, None))
+#ax.set_xlim((0, None))
+#ax.set_ylim((0, None))
 ax2.set_xlabel("time (s)")
 ax2.set_ylabel("mem (bytes)")
 ax2.set_title("Addition")
+ax2.set_xscale("log")
+ax2.set_yscale("log")
+plt.grid(True, which="both", linestyle='dotted')
 plt.show(block = False)
 plt.savefig(dir + "/add.png")
 
@@ -226,11 +235,14 @@ for D in delete:
     ax2.annotate(D["name"], 
                 xy=(D["time"], D["mem"]), xycoords='data', # Data point
                 xytext=(5, 5), textcoords='offset points') # Text offset
-ax.set_xlim((0, None))
-ax.set_ylim((0, None))
+#ax.set_xlim((0, None))
+#ax.set_ylim((0, None))
 ax2.set_xlabel("time (s)")
 ax2.set_ylabel("mem (bytes)")
 ax2.set_title("Deletion")
+ax2.set_xscale("log")
+ax2.set_yscale("log")
+plt.grid(True, which="both", linestyle='dotted')
 plt.savefig(dir + "/del.png")
 plt.show(block = True)
 
