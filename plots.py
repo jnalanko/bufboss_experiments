@@ -101,6 +101,9 @@ def parse_summaries():
                 build.append(to_dict4("FDBG-RecSplit",  float(tokens[1]), float(tokens[2]), float(tokens[3])))
             elif tokens[0] == "add":
                 add.append(to_dict4("FDBG-RecSplit",  float(tokens[1]), float(tokens[2]), float(tokens[3])))
+            elif tokens[0] == "del":
+                print(tokens)
+                delete.append(to_dict4("FDBG-RecSplit",  float(tokens[1]), float(tokens[2]), float(tokens[3])))
             else: # query
                 if tokens[0] not in query: query[tokens[0]] = []
                 query[tokens[0]].append(("FDBG-RecSplit",  float(tokens[1])))
