@@ -91,7 +91,7 @@ table_prefix = """\\begin{table*}[h]
 
 table_suffix = """\\hline
   	\\end{tabular}}
- 	\\caption{E coli reads construction. Time in minutes, memory and disk in mebibytes (2^{20} bytes).}
+ 	\\caption{E coli reads construction. Time in minutes, memory and disk in mebibytes ($2^{20}$ bytes).}
  	\\label{construction}
  \\end{table*}
  """
