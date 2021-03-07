@@ -5,6 +5,10 @@ from setup import *
 
 import argparse
 
+plt.rcParams.update({'font.size': 14, 'font.family': "sans-serif"})
+plt.rcParams.update({'font.sans-serif': ['Arial']})
+
+
 parser = argparse.ArgumentParser()
 parser.add_argument('--dir', type=str, help='base directory')
 parser.add_argument('--bifrost', help='Enable Bifrost', action='store_const', const=True, default=False)
@@ -184,7 +188,7 @@ ax.set_yscale("log")
 ax.legend()
 fig.tight_layout()
 plt.show(block = False)
-plt.savefig(dir + "/query.png")
+plt.savefig(dir + "/query.eps")
 
 #
 # Plot construction
@@ -206,18 +210,26 @@ ax.set_title("Construction")
 ax.set_xscale("log")
 ax.set_yscale("log")
 plt.grid(True, which="both", linestyle='dotted')
+plt.tight_layout()
 plt.show(block = False)
-plt.savefig(dir + "/build.png")
+plt.savefig(dir + "/build.eps")
 
 # Plot addition
 fig2, ax2 = plt.subplots()
 for D in add:
     color = "blue"
-    if "BufBOSS" in D["name"]: color = "orange"
+    label_overlap_fix = 0
+    if "BufBOSS-0.25" in D["name"] or "BufBOSS-0.5" in D["name"]: 
+        continue # These are essentially the same as BufBOSS-1.0
+    if "BufBOSS" in D["name"]: 
+        if D["name"] == "BufBOSS-0.025":
+            label_overlap_fix = 20
+        color = "orange"
+        D["name"] = D["name"].replace("BufBOSS","BB")
     ax2.scatter(D["time"], D["mem"], color = color)
     ax2.annotate(D["name"], 
                 xy=(D["time"], D["mem"]), xycoords='data', # Data point
-                xytext=(5, 5), textcoords='offset points') # Text offset
+                xytext=(5 - label_overlap_fix, 5), textcoords='offset points') # Text offset
 #ax.set_xlim((0, None))
 #ax.set_ylim((0, None))
 ax2.set_xlabel("time (s)")
@@ -226,14 +238,18 @@ ax2.set_title("Addition")
 ax2.set_xscale("log")
 ax2.set_yscale("log")
 plt.grid(True, which="both", linestyle='dotted')
+plt.tight_layout()
 plt.show(block = False)
-plt.savefig(dir + "/add.png")
+plt.savefig(dir + "/add.eps")
 
 # Plot deletion
 fig2, ax2 = plt.subplots()
 for D in delete:
     color = "blue"
-    if "BufBOSS" in D["name"]: color = "orange"
+    if "BufBOSS" in D["name"]: 
+        if D["name"] != "BufBOSS-1.0": continue
+        D["name"] = "BufBOSS"
+        color = "orange"
     ax2.scatter(D["time"], D["mem"], color = color)
     ax2.annotate(D["name"], 
                 xy=(D["time"], D["mem"]), xycoords='data', # Data point
@@ -246,6 +262,7 @@ ax2.set_title("Deletion")
 ax2.set_xscale("log")
 ax2.set_yscale("log")
 plt.grid(True, which="both", linestyle='dotted')
-plt.savefig(dir + "/del.png")
+plt.tight_layout()
+plt.savefig(dir + "/del.eps")
 plt.show(block = True)
 
