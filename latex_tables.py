@@ -30,6 +30,23 @@ def parse_build_line(filename):
             return "%.2f" % (time / 60), "%.2f" % (mem / 2**20), "%.2f" %  (disk / 2**20)
     print("Error parsing " + filename)
 
+
+def parse_add_line(filename):
+    for line in open(filename):
+        tokens = line.split()
+        if tokens[0] == "add" or tokens[0] == "add-0.025":
+            time, mem, disk = float(tokens[1]), int(tokens[2]), int(tokens[3])
+            return "%.2f" % (time / 60), "%.2f" % (mem / 2**20), "%.2f" %  (disk / 2**20)
+    print("Error parsing " + filename)
+
+def parse_del_line(filename):
+    for line in open(filename):
+        tokens = line.split()
+        if tokens[0] == "del-0.025":
+            time, mem, disk = float(tokens[1]), int(tokens[2]), int(tokens[3])
+            return "%.2f" % (time / 60), "%.2f" % (mem / 2**20), "%.2f" %  (disk / 2**20)
+    print("Error parsing " + filename)
+
 def parse_summaries():
 
     for dataset in datasets:

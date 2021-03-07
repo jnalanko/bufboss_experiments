@@ -252,6 +252,58 @@ def generate_input_files_from_readfile(readfile, experiment_dir, build_percentag
     for name in query_inputs:
         metadata.write(name + " " + str(fasta_count_edgemers(query_inputs[name])) + "\n")
 
+def create_given_files(buildfile, addfile, delfile, queryfile, experiment_dir):
+    datadir = experiment_dir + "/data"
+    tempdir = experiment_dir + "/temp"
+
+    run("mkdir -p " + str(datadir))
+    run("mkdir -p " + str(tempdir))
+    run("mkdir -p " + str(experiment_dir))
+    run("mkdir -p " + str(experiment_dir + "/lists"))
+
+    query_inputs = {"query": experiment_dir + "/data/query.fasta"}
+    query_metadatafile = experiment_dir + "/lists/query_metadata.txt"
+
+    build_concat = experiment_dir + "/data/build.fasta"
+    add_concat = experiment_dir + "/data/add.fasta"
+    del_concat = experiment_dir + "/data/del.fasta"
+
+    build_concat_with_rc = experiment_dir + "/data/build_with_rc.fasta"
+    add_concat_with_rc = experiment_dir + "/data/add_with_rc.fasta"
+    del_concat_with_rc = experiment_dir + "/data/del_with_rc.fasta"
+
+    config = ExperimentConfig (build_concat, build_concat_with_rc, add_concat, add_concat_with_rc, del_concat, del_concat_with_rc, query_inputs, experiment_dir, tempdir)
+    config.serialize(experiment_dir + "/config.txt")
+
+    # Preprocess input files
+    run("echo " + buildfile + " > " + tempdir + "/buildfile.txt")
+    run("./input_cleaning/collect_and_remove_non_ACGT " + tempdir + "/buildfile.txt " + build_concat + " " + str(edgemer_k))
+
+    run("echo " + addfile + " > " + tempdir + "/addfile.txt")
+    run("./input_cleaning/collect_and_remove_non_ACGT " + tempdir + "/addfile.txt " + add_concat + " " + str(edgemer_k))
+
+    run("echo " + delfile + " > " + tempdir + "/delfile.txt")
+    run("./input_cleaning/collect_and_remove_non_ACGT " + tempdir + "/delfile.txt " + del_concat + " " + str(edgemer_k))
+
+    run("echo " + queryfile + " > " + tempdir + "/queryfile.txt")
+    run("./input_cleaning/collect_and_remove_non_ACGT " + tempdir + "/queryfile.txt " + query_inputs["query"] + " " + str(edgemer_k))
+
+    # For tools that don't index reverse complements (looking at you dynboss), create input files with
+    # concatenated reverse complements in the end
+    run("./input_cleaning/get_rc " + build_concat + " temp/temp_rc.fasta")
+    run("cat " + build_concat + " temp/temp_rc.fasta > " + build_concat_with_rc) 
+
+    run("./input_cleaning/get_rc " + add_concat + " temp/temp_rc.fasta")
+    run("cat " + add_concat + " temp/temp_rc.fasta > " + add_concat_with_rc)
+
+    run("./input_cleaning/get_rc " + del_concat + " temp/temp_rc.fasta")
+    run("cat " + del_concat + " temp/temp_rc.fasta > " + del_concat_with_rc)
+
+    print("Calculating metadata")
+    metadata = open(query_metadatafile,'w')
+    for name in query_inputs:
+        metadata.write(name + " " + str(fasta_count_edgemers(query_inputs[name])) + "\n")
+
 # Takes number of genomes to build, add and del respectively.
 if __name__ == "__main__":
     if sys.argv[1] == "reads-split":
@@ -262,6 +314,13 @@ if __name__ == "__main__":
         del_percentage = int(sys.argv[6])
         assert(build_percentage + add_percentage + del_percentage == 100)
         generate_input_files_from_readfile(readfile, experiment_dir, build_percentage, add_percentage, del_percentage)
+    elif sys.argv[1] == "given-files":
+        buildfile = sys.argv[2]
+        addfile = sys.argv[3]
+        delfile = sys.argv[4]
+        queryfile = sys.argv[5]
+        experiment_dir = sys.argv[6]
+        create_given_files(buildfile, addfile, delfile, queryfile, experiment_dir)
     else:
         print("Invalid experiment class: " + sys.argv[1])
         quit(1)

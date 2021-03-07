@@ -25,7 +25,7 @@ dir = args.dir
 enable_bifrost = args.bifrost or args.all
 enable_bufboss = args.bufboss or args.all
 enable_dynboss = args.dynboss or args.all
-enable_fdbg = args.fdbg # Not included in "all" at the moment
+enable_fdbg = args.fdbg or args.all
 enable_fdbg_recsplit = args.fdbg_recsplit or args.all
 
 print(args)
@@ -93,6 +93,8 @@ def parse_summaries():
                 build.append(to_dict4("FDBG",  float(tokens[1]), float(tokens[2]), float(tokens[3])))
             elif tokens[0] == "add":
                 add.append(to_dict4("FDBG",  float(tokens[1]), float(tokens[2]), float(tokens[3])))
+            elif tokens[0] == "del":
+                delete.append(to_dict4("FDBG",  float(tokens[1]), float(tokens[2]), float(tokens[3])))
             else: # query
                 if tokens[0] not in query: query[tokens[0]] = []
                 query[tokens[0]].append(("FDBG",  float(tokens[1])))
@@ -106,7 +108,6 @@ def parse_summaries():
             elif tokens[0] == "add":
                 add.append(to_dict4("FDBG-RecSplit",  float(tokens[1]), float(tokens[2]), float(tokens[3])))
             elif tokens[0] == "del":
-                print(tokens)
                 delete.append(to_dict4("FDBG-RecSplit",  float(tokens[1]), float(tokens[2]), float(tokens[3])))
             else: # query
                 if tokens[0] not in query: query[tokens[0]] = []
@@ -164,28 +165,30 @@ n_bars = enable_bifrost + enable_bufboss + enable_fdbg + enable_fdbg_recsplit + 
 fig, ax = plt.subplots()
 bar_idx = 0
 if enable_bifrost:
-    rects1 = ax.bar(x + bar_idx*width/n_bars, bifrost_queries, width/n_bars, label='Bifrost')
+    rects1 = ax.bar(x + (bar_idx-2)*width/n_bars, bifrost_queries, width/n_bars, label='Bifrost')
     bar_idx += 1
 if enable_bufboss:
-    rects2 = ax.bar(x + bar_idx*width/n_bars, bufboss_queries, width/n_bars, label='BufBOSS')
+    rects2 = ax.bar(x + (bar_idx-2)*width/n_bars, bufboss_queries, width/n_bars, label='BufBOSS')
     bar_idx += 1
 if enable_fdbg:
-    rects3 = ax.bar(x + bar_idx*width/n_bars, fdbg_queries, width/n_bars, label='FDBG')
+    rects3 = ax.bar(x + (bar_idx-2)*width/n_bars, fdbg_queries, width/n_bars, label='FDBG')
     bar_idx += 1
 if enable_fdbg_recsplit:
-    rects4 = ax.bar(x + bar_idx*width/n_bars, fdbg_recsplit_queries, width/n_bars, label='FDBG-RecSplit')
+    rects4 = ax.bar(x + (bar_idx-2)*width/n_bars, fdbg_recsplit_queries, width/n_bars, label='FDBG-RecSplit')
     bar_idx += 1
 if enable_dynboss:
-    rects5 = ax.bar(x + bar_idx*width/n_bars, dynboss_queries, width/n_bars, label='DynBOSS')
+    rects5 = ax.bar(x + (bar_idx-2)*width/n_bars, dynboss_queries, width/n_bars, label='DynBOSS')
     bar_idx += 1
+
+query_shortnames = {"query-existing_build_sequence": "EBS", "query-existing_added_sequence": "EAS", "query-existing_added_edgemers": "EAE", "query-existing_build_edgemers": "EBE", "query-random_sequence": "RS", "query-random_edgemers": "RE"}
 
 # Add some text for labels, title and custom x-axis tick labels, etc.
 ax.set_ylabel('Seconds per edgemer')
 ax.set_title('Query time')
 ax.set_xticks(x)
-ax.set_xticklabels(query_inputs, rotation = 45)
+ax.set_xticklabels([query_shortnames[Q] for Q in query_inputs])
 ax.set_yscale("log")
-ax.legend()
+plt.legend(loc="lower left", bbox_to_anchor= (0.0, 1.01), ncol=2, borderaxespad=0, frameon=False)
 fig.tight_layout()
 plt.show(block = False)
 plt.savefig(dir + "/query.eps")
@@ -202,8 +205,8 @@ for D in build:
     ax.annotate(D["name"], 
                 xy=(D["time"], D["mem"]), xycoords='data', # Data point
                 xytext=(5, 5), textcoords='offset points') # Text offset
-#ax.set_xlim((0, None))
-#ax.set_ylim((0, None))
+ax.set_xlim((1, None))
+ax.set_ylim((1, None))
 ax.set_xlabel("time (s)")
 ax.set_ylabel("mem (bytes)")
 ax.set_title("Construction")
