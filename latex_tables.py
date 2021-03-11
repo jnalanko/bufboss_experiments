@@ -42,31 +42,40 @@ def parse_add_line(filename):
 def parse_del_line(filename):
     for line in open(filename):
         tokens = line.split()
-        if tokens[0] == "del-0.025":
+        if tokens[0] == "del" or tokens[0] == "del-0.025":
             time, mem, disk = float(tokens[1]), int(tokens[2]), int(tokens[3])
             return "%.2f" % (time / 60), "%.2f" % (mem / 2**20), "%.2f" %  (disk / 2**20)
     print("Error parsing " + filename)
 
-def parse_summaries():
+def parse_summaries(tablename):
+
+    parse_func = None
+    if tablename == "build": parse_func = parse_build_line
+    if tablename == "add": parse_func = parse_add_line
+    if tablename == "del": parse_func = parse_del_line
+    assert(parse_func != None)
 
     for dataset in datasets:
 
         print("\\hline " + dataset + " & ")
 
-        time, mem, disk = parse_build_line(dir + "/" + dataset + "/bufboss_results/summary.txt")
+        time, mem, disk = parse_func(dir + "/" + dataset + "/bufboss_results/summary.txt")
         print(disk + " & " + mem + " & " + time + " & ")
 
-        time, mem, disk = parse_build_line(dir + "/" + dataset + "/dynboss_results/summary.txt")
+        time, mem, disk = parse_func(dir + "/" + dataset + "/dynboss_results/summary.txt")
         print(disk + " & " + mem + " & " + time + " & ")
         
-        time, mem, disk = parse_build_line(dir + "/" + dataset + "/fdbg_recsplit_results/summary.txt")
+        time, mem, disk = parse_func(dir + "/" + dataset + "/fdbg_recsplit_results/summary.txt")
         print(disk + " & " + mem + " & " + time + " & ")
 
-        time, mem, disk = parse_build_line(dir + "/" + dataset + "/fdbg_results/summary.txt")
+        time, mem, disk = parse_func(dir + "/" + dataset + "/fdbg_results/summary.txt")
         print(disk + " & " + mem + " & " + time + " & ")
 
-        time, mem, disk = parse_build_line(dir + "/" + dataset + "/bifrost_results/summary.txt")
-        print(disk + " & " + mem + " & " + time + " \\\\ ")
+        if tablename == "del":
+            print(" & & \\\\") # Bifrost does not do delete
+        else:
+            time, mem, disk = parse_func(dir + "/" + dataset + "/bifrost_results/summary.txt")
+            print(disk + " & " + mem + " & " + time + " \\\\ ")
 
 
 
@@ -102,11 +111,19 @@ table_prefix = """\\begin{table*}[h]
 
 table_suffix = """\\hline
   	\\end{tabular}}
- 	\\caption{E coli reads construction. Time in minutes, memory and disk in mebibytes ($2^{20}$ bytes).}
- 	\\label{construction}
+ 	\\caption{}
+ 	\\label{}
  \\end{table*}
  """
 
 print(table_prefix)
-parse_summaries()
+parse_summaries("build")
+print(table_suffix)
+
+print(table_prefix)
+parse_summaries("add")
+print(table_suffix)
+
+print(table_prefix)
+parse_summaries("del")
 print(table_suffix)

@@ -304,6 +304,76 @@ def create_given_files(buildfile, addfile, delfile, queryfile, experiment_dir):
     for name in query_inputs:
         metadata.write(name + " " + str(fasta_count_edgemers(query_inputs[name])) + "\n")
 
+def add_additions_deletions_and_queries(addfile, delfile, experiment_dir):
+    # Assumes the directory tree and the bufboss index has been built
+    config = ExperimentConfig()
+    config.load(experiment_dir + "/config.txt")
+
+    experiment_dir = config.experiment_dir
+    tempdir = experiment_dir + "/temp"
+
+    query_inputs = {"query-random_edgemers": experiment_dir + "/data/random/edgemers.fasta",
+                    "query-random_sequence": experiment_dir + "/data/random/sequence.fasta",
+                    "query-existing_build_edgemers": experiment_dir + "/data/existing/build_edgemers.fasta",
+                    "query-existing_build_sequence": experiment_dir + "/data/existing/build_sequence.fasta",
+                    "query-existing_added_edgemers": experiment_dir + "/data/existing/added_edgemers.fasta",
+                    "query-existing_added_sequence" : experiment_dir + "/data/existing/added_sequence.fasta"}
+
+    query_metadatafile = experiment_dir + "/lists/query_metadata.txt"
+
+    build_concat = experiment_dir + "/data/build.fasta" # Assumed to exist already
+
+    add_concat = experiment_dir + "/data/add.fasta" # Will be created
+    del_concat = experiment_dir + "/data/del.fasta" # Will be created
+
+    run("echo " + addfile + " > " + tempdir + "/addfile.txt")
+    run("./input_cleaning/collect_and_remove_non_ACGT " + tempdir + "/addfile.txt " + add_concat + " " + str(edgemer_k))
+
+    run("echo " + delfile + " > " + tempdir + "/delfile.txt")
+    run("./input_cleaning/collect_and_remove_non_ACGT " + tempdir + "/delfile.txt " + del_concat + " " + str(edgemer_k))
+
+    add_concat_with_rc = experiment_dir + "/data/add_with_rc.fasta" # Will be created
+    del_concat_with_rc = experiment_dir + "/data/del_with_rc.fasta" # Will be created
+
+    # For tools that don't index reverse complements (looking at you dynboss), create input files with
+    # concatenated reverse complements in the end
+
+    run("./input_cleaning/get_rc " + add_concat + " temp/temp_rc.fasta")
+    run("cat " + add_concat + " temp/temp_rc.fasta > " + add_concat_with_rc)
+
+    run("./input_cleaning/get_rc " + del_concat + " temp/temp_rc.fasta")
+    run("cat " + del_concat + " temp/temp_rc.fasta > " + del_concat_with_rc)
+
+    # Generate random queries
+    run("mkdir -p " + experiment_dir + "/data/random")
+    run("python3 gen_random_kmers.py 31 1000000 > " + query_inputs["query-random_edgemers"]) # Million edgemers
+    run("python3 gen_random_kmers.py 1000000 1 > " + query_inputs["query-random_sequence"]) # Million - k + 1 edgemers
+
+    # Generate existing queries...
+    run("mkdir -p " + experiment_dir + "/data/existing")
+
+    # ...for existing k-mers, build a bufboss and sample from there. First for build kmers...
+    index_dir = experiment_dir + "/bufboss_out/built" # Assumed to exist already
+    run("./bufboss/bin/bufboss_sample_random_edgemers -i " + index_dir + " -o " + query_inputs["query-existing_build_edgemers"] + " --count 1000000")
+
+    # ...then for added kmers
+    run("./bufboss/KMC/bin/kmc -k31 -m1 -ci1 -cs1 -fm " + add_concat + " " + tempdir + "/kmc_db temp")
+    run("./bufboss/bin/bufboss_build --KMC " + tempdir + "/kmc_db -o " + index_dir + " -t " + tempdir)
+    run("./bufboss/bin/bufboss_sample_random_edgemers -i " + index_dir + " -o " + query_inputs["query-existing_added_edgemers"] + " --count 1000000")
+
+    # For existing sequences, take 1 million base pairs from buildlist and addlist
+    run("./input_cleaning/take_prefix 1000000 " + build_concat + " " + query_inputs["query-existing_build_sequence"])
+    run("./input_cleaning/take_prefix 1000000 " + add_concat + " " + query_inputs["query-existing_added_sequence"])
+
+    print("Calculating metadata")
+    metadata = open(query_metadatafile,'w')
+    for name in query_inputs:
+        metadata.write(name + " " + str(fasta_count_edgemers(query_inputs[name])) + "\n")
+
+    config.query_inputs = query_inputs
+    config.serialize(experiment_dir + "/config.txt")
+
+
 # Takes number of genomes to build, add and del respectively.
 if __name__ == "__main__":
     if sys.argv[1] == "reads-split":
@@ -321,6 +391,11 @@ if __name__ == "__main__":
         queryfile = sys.argv[5]
         experiment_dir = sys.argv[6]
         create_given_files(buildfile, addfile, delfile, queryfile, experiment_dir)
+    elif sys.argv[1] == "update-add-del-and-query":
+        addfile = sys.argv[2]
+        delfile = sys.argv[3]
+        experiment_dir = sys.argv[4]
+        add_additions_deletions_and_queries(addfile, delfile, experiment_dir)
     else:
         print("Invalid experiment class: " + sys.argv[1])
         quit(1)
