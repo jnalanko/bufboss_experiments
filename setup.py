@@ -356,10 +356,12 @@ def add_additions_deletions_and_queries(addfile, delfile, experiment_dir):
     index_dir = experiment_dir + "/bufboss_out/built" # Assumed to exist already
     run("./bufboss/bin/bufboss_sample_random_edgemers -i " + index_dir + " -o " + query_inputs["query-existing_build_edgemers"] + " --count 1000000")
 
+    temp_index_dir = tempdir + "/temp_index"
+    run("mkdir -p " + temp_index_dir)
     # ...then for added kmers
     run("./bufboss/KMC/bin/kmc -k31 -m1 -ci1 -cs1 -fm " + add_concat + " " + tempdir + "/kmc_db temp")
-    run("./bufboss/bin/bufboss_build --KMC " + tempdir + "/kmc_db -o " + index_dir + " -t " + tempdir)
-    run("./bufboss/bin/bufboss_sample_random_edgemers -i " + index_dir + " -o " + query_inputs["query-existing_added_edgemers"] + " --count 1000000")
+    run("./bufboss/bin/bufboss_build --KMC " + tempdir + "/kmc_db -o " + temp_index_dir + " -t " + tempdir)
+    run("./bufboss/bin/bufboss_sample_random_edgemers -i " + temp_index_dir + " -o " + query_inputs["query-existing_added_edgemers"] + " --count 1000000")
 
     # For existing sequences, take 1 million base pairs from buildlist and addlist
     run("./input_cleaning/take_prefix 1000000 " + build_concat + " " + query_inputs["query-existing_build_sequence"])
