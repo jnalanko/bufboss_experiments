@@ -205,8 +205,8 @@ for D in build:
     ax.annotate(D["name"], 
                 xy=(D["time"], D["mem"]), xycoords='data', # Data point
                 xytext=(5, 5), textcoords='offset points') # Text offset
-ax.set_xlim((1, None))
-ax.set_ylim((1, None))
+#ax.set_xlim((1, None))
+#ax.set_ylim((1, None))
 ax.set_xlabel("time (s)")
 ax.set_ylabel("mem (bytes)")
 ax.set_title("Construction")

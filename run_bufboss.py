@@ -84,21 +84,21 @@ build_disk = get_disk_size_bytes(built)
 summary_out.write("build " + str(KMC_time + build_time) + " " + str(max(build_rss, KMC_rss)) + " " + str(build_disk) + "\n")
 
 # Add
-for b in buf_fractions:
+for i, b in enumerate(buf_fractions):
     add_time, add_rss = parse_usr_bin_time(resultdir + "/add-" + str(b) + ".stderr.txt")
-    add_disk = 0 # Todo
+    add_disk = get_disk_size_bytes(added) # This reports the disk size only for the last buffer fraction trie
     summary_out.write("add-" + str(b) + " " + str(add_time) + " " + str(add_rss) + " " + str(add_disk) + "\n")
 
 # Delete
 for b in buf_fractions:
     del_time, del_rss = parse_usr_bin_time(resultdir + "/del-" + str(b) + ".stderr.txt")
-    del_disk = 0 # todo
+    del_disk = get_disk_size_bytes(deleted) # This reports the disk size only for the last buffer fraction trie
     summary_out.write("del-" + str(b) + " " + str(del_time) + " " + str(del_rss) + " " + str(del_disk) + "\n")
 
 # Add and delete
 for b in buf_fractions:
     adddel_time, adddel_rss = parse_usr_bin_time(resultdir + "/adddel-" + str(b) + ".stderr.txt")
-    adddel_disk = 0 # todo
+    adddel_disk = get_disk_size_bytes(added_and_deleted) # This reports the disk size only for the last buffer fraction trie
     summary_out.write("adddel-" + str(b) + " " + str(adddel_time) + " " + str(adddel_rss) + " " + str(adddel_disk) + "\n")
 
 for name in config.query_inputs:
