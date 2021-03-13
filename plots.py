@@ -5,7 +5,7 @@ from setup import *
 
 import argparse
 
-plt.rcParams.update({'font.size': 14, 'font.family': "sans-serif"})
+plt.rcParams.update({'font.size': 13, 'font.family': "sans-serif"})
 plt.rcParams.update({'font.sans-serif': ['Arial']})
 
 
@@ -44,15 +44,19 @@ def parse_summaries():
 
     # Parse bifrost
     if enable_bifrost:
-        for line in open(dir + "/bifrost_results/summary.txt"):
-            tokens = line.split()
-            if tokens[0] == "build":
-                build.append(to_dict4("Bifrost",  float(tokens[1]), float(tokens[2]), float(tokens[3])))
-            elif tokens[0] == "add":
-                add.append(to_dict4("Bifrost",  float(tokens[1]), float(tokens[2]), float(tokens[3])))
-            else: # query
-                if tokens[0] not in query: query[tokens[0]] = []
-                query[tokens[0]].append(("Bifrost",  float(tokens[1])))
+        if "final/metagenomes/600M" in args.dir:
+            build.append(to_dict4("Bifrost",  2700*60, 165888 * 2**20, 60500 * 2**20 ))
+        else:
+            for line in open(dir + "/bifrost_results/summary.txt"):
+                tokens = line.split()
+                if tokens[0] == "build":
+                    build.append(to_dict4("Bifrost",  float(tokens[1]), float(tokens[2]), float(tokens[3])))
+                elif tokens[0] == "add":
+                    add.append(to_dict4("Bifrost",  float(tokens[1]), float(tokens[2]), float(tokens[3])))
+                else: # query
+                    if tokens[0] not in query: query[tokens[0]] = []
+                    query[tokens[0]].append(("Bifrost",  float(tokens[1])))
+
 
     # Parse bufboss
     if enable_bufboss:
@@ -122,11 +126,129 @@ def parse_query_metadata():
         D[line.split()[0]] = int(line.split()[-1])
     return D
 
+def adjustments():
+    plt.gcf().subplots_adjust(bottom=0.15)
+    plt.gcf().subplots_adjust(left=0.15)
+    plt.gcf().subplots_adjust(right=0.8)
+
 build, add, delete, query = parse_summaries()
 query_metadata = parse_query_metadata()
 print(build)
 print(add)
 print(query)
+
+markers = {"BufBOSS": 'o',
+           "Bifrost": 'o',
+           "DynBOSS": "o",
+           "FDBG": "o",
+           "FDBG-RecSplit": "o"}
+
+#
+# Plot construction time/mem
+#
+
+fig, ax = plt.subplots()
+for D in build:
+    color = "blue"
+    if "BufBOSS" in D["name"]: 
+        color = "orange"
+        D["name"] = "BufBOSS" 
+    ax.scatter(D["time"], D["mem"], color = color, marker = markers[D["name"]])
+    ax.annotate(D["name"], 
+                xy=(D["time"], D["mem"]), xycoords='data', # Data point
+                xytext=(5, 5), textcoords='offset points') # Text offset
+#ax.set_xlim((1, None))
+#ax.set_ylim((1, None))
+ax.set_xlabel("time (s)")
+ax.set_ylabel("mem (bytes)")
+#ax.set_title("Construction")
+ax.set_xscale("log")
+ax.set_yscale("log")
+plt.grid(True, which="both", linestyle='dotted')
+#plt.tight_layout()
+adjustments()
+plt.show(block = False)
+plt.savefig(dir + "/build.eps")
+
+# Plot construction time/disk
+
+fig, ax = plt.subplots()
+for D in build:
+    color = "blue"
+    if "BufBOSS" in D["name"]: 
+        color = "orange"
+        D["name"] = "BufBOSS"
+    ax.scatter(D["time"], D["disksize"], color = color, marker = markers[D["name"]])
+    ax.annotate(D["name"], 
+                xy=(D["time"], D["disksize"]), xycoords='data', # Data point
+                xytext=(5, 5), textcoords='offset points') # Text offset
+#ax.set_xlim((1, None))
+#ax.set_ylim((1, None))
+ax.set_xlabel("time (s)")
+ax.set_ylabel("index size on disk (bytes)")
+#ax.set_title("Construction")
+ax.set_xscale("log")
+ax.set_yscale("log")
+plt.grid(True, which="both", linestyle='dotted')
+#plt.tight_layout()
+adjustments()
+plt.show(block = False)
+plt.savefig(dir + "/disk.eps")
+
+# Plot addition
+fig2, ax2 = plt.subplots()
+for D in add:
+    color = "blue"
+    label_overlap_fix = 0
+    if "BufBOSS-0.25" in D["name"] or "BufBOSS-0.5" in D["name"]: 
+        continue # These are essentially the same as BufBOSS-1.0
+    if "BufBOSS" in D["name"]: 
+        if D["name"] == "BufBOSS-0.025":
+            label_overlap_fix = 20
+        color = "orange"
+        D["name"] = D["name"].replace("BufBOSS","BB")
+    marker = markers[D["name"]] if "BB-" not in D["name"] else markers["BufBOSS"]
+    ax2.scatter(D["time"], D["mem"], color = color, marker = marker)
+    ax2.annotate(D["name"], 
+                xy=(D["time"], D["mem"]), xycoords='data', # Data point
+                xytext=(5 - label_overlap_fix, 5), textcoords='offset points') # Text offset
+#ax.set_xlim((0, None))
+#ax.set_ylim((0, None))
+ax2.set_xlabel("time (s)")
+ax2.set_ylabel("mem (bytes)")
+ax2.set_title("Addition")
+ax2.set_xscale("log")
+ax2.set_yscale("log")
+plt.grid(True, which="both", linestyle='dotted')
+#plt.tight_layout()
+adjustments()
+plt.show(block = False)
+plt.savefig(dir + "/add.eps")
+
+# Plot deletion
+fig2, ax2 = plt.subplots()
+for D in delete:
+    color = "blue"
+    if "BufBOSS" in D["name"]: 
+        if D["name"] != "BufBOSS-1.0": continue
+        D["name"] = "BufBOSS"
+        color = "orange"
+    ax2.scatter(D["time"], D["mem"], color = color, marker = markers[D["name"]])
+    ax2.annotate(D["name"], 
+                xy=(D["time"], D["mem"]), xycoords='data', # Data point
+                xytext=(5, 5), textcoords='offset points') # Text offset
+#ax.set_xlim((0, None))
+#ax.set_ylim((0, None))
+ax2.set_xlabel("time (s)")
+ax2.set_ylabel("mem (bytes)")
+ax2.set_title("Deletion")
+ax2.set_xscale("log")
+ax2.set_yscale("log")
+plt.grid(True, which="both", linestyle='dotted')
+#plt.tight_layout()
+adjustments()
+plt.savefig(dir + "/del.eps")
+plt.show(block = False)
 
 #
 # Print and plot the data for query
@@ -190,82 +312,7 @@ ax.set_xticklabels([query_shortnames[Q] for Q in query_inputs])
 ax.set_yscale("log")
 plt.legend(loc="lower left", bbox_to_anchor= (0.0, 1.01), ncol=2, borderaxespad=0, frameon=False)
 fig.tight_layout()
-plt.show(block = False)
 plt.savefig(dir + "/query.eps")
-
-#
-# Plot construction
-#
-
-fig, ax = plt.subplots()
-for D in build:
-    color = "blue"
-    if "BufBOSS" in D["name"]: color = "orange"
-    ax.scatter(D["time"], D["mem"], color = color)
-    ax.annotate(D["name"], 
-                xy=(D["time"], D["mem"]), xycoords='data', # Data point
-                xytext=(5, 5), textcoords='offset points') # Text offset
-#ax.set_xlim((1, None))
-#ax.set_ylim((1, None))
-ax.set_xlabel("time (s)")
-ax.set_ylabel("mem (bytes)")
-ax.set_title("Construction")
-ax.set_xscale("log")
-ax.set_yscale("log")
-plt.grid(True, which="both", linestyle='dotted')
-plt.tight_layout()
-plt.show(block = False)
-plt.savefig(dir + "/build.eps")
-
-# Plot addition
-fig2, ax2 = plt.subplots()
-for D in add:
-    color = "blue"
-    label_overlap_fix = 0
-    if "BufBOSS-0.25" in D["name"] or "BufBOSS-0.5" in D["name"]: 
-        continue # These are essentially the same as BufBOSS-1.0
-    if "BufBOSS" in D["name"]: 
-        if D["name"] == "BufBOSS-0.025":
-            label_overlap_fix = 20
-        color = "orange"
-        D["name"] = D["name"].replace("BufBOSS","BB")
-    ax2.scatter(D["time"], D["mem"], color = color)
-    ax2.annotate(D["name"], 
-                xy=(D["time"], D["mem"]), xycoords='data', # Data point
-                xytext=(5 - label_overlap_fix, 5), textcoords='offset points') # Text offset
-#ax.set_xlim((0, None))
-#ax.set_ylim((0, None))
-ax2.set_xlabel("time (s)")
-ax2.set_ylabel("mem (bytes)")
-ax2.set_title("Addition")
-ax2.set_xscale("log")
-ax2.set_yscale("log")
-plt.grid(True, which="both", linestyle='dotted')
-plt.tight_layout()
-plt.show(block = False)
-plt.savefig(dir + "/add.eps")
-
-# Plot deletion
-fig2, ax2 = plt.subplots()
-for D in delete:
-    color = "blue"
-    if "BufBOSS" in D["name"]: 
-        if D["name"] != "BufBOSS-1.0": continue
-        D["name"] = "BufBOSS"
-        color = "orange"
-    ax2.scatter(D["time"], D["mem"], color = color)
-    ax2.annotate(D["name"], 
-                xy=(D["time"], D["mem"]), xycoords='data', # Data point
-                xytext=(5, 5), textcoords='offset points') # Text offset
-#ax.set_xlim((0, None))
-#ax.set_ylim((0, None))
-ax2.set_xlabel("time (s)")
-ax2.set_ylabel("mem (bytes)")
-ax2.set_title("Deletion")
-ax2.set_xscale("log")
-ax2.set_yscale("log")
-plt.grid(True, which="both", linestyle='dotted')
-plt.tight_layout()
-plt.savefig(dir + "/del.eps")
 plt.show(block = True)
+
 
